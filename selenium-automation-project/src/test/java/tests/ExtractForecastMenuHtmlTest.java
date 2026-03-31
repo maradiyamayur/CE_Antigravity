@@ -127,9 +127,7 @@ public class ExtractForecastMenuHtmlTest {
         } catch (Exception e) {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
         }
-    }
-
-    private File waitForFileDownload(String downloadDir, String fileNamePrefix, int timeoutSeconds) {
+    }    private File waitForFileDownload(String downloadDir, String fileNamePrefix, int timeoutSeconds) {
         System.out.println("Waiting for file starting with '" + fileNamePrefix + "' in " + downloadDir + "...");
         File dir = new File(downloadDir);
         for (int i = 0; i < timeoutSeconds; i++) {
