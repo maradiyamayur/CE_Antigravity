@@ -1,0 +1,554 @@
+<html class="page-22 app-ZOOLANDER" lang="en-gb" style="--js-sticky-top: 0px;"><head>
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta charset="utf-8">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="/i/app_ui/css/Core.min.css?v=24.2.5" type="text/css">
+<link rel="stylesheet" href="/i/app_ui/css/Theme-Standard.min.css?v=24.2.5" type="text/css">
+<link rel="stylesheet" href="r/prongc/10132/files/plugin/523673704854167311/v329/searchNavMenu.css" type="text/css">
+<link rel="stylesheet" href="r/prongc/10132/files/plugin/1464304327076327862/v204/uc.aopdownload.min.css" type="text/css">
+
+  <link rel="stylesheet" href="/i/libraries/font-apex/2.4/css/font-apex.min.css?v=24.2.5" type="text/css">
+<link rel="stylesheet" href="/i/themes/theme_42/24.2/css/Core.min.css?v=24.2.5" type="text/css">
+
+  
+  <link rel="stylesheet" href="r/prongc/10132/files/theme/42/v65/451673444590077862.css" type="text/css">
+
+  <link rel="stylesheet" href="r/prongc/files/static/v67/NGC_General_CSS_Lib.css" type="text/css">
+
+  <style nonce="DmrqXy5At6Z_3eoLbK81Ew">
+/*.t-PageBody--login .t-Body{
+    Background: url(r/prongc/files/static/v67/NGCLogo.png);
+    Background-size: 100% auto;
+}*/
+
+.t-Login-header {
+display:none
+}
+
+.link-btn {
+    background:none!important;
+     border:none; 
+     padding:0!important;
+    
+    /*optional*/
+    font-family:arial,sans-serif; /*input has OS specific font-family*/
+     color:#069;
+     text-decoration:underline;
+     cursor:pointer;
+}
+
+.link-btn:hover {
+background: #6ab8be;
+}
+
+body {
+    background: url(r/prongc/files/static/v67/NGCLogo.png) no-repeat;  
+    background-size: cover; 
+}
+
+
+#instance{color: white !important;
+background:none !important;}
+
+.instance_wrapper{position: absolute;
+    z-index:99999;
+    top: 0%; 
+    right: 0%;
+    transform: translate(40%, -80%) rotate(20deg);
+    text-transform: uppercase;
+    font-family: sans-serif;
+    font-size: 6em;
+    font-weight: 700;
+    color: #f5f5f5;
+    text-shadow: 1px 1px 1px #919191,
+        1px 2px 1px #919191,
+        1px 3px 1px #919191,
+        1px 4px 1px #919191,
+        1px 5px 1px #919191,
+        1px 6px 1px #919191,
+        1px 7px 1px #919191,
+        1px 8px 1px #919191,
+        1px 9px 1px #919191,
+        1px 10px 1px #919191,
+    1px 18px 6px rgba(16,16,16,0.4),
+    1px 22px 10px rgba(16,16,16,0.2),
+    1px 25px 35px rgba(16,16,16,0.2),
+    1px 30px 60px rgba(16,16,16,0.4);}
+	
+	#P22_FORGOT{
+    color:#2D2A81;
+}
+#P22_USERNAME, #P22_PASSWORD, #P22_LOGIN {
+    border-radius:10px;
+}
+
+#P22_LOGIN{background:#2D2A81 !important; color:#FFFFFF !important;}
+
+#P22_LOGIN:hover{background:#9B99DE !important; color:#1C1C28 !important;}
+
+.t-Login-region{background: white !important;}
+
+
+/*Loggin Help Message*/
+#LOGGIN_HELP_MESSAGE{
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+  animation: 1s slide-up;
+}
+
+
+@keyframes slide-up {
+from {bottom:-30%;
+top:auto;}
+to {bottom:5%;
+top:auto;}}
+
+.t-Body-Loggin-Help{
+  background: #DFDEF4;
+  max-width: 550px;
+  box-shadow: 0px 4px 8px rgba(45, 42,129, 0.1);
+  border-radius: 4px;
+  display: flex;
+  padding: 15px;
+  border-left: solid 3px #6f7eff;
+}
+
+.t-Loggin-Help-wrap{
+  display: flex;
+  flex-direction: row;
+}
+
+.t-Loggin-Help-icon > i:before {
+  color: #2D2A81;
+  padding: 4px;
+}
+.t-Loggin-Help-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.t-Loggin-Help-content{
+  flex: 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.t-Loggin-Help-Button{
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  padding: 1px 4px 1px 4px;
+  background-color: #000000;
+  color: #FFFFFF;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.25);
+  border-radius: 24px;
+  border: none;
+}
+
+.t-Icon-Close-Loggin-Help:before{
+  font-family: apex-5-icon-font;
+  font-size: 16px;
+  content: "\e0a2";
+  transition: 0.2s ease;
+}
+
+.t-Loggin-Help-Button:hover{
+  background-color: #dfdef4;  
+  color: #2d2a81;
+  cursor:pointer;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.25);
+}
+</style>
+
+  <link rel="apple-touch-icon" href="r/prongc/10132/files/static/v100/icons/app-icon-192.png"><link rel="icon" href="r/prongc/10132/files/static/v100/icons/app-icon-32.png">
+  
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="app-version" content="v25.Q2.5">
+  <meta name="app-tenant-id" content="">
+  <meta name="app-alias" content="ZOOLANDER">
+  <meta name="app-page-alias" content="LOGIN">
+<script async="" src="https://cdn.eu.pendo.io/agent/static/6ff4e6e8-dd70-4519-b2d1-5c14b23801bc/pendo.js"></script><script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-K823RZ3Z"></script><style>
+ .fch_icon:before {
+  content: url(r/prongc/files/static/v67/FCH_ICON.png);
+  padding-right: 2px;
+ }
+ .iotron_icon:before {
+  content: url(r/prongc/files/static/v67/IOTRON_ICON.png);
+  padding-right: 2px;
+ }
+ .subscription_icon:before {
+  content: url(r/prongc/files/static/v67/subscriptions.png);
+  padding-right: 2px;
+ }
+ .t-Body-actionsControlsIcon:before {
+  content: "\e0f4";
+ }
+ </style></head>
+<body class="t-PageBody--login t-PageTemplate--login apex-side-nav apex-icons-fontapex apex-theme-ngc-theme js-ready">
+<form role="none" action="wwv_flow.accept?p_context=10132:22:8652726563669" method="post" name="wwv_flow" id="wwvFlowForm" data-oj-binding-provider="none" novalidate="">
+<input type="hidden" name="p_flow_id" value="10132" id="pFlowId"><input type="hidden" name="p_flow_step_id" value="22" id="pFlowStepId"><input type="hidden" name="p_instance" value="8652726563669" id="pInstance"><input type="hidden" name="p_page_submission_id" value="MjY1OTA5NTgyNDYzMTM4OTA5ODA3MDc0NDY1NTM4NTIzMjEzNTA5/NYej4f845_1klgdOQyuX68PtlwHpz42OKQBDbAFRFgWXcwiUVUMw3H6jgAMvfuGOHQeDwFNx0lTetDc6wkeHKQ" id="pPageSubmissionId"><input type="hidden" name="p_request" value="" id="pRequest"><input type="hidden" name="p_reload_on_submit" value="A" id="pReloadOnSubmit"><input type="hidden" value="10132:22:8652726563669" id="pContext"><input type="hidden" value="265909582463138909807074465538523213509" id="pSalt">
+<div class="t-Login-bg">
+  
+  <div class="t-Login-bgImg"></div>
+</div><div class="container">
+<div class="row ">
+<div class="col col-12 apex-col-auto col-start col-end"><div class="t-Region t-Region--scrollBody" id="R44662519009929817" role="region" aria-label="SearchOnMenu" style="display:none">
+ <div class="t-Region-header">
+  <div class="t-Region-headerItems t-Region-headerItems--title">
+    <span class="t-Region-headerIcon"><span class="t-Icon " aria-hidden="true"></span></span>
+    <h2 class="t-Region-title" id="R44662519009929817_heading" data-apex-heading="">SearchOnMenu</h2>
+  </div>
+  <div class="t-Region-headerItems t-Region-headerItems--buttons"><span class="js-maximizeButtonContainer"></span></div>
+ </div>
+ <div class="t-Region-bodyWrap">
+   <div class="t-Region-buttons t-Region-buttons--top">
+    <div class="t-Region-buttons-left"></div>
+    <div class="t-Region-buttons-right"></div>
+   </div>
+   <div class="t-Region-body">
+     <div class="t-Region-orderBy"></div>
+     <div class="container">
+<div class="row ">
+<div class="col col-12 apex-col-auto col-start col-end"></div>
+</div>
+</div>
+     
+   </div>
+   <div class="t-Region-buttons t-Region-buttons--bottom">
+    <div class="t-Region-buttons-left"></div>
+    <div class="t-Region-buttons-right"></div>
+   </div>
+ </div>
+</div>
+</div>
+</div>
+</div><div class="t-Login-container">
+  <header class="t-Login-containerHeader"></header>
+  <main class="t-Login-containerBody" id="main"><span id="APEX_SUCCESS_MESSAGE" data-template-id="2101157952850466385_S" class="apex-page-success u-hidden"></span><span id="APEX_ERROR_MESSAGE" data-template-id="2101157952850466385_E" class="apex-page-error u-hidden"></span><div class="container">
+<div class="row ">
+<div class="col col-12 apex-col-auto col-start col-end"><div class="t-Login-region t-Form--stretchInputs t-Form--labelsAbove " id="R570488487839983277" role="region" aria-labelledby="R570488487839983277_heading">
+  <div class="t-Login-header">
+    
+    <span class="t-Login-logo " aria-hidden="true"></span>
+    <h2 class="t-Login-title" id="R570488487839983277_heading" data-apex-heading="">Login Items</h2>
+  </div>
+  <div class="t-Login-body"><div align="center"><center>
+<img src="r/prongc/files/static/v67/NGC-sttl-logo.png">
+</center>
+<br><br>
+<span class="instance_wrapper"><span style="font-weight:bold; color: #345511;" id="instance">UAT</span></span><div class="t-Form-fieldContainer t-Form-fieldContainer--hiddenLabel rel-col icon-login-username apex-item-wrapper apex-item-wrapper--has-placeholder apex-item-wrapper--text-field" id="P22_USERNAME_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer t-Form-labelContainer--hiddenLabel col col-null">
+<label for="P22_USERNAME" id="P22_USERNAME_LABEL" class="t-Form-label u-VisuallyHidden">User Name</label>
+</div><div class="t-Form-inputContainer col col-null"><div class="t-Form-itemWrapper"><input type="text" id="P22_USERNAME" name="P22_USERNAME" placeholder="Username" class="text_field apex-item-text" value="" size="24" maxlength="100" data-trim-spaces="NONE" data-enter-submit="false" data-is-page-item-type="true"></div><span id="P22_USERNAME_error_placeholder" class="a-Form-error" data-template-id="2040785906935475274_ET"></span></div></div><div class="t-Form-fieldContainer t-Form-fieldContainer--hiddenLabel rel-col icon-login-password apex-item-wrapper apex-item-wrapper--has-placeholder apex-item-wrapper--password" id="P22_PASSWORD_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer t-Form-labelContainer--hiddenLabel col col-null">
+<label for="P22_PASSWORD" id="P22_PASSWORD_LABEL" class="t-Form-label u-VisuallyHidden">Password</label>
+</div><div class="t-Form-inputContainer col col-null"><div class="t-Form-itemWrapper"><div class="apex-item-group apex-item-group--password"><input type="password" name="P22_PASSWORD" size="40" maxlength="100" value="" id="P22_PASSWORD" placeholder="Password" class="password apex-item-text apex-item-password" data-enter-submit="true"><button class="t-Button t-Button--icon t-Button--passwordVisibility" type="button" aria-label="Show Password" title="Show Password"><span class="apex-item-icon fa fa-eye-slash" aria-hidden="true"></span></button></div></div><span id="P22_PASSWORD_error_placeholder" class="a-Form-error" data-template-id="2040785906935475274_ET"></span></div></div><input type="hidden" name="P22_TEMP_PASS_EXISTS" id="P22_TEMP_PASS_EXISTS" value=""><input type="hidden" data-for="P22_TEMP_PASS_EXISTS" value="FhpLfqI_nd7DbgNbb92la1JTrLnBUNb6kNVi9BOPVMKe4xdpZexV6q8ZYoi5GtXvVBvUKjKcpW-YIJnDd7pULg"><input type="hidden" name="P22_PASS_EXP" id="P22_PASS_EXP" value=""><input type="hidden" data-for="P22_PASS_EXP" value="D2S0mMzXxM0xD4rFI9m0UGL2sK-Z005u9YIeQB4LAX6-66sst0wmEb7iPkETjxq-0OkfGO7VsOKo2spmY8toOQ"><input type="hidden" name="P22_ACCOUNT_LOCKED" id="P22_ACCOUNT_LOCKED" value=""><input type="hidden" data-for="P22_ACCOUNT_LOCKED" value="gHD49WI_kzrmi11JlCmSkWwqM8imIlfEY3TtGERxlnZfFHEh6iCpw1m8QqpQ-2MHAd1EWnvGUt8kWruUdD-SLA"><input type="hidden" name="P22_NEW_ACCOUNT" id="P22_NEW_ACCOUNT" value=""><input type="hidden" data-for="P22_NEW_ACCOUNT" value="wcxpfA7t4cR9Q-ojKwl7-CYYYBHAvnNo1nt5Czb-WFAeEihuLt0cPHa9x2KUMquopEA1muhJJZx__kyOH3yluQ"><input type="hidden" name="P22_TERM_ACCOUNT" id="P22_TERM_ACCOUNT" value=""><input type="hidden" data-for="P22_TERM_ACCOUNT" value="26PTjPxmPpms_TyROpXUZT2zAoPfWasxdidUt2sK8lDJkbwCditG0o-xXmKw37M_dJE2p70UG_x0GnKWGRhEJg"></div>
+  <div class="t-Login-buttons"><button class="t-Button t-Button--hot " type="button" id="P22_LOGIN" data-otel-label="P22_PASSWORD"><span class="t-Button-label">Login</span></button><button class="t-Button a-Login-links  t-Button--large t-Button--link" type="button" id="P22_FORGOT" data-otel-label="P22_FORGOT"><span class="t-Button-label">Forgot your Password?</span></button></div>
+  <div class="t-Login-links"></div>
+  <div class="t-Login-subRegions"></div>
+</div></div>
+</div>
+</div></div></main>
+  <footer class="t-Login-containerFooter"></footer>
+</div>
+<input type="hidden" id="pPageFormRegionChecksums" value="[]">
+<input type="hidden" id="pPageItemsRowVersion" value=""><input type="hidden" id="pPageItemsProtected" value="UDIyX1RFTVBfUEFTU19FWElTVFM6UDIyX1BBU1NfRVhQOlAyMl9BQ0NPVU5UX0xP.,Q0tFRDpQMjJfTkVXX0FDQ09VTlQ6UDIyX1RFUk1fQUNDT1VOVA/AyN0hEXf0q01ZTY5aPMuiYj4TI1Wmq8dJycMLYE3dDlx14lA6CcAltJCvMFO9aXXw_ENZgDAtXiZt7x4ArYeAg"></form>
+
+
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew">
+var apex_img_dir = "\u002Fi\u002F";
+var apex = {env: {APP_USER: "nobody",APP_ID: "10132",APP_PAGE_ID: "22",APP_SESSION: "8652726563669",APP_FILES: "r\u002Fprongc\u002F10132\u002Ffiles\u002Fstatic\u002Fv100\u002F",WORKSPACE_FILES: "r\u002Fprongc\u002Ffiles\u002Fstatic\u002Fv67\u002F",APEX_VERSION: "24.2.5",APEX_BASE_VERSION: "24.2",COMPATIBILITY_MODE: 21.2,NONCE: "DmrqXy5At6Z_3eoLbK81Ew"},
+libVersions:{cropperJs:"1.6.2",domPurify:"3.2.4",fontapex:"2.4",fullcalendar:"6.1.15",hammer:"2.0.8",jquery:"3.6.4",jqueryUi:"1.13.2",maplibre:"4.6.0",mapboxGlRtlText:"0.3.0",markedJs:"14.1.2",prismJs:"1.30.0",oraclejet:"17.0.2",turndown:"7.2.0",monacoEditor:"0.51.0",lessJs:"4.2.0"}};
+</script>
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew" src="/i/libraries/apex/minified/desktop_all.min.js?v=24.2.5"></script>
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew" src="wwv_flow.js_messages?p_app_id=10132&amp;p_lang=en-gb&amp;p_version=24.2.5-34441742257&amp;p_nls_settings=eyJudW1lcmljQ2hhcmFjdGVycyI6Ii4sIiwiY3VycmVuY3kiOiKjIiwiaXNvQ3VycmVuY3kiOiJVTklURUQgS0lOR0RPTSIsImR1YWxDdXJyZW5jeSI6Ir8ifQ"></script>
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew" src="wwv_flow.js_dialogs?p_app_id=10132&amp;p_version=24.2.5-34441742257"></script>
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew" src="/i/libraries/apex/minified/legacy_pre18.min.js?v=24.2.5"></script>
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew" src="/i/libraries/apex/minified/legacy_18.min.js?v=24.2.5"></script>
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew" src="/i/libraries/jquery-migrate/3.5.2/jquery-migrate.min.js?v=24.2.5"></script>
+
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew">
+apex.da.initDaEventList = function(){
+apex.da.gEventList = [
+{"executionType":"IMMEDIATE","bindEventType":"ready","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"affectedElementsType":"JQUERY_SELECTOR","affectedElements":".aopdownload",javascriptFunction:function(){  
+      options = $.extend(true, this, { 
+        "render": { 
+          "attr": {
+            "app": {
+              "emailFrom": "uat_operations@nextgenclearing.com"
+            }
+          },
+          "apex": "24.2.5",
+          "debug": false,
+          "messages": {
+            "codes": "AOP_DOWNLOAD_LABEL_ITEM_FREQUENCY_YEARLY,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_ENDS_DATE,AOP_DOWNLOAD_LABEL_ITEM_FREQUENCY_HOURLY,AOP_DOWNLOAD_MSG_TABLE_SCHEDULED,AOP_DOWNLOAD_MSG_BROWSER_NOW,AOP_DOWNLOAD_MSG_TABLE_NOW,AOP_DOWNLOAD_LABEL_ITEM_WHEN_SCHEDULED,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_STARTS,AOP_DOWNLOAD_MSG_BROWSER_SCHEDULED,AOP_DOWNLOAD_LABEL_ITEM_AOP_TPL_PPTX,AOP_DOWNLOAD_MSG_EMAIL_BACKGROUND,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_STARTS_NOW,AOP_DOWNLOAD_MSG_TABLE_BACKGROUND,AOP_DOWNLOAD_MSG_CUSTOM_NOW,AOP_DOWNLOAD_LABEL_ITEM_AOP_TPL_MD,AOP_DOWNLOAD_LABEL_ITEM_OUTPUTTO_TABLE,AOP_DOWNLOAD_LABEL_CR_ANCHOR,AOP_DOWNLOAD_MSG_FILE_DB_BACKGROUND,AOP_DOWNLOAD_LABEL_ITEM_AOP_TPL_XLSX,AOP_DOWNLOAD_MSG_CUSTOM_BACKGROUND,AOP_DOWNLOAD_LABEL_ITEM_EMAIL_BCC,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_STARTS_DATE,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAY_SUN,AOP_DOWNLOAD_MSG_EMAIL_SCHEDULED,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAY_MON,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAYS,AOP_DOWNLOAD_LABEL_ITEM_AOP_TEMPLATE,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAY_FRI,AOP_DOWNLOAD_MSG_EMAIL_NOW,AOP_DOWNLOAD_MSG_FILE_DB_SCHEDULED,AOP_DOWNLOAD_LABEL_ITEM_OUTPUTTO_FILE_DB,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_END_DATE,AOP_DOWNLOAD_LABEL_BUTTON_GENERATE,AOP_DOWNLOAD_LABEL_ITEM_WHEN,AOP_DOWNLOAD_MSG_BROWSER_BACKGROUND,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_START_DATE,AOP_DOWNLOAD_LABEL_BUTTON_CANCEL,AOP_DOWNLOAD_MSG_FILE_AOP_SCHEDULED,AOP_DOWNLOAD_LABEL_ITEM_OUTPUTTO,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_ENDS_NEVER,AOP_DOWNLOAD_MSG_CUSTOM_SCHEDULED,AOP_DOWNLOAD_LABEL_ITEM_FREQUENCY_MINUTELY,AOP_DOWNLOAD_LABEL_ITEM_EMAIL_CC,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAY_SAT,AOP_DOWNLOAD_MSG_FILE_AOP_NOW,AOP_DOWNLOAD_LABEL_ITEM_AOP_TPL_DOCX,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_REPEAT,AOP_DOWNLOAD_LABEL_ITEM_FREQUENCY_DAILY,AOP_DOWNLOAD_LABEL_ITEM_REPORT_TYPE,AOP_DOWNLOAD_LABEL_ITEM_EMAIL_SUBJECT,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_ENDS,AOP_DOWNLOAD_LABEL_ITEM_FREQUENCY_MONTHLY,AOP_DOWNLOAD_LABEL_ITEM_OUTPUTTO_EMAIL,AOP_DOWNLOAD_HELP_ITEM_EMAIL_BODY,AOP_DOWNLOAD_MSG_FILE_DB_NOW,AOP_DOWNLOAD_LABEL_ITEM_WHEN_NOW,AOP_DOWNLOAD_LABEL_ITEM_OUTPUTTO_FILE_AOP,AOP_DOWNLOAD_LABEL_ITEM_OUTPUTTO_BROWSWER,AOP_DOWNLOAD_LABEL_ITEM_AOP_TPL_HTML,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAY_TUE,AOP_DOWNLOAD_LABEL_ITEM_WHEN_BACKGROUND,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAY_THU,AOP_DOWNLOAD_LABEL_ITEM_FREQUENCY_WEEKLY,AOP_DOWNLOAD_LABEL_ITEM_TEMPLATE_SELECTION,AOP_DOWNLOAD_LABEL_MENU_ENTRY,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAY_WED,AOP_DOWNLOAD_LABEL_ITEM_EMAIL_TO,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_SCOPE,AOP_DOWNLOAD_MSG_FILE_AOP_BACKGROUND,AOP_DOWNLOAD_LABEL_ITEM_EMAIL_BODY",
+            "texts": "Year,On specific date,Hour,File has been scheduled to generate,File \"\u0026AOP_FILENAME.\" generated.,File generated into table,Scheduled,Starts,File has been scheduled to be generated.,Powerpoint (pptx),File will be sent to e-mail \"\u0026AOP_EMAIL_TO.\" when generation is finished in the background,Now,File is generating in the background,File generated to custom output location,Markdown,Table,Print with AOP,File is generating into file system (db directory) in the background,Excel (xlsx),File is generating into custom output location in the background,E-mail BCC,On specific date,Sun,File scheduled to be sent to e-mail \"\u0026AOP_EMAIL_TO.\",Mon,Days of the week:,Generate template,Fri,File generated and sent to e-mail \"\u0026AOP_EMAIL_TO.\",File is scheduled to generate into file system (db directory),DB Folder,End Date,Go,When,File is being generating in the background.,Start Date,Cancel,File is scheduled to generate into file system (AOP directory),Output To,Never,File is scheduled to generate to custom output location,Minute,E-mail CC,Sat,File is generated into file system (AOP directory),Word (docx),Repeat Every,Day,Report Type,E-mail Subject,Ends,Month,E-mail,-,File is generated into file system (db directory),Now,AOP Folder,Browser,HTML,Tue,Background,Thu,Week,Choose your template,Download \u0026 Subscribe,Wed,E-mail To,Frequency,File is generating into file system (AOP directory) in the background,E-mail Body"
+          },
+          "templates": { 
+            "label": { 
+              "names": "OPTIONAL_FLOATING,OPTIONAL_ABOVE", 
+              "ids": "1609121967514267634,3031561666792084173" 
+            } 
+          }, 
+          "da": { 
+            "id"   : "76002562710934817", 
+            "name" : "AOP Download [Plug-in]", 
+            "event": "ready",
+            "initJavascriptCode"  : ""
+          }, 
+          "actionId": "76002917890934849", 
+          "region": { 
+            "hidden"        : false, 
+            "id"            : "", 
+            "type"          : "",
+            "staticId"      : "",
+            "itemsToSubmit" : ""
+          }, 
+          "regionId": "", 
+          "waitFor": "" 
+        } 
+      }); 
+       
+      uc.aopdownload.init_pageload( options ); 
+    },"ajaxIdentifier":"REEgVFlQRX5-NzYwMDI5MTc4OTA5MzQ4NDk\u002Fuq-r_4k50g5fv8q-TJb9Oh0jwTtZnPj6VblyrDMiJztWTxIM8FR-l0yc5GkDtXTkXr7o-YfesCj8_5tXHZfc5Q","attribute01":"xlsx:csv","attribute03":"AOP","attribute04":"INIT","attribute08":"BROWSER:EMAIL","attribute10":"NOW:SCHEDULED","attribute11":"AOP_REPORT","attribute12":"AOP_JSON_DEBUG:DISPLAY_MESSAGE:DISPLAY_SPINNER","action":"PLUGIN_UNITEDCODES_AOP_DOWNLOAD"}]},
+{"triggeringConditionType":"JAVASCRIPT_EXPRESSION","triggeringConditionExpression": function() {
+return ($("#t_Alert_Notification").length > 0
+); },"executionType":"IMMEDIATE","bindEventType":"ready","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ var custom_message_html = '<span id="LOGGIN_HELP_MESSAGE" class="custom_loggin_help_message"><div class="t-Body-Loggin-Help"><div class="t-Loggin-Help-wrap"><div class="t-Loggin-Help-icon"><i class="fa fa-info-circle-o fa-2x"></i></div><div class="t-Loggin-Help-content"><div class="t-Loggin-Help-text"><b>Having challenges accessing our system?</b><br>If you received your new users credentials via email<br>please login using - <a href= "https://login.nextgenclearing.com" target="_blank">https://login.nextgenclearing.com</a><br><br><b>Still need help?</b><br>Please contact us <a href="mailto:operations@nextgenclearing.com;iotronops@nextgenclearing.com">here</a></div></div><div class="t-Loggin-Help-Buttons"><button class="t-Loggin-Help-Button" onclick="$(\'#LOGGIN_HELP_MESSAGE\').remove();" type="button" title="Close Loggin Help"><span class="t-Icon-Close-Loggin-Help"></span></button></div></div></div></span>;';
+
+$("#main").append(custom_message_html);
+},"action":"NATIVE_JAVASCRIPT_CODE"}]},
+{"executionType":"IMMEDIATE","bindEventType":"ready","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ //Add enviroment indicator to nav menu
+$("#t_TreeNav > ul").prepend('<li id="t_TreeNav_INSTANCE" style="padding:12px; margin-bottom: 1px; background: #f3c83c; text-align: center; cursor: default;" class="a-TreeView-node is-expandable a-TreeView-node--topLevel"><span style="font-weight:bold; color: #345511;" id="instance">UAT</span></li>');
+
+//Add brand to page header
+$("#t_Header > div.t-Header-branding > div.t-Header-logo").after('<div class="t-Header-brand" style="flex: 1; display:flex;"></div>');
+
+//Add Accordion-Like Navigation menu
+$('#t_Body_nav #t_TreeNav').on('click', 'ul li.a-TreeView-node div.a-TreeView-content:not(:has(a))', function(){
+    $('#t_Body_nav #t_TreeNav .is-selected').removeClass("is-selected");
+    $(this).prev('span.a-TreeView-toggle').click();
+});
+
+$('#t_Button_navControl').on('click',this, function(){
+    $('#t_Body_nav #t_TreeNav .is-selected').removeClass("is-selected");
+});
+
+//Add Tooltip if navigation is not expanded
+ if( $('#t_Body_nav #t_TreeNav').length > 0 )
+{
+     //Tooltip for Menu Text
+$("#t_TreeNav").treeView("option", "tooltip", {
+    content: function(cb, node) {
+        if ($(".js-navCollapsed ").length > 0) {
+         return node.label;;
+      }
+        else {
+         return "";
+      }
+    },
+    position: {
+      my: "left+10 center", at: "right center"
+    }
+} );
+ //This tells the tooltip to show up for the whole node content including the icon.
+$("#t_TreeNav").tooltip("option", "items", ".a-TreeView-content");
+}
+
+//Collapse Navigation menu on page load
+if ($('#t_Button_navControl').attr('aria-expanded') === "true") {
+    $('#t_Button_navControl').click();
+}
+},"action":"NATIVE_JAVASCRIPT_CODE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){  const style = document.createElement('style');
+ style.textContent = `
+ .fch_icon:before {
+  content: url(r/prongc/files/static/v67/FCH_ICON.png);
+  padding-right: 2px;
+ }
+ .iotron_icon:before {
+  content: url(r/prongc/files/static/v67/IOTRON_ICON.png);
+  padding-right: 2px;
+ }
+ .subscription_icon:before {
+  content: url(r/prongc/files/static/v67/subscriptions.png);
+  padding-right: 2px;
+ }
+ .t-Body-actionsControlsIcon:before {
+  content: "\\e0f4";
+ }
+ `;
+
+ // Append the <style> element to the <head> of the page
+ document.head.appendChild(style);
+},"action":"NATIVE_JAVASCRIPT_CODE"}]},
+{"triggeringElementType":"JQUERY_SELECTOR","triggeringElement":".apex-item-multi,.a-Button--popupLOV","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"mouseenter","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ /*POPUP LOV default behavior is to remove browser scroll on click.
+Since right column side of the page is affected by this removal and it changes item dimensions this was 
+added to emulate this behavior before click*/
+$('.t-PageBody').addClass('apex-no-scroll')
+
+},"action":"NATIVE_JAVASCRIPT_CODE"}]},
+{"triggeringElementType":"JQUERY_SELECTOR","triggeringElement":".apex-item-multi,.a-Button--popupLOV","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"mouseleave","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ /*POPUP LOV default behavior is to remove browser scroll on click.
+Since right column side of the page is affected by this removal and it changes item dimensions this was 
+added to emulate this behavior before click*/
+$('.t-PageBody').removeClass('apex-no-scroll')
+
+},"action":"NATIVE_JAVASCRIPT_CODE"}]},
+{"triggeringElementType":"JAVASCRIPT_EXPRESSION","triggeringElement": function() {
+return (document
+); },"bindType":"bind","executionType":"IMMEDIATE","bindEventType":"scroll","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ if(window.scrollY==0){
+    $( ".t-BreadcrumbRegion" ).removeClass( "page-scrolled" );
+} else {
+    $( ".t-BreadcrumbRegion" ).addClass( "page-scrolled" );
+};
+},"action":"NATIVE_JAVASCRIPT_CODE"}]},
+{"executionType":"IMMEDIATE","bindEventType":"ready","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ $("#t_TreeNav").on("treeviewactivatenode", function(e, ui) {  
+
+var n$ = $(e.originalEvent.target).closest(".a-TreeView-content"); 
+
+if (ui.nodes.length > 0 && ui.nodes[0].link === "") { 
+
+     if (n$.parent().hasClass("is-expandable")) { 
+
+         $(this).treeView("expand", n$)
+
+     } else if (n$.parent().hasClass("is-collapsible")) {
+
+       $(this).treeView("collapse", n$) 
+
+     }  
+
+} 
+
+}); 
+},"action":"NATIVE_JAVASCRIPT_CODE"}]},
+{"bindEventType":"ready","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ var app_user_env        =  'UAT';
+var app_user_id         =  '';
+var app_user_email      =  '';
+var app_user_firstname  =  '';
+var app_user_lastname   =  '';
+var app_user_orgid      =  '';
+var app_user_orgname    =  '';
+
+
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K823RZ3Z');
+
+/* Push user context AFTER login */
+if (apex.env.APP_USER !== 'NOBODY') {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: "pendo_context",
+    env: app_user_env, 
+    product: "FCH",
+    id: app_user_id,
+    email: app_user_email,
+    firstName: app_user_firstname,
+    lastName: app_user_lastname,    
+    organization : {
+        id : app_user_orgid,
+        name: app_user_orgname
+    },
+  });
+}
+},"action":"NATIVE_JAVASCRIPT_CODE"}]}];
+}
+</script>
+<style nonce="DmrqXy5At6Z_3eoLbK81Ew">
+/* 
+** STYLE Settings for search navigation menu and menu icons
+*/
+/* FIX If you use FONT awesome enable this .srch_nav span */
+/*
+.srch_nav span { 
+   top:2px;
+}
+*/
+/* FIX If you use FONT awesome disable  this .t-TreeNav */
+.t-TreeNav .a-TreeView-node--topLevel ul .a-TreeView-content .fa {
+   vertical-align: top;
+   width: 32px; /* This can be decrease to have smaller spacing */
+   height: 32px;
+   line-height: 32px;
+   text-align: center;
+   transition: width .2s ease;
+}
+/* Search resault setting */
+.a-TreeView-label strong {
+    font-weight:bold; 
+    color:black;
+    background-color:#ffef9a;
+}
+/* Input field style setting */
+.srch_nav input {
+    color:black;
+    background-color:#f1f6fa;
+    border-color:#ededed;
+}
+/* Input field on hover setting */
+.srch_nav input:focus {
+    border-color:#ff7052;
+}
+</style>
+
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew" src="/i/libraries/apex/minified/widget.stickyWidget.min.js?v=24.2.5"></script>
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew" src="/i/themes/theme_42/24.2/js/theme42.min.js?v=24.2.5"></script>
+
+
+
+
+
+
+
+
+
+
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew" src="r/prongc/10132/files/plugin/523673704854167311/v329/searchNavMenu.js"></script>
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew" src="/i/libraries/apex/minified/widget.datepicker.min.js?v=24.2.5"></script>
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew" src="/i/libraries/apex/minified/widget.timepicker.min.js?v=24.2.5"></script>
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew" src="r/prongc/10132/files/plugin/1464304327076327862/v204/uc.aopdownload.min.js"></script>
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew" src="r/prongc/10132/files/plugin/1464304327076327862/v204/uc.aopdownloadCommon.min.js"></script>
+
+
+<script nonce="DmrqXy5At6Z_3eoLbK81Ew">
+apex.jQuery( function() {
+apex.page.init( this, function() {
+try {
+(function(){$("#t_Button_navControl").on("click", function(){showHideSearchBar("P0_SEARCH");});$("#t_TreeNav").prepend("<div id=\"P0_SEARCH\" class=\"srch_nav \">"+                       
+                        "<input class=\"srch_input\" type=\"text\" placeholder=\"\" value=\"\"/>"+"<span class=\"srch_icon\"><i class=\"fa fa-search\"></i></span></div>");LoadSearchNavMenu("P0_SEARCH",{"MenuOpen":false,
+ "MenuClickOpenClose":true,
+ "SaveSS":true,
+ "ShortcutSaveSS":false,
+ "ShrtCaseSensitive":true,
+ "OnSearchShowChildren":true,
+ "UseFocus":true,
+ "Shortcuts" : []
+},"SVRFTSBUWVBFfjUxMjB-NDQ2NjI2MDE2NDE5Mjk4MTg/cwo9mjIFyqhm2EbUqUIz_1FQgO1wKXQjrp7bGKeUK6cD5MmMPZW-aNrpOvVvfjQttmaJgLdxWuAIykRJAeyHUw","S","");})();
+(function(){apex.jQuery("#P22_LOGIN").click( event => { apex.submit({request:'P22_PASSWORD',validate:true}); });})();
+(function(){apex.jQuery("#P22_FORGOT").click( event => { apex.navigation.redirect('f?p=10132:22::V_FORGOT::22::'); });})();
+} catch(e) {apex.debug.error(e)};
+apex.item.waitForDelayLoadItems().done(function() {
+try {
+(function(){apex.da.initDaEventList();
+apex.da.init();})();
+apex.theme42.initializePage.appLogin();
+
+
+apex.item( 'P0_SEARCH' ).setFocus();
+} finally {
+apex.event.trigger(apex.gPageContext$,'apexreadyend');
+};
+});
+});
+});apex.pwa.cleanup( { serviceWorkerPath:'\u002Ffuat\u002Fr\u002Fprongc\u002Fzoolander\u002Fsw.js?v=24.2.5-34441742257\u0026lang=en-gb' } );
+</script>
+
+
+<div tabindex="-1" role="dialog" class="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front no-close srch_modal ui-dialog-buttons ui-draggable ui-resizable" aria-labelledby="ui-id-1" style="display: none; position: fixed;"><div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle"><h1 id="ui-id-1" class="ui-dialog-title" aria-roledescription="Dialog Title">Search Navigation Menu HELP</h1><button type="button" class="ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close" title="Close" aria-label="Close" aria-describedby="ui-id-1"><span class="ui-button-icon ui-icon ui-icon-closethick"></span></button></div><div id="SNM_Help" class="ui-dialog-content ui-widget-content"></div><div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix"><div class="ui-dialog-buttonset"><button type="button" class="ui-button ui-corner-all ui-widget">Close</button></div></div><div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90;"></div></div><script type="text/javascript" id="" charset="">(function(h){(function(a,c,g,d,b){b=a[d]=a[d]||{};b._q=b._q||[];var f="initialize identify updateOptions pageLoad track trackAgent".split(" ");a=0;for(d=f.length;a<d;++a)(function(e){b[e]=b[e]||function(){b._q[e===f[0]?"unshift":"push"]([e].concat([].slice.call(arguments,0)))}})(f[a]);a=c.createElement(g);a.async=!0;a.src="https://cdn.eu.pendo.io/agent/static/"+h+"/pendo.js";c=c.getElementsByTagName(g)[0];c.parentNode.insertBefore(a,c)})(window,document,"script","pendo");pendo.initialize({visitor:{id:google_tag_manager["rm"]["242674320"](6),
+email:google_tag_manager["rm"]["242674320"](7),firstName:google_tag_manager["rm"]["242674320"](8),lastName:google_tag_manager["rm"]["242674320"](9)},account:{id:google_tag_manager["rm"]["242674320"](10),accountName:google_tag_manager["rm"]["242674320"](11),environment:google_tag_manager["rm"]["242674320"](12),product:google_tag_manager["rm"]["242674320"](13)}})})("6ff4e6e8-dd70-4519-b2d1-5c14b23801bc");</script></body></html>
