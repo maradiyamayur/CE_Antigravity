@@ -1,0 +1,10 @@
+pages\BasePage.class
+driver\DriverFactory.class
+pages\LoginPage.class
+pages\HomePage.class
+pages\DiscountAgreementsPage.class
+pages\AgreementDetailPage.class
+utils\ConfigReader.class
+pages\IotronDashboardPage.class
+utils\CsvUtils.class
+pages\ForecastReportPage.class
