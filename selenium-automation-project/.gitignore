@@ -1,25 +1,18 @@
-# Maven
+# Maven build output
 target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
 
-# IDE
+# IDE files
 .idea/
 *.iml
-*.iws
 .vscode/
 
-# Project Specific
-config.properties
-error_screenshots/
-*.html
+# OS files
+.DS_Store
+Thumbs.db
 
-# Logs
-*.log
+# Downloaded test files (runtime generated)
+target/downloads/
+target/surefire-reports/
+
+# Git related
+.gitignore
