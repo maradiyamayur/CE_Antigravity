@@ -1,6 +1,7 @@
 pages\BasePage.class
 driver\DriverFactory.class
 pages\LoginPage.class
+utils\FileDownloadUtils.class
 pages\HomePage.class
 pages\DiscountAgreementsPage.class
 pages\AgreementDetailPage.class

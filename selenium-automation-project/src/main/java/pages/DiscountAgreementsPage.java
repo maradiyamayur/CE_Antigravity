@@ -80,18 +80,31 @@ public class DiscountAgreementsPage extends BasePage {
         // 1. Open the column-selector menu
         wait.until(ExpectedConditions.elementToBeClickable(colSelectorButton)).click();
 
-        // 2. Choose "Agreement" (the column that holds the agreement reference/name)
-        //    The visible option label in APEX IRR column-selector is "Agreement"
-        By agreementColumnOption = By.xpath(
-                "//li[contains(@class,'a-Menu-item')]//button[normalize-space(text())='Agreement']");
-        try {
-            wait.until(ExpectedConditions.elementToBeClickable(agreementColumnOption)).click();
-            System.out.println("'Agreement' column option selected.");
-        } catch (Exception e) {
-            System.out.println("Could not find 'Agreement' column option, trying 'Agreement Reference'...");
-            By agreementRefOption = By.xpath(
-                "//li[contains(@class,'a-Menu-item')]//button[contains(.,'Agreement Reference')]");
-            wait.until(ExpectedConditions.elementToBeClickable(agreementRefOption)).click();
+        // Wait briefly for menu items to fully render
+        try { Thread.sleep(1500); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+
+        // 2. Try multiple possible column label variants used across IOTRON versions
+        String[] columnLabels = {"Agreement", "Agreement Reference", "Agreement Name", "All Columns"};
+        boolean columnSelected = false;
+        for (String label : columnLabels) {
+            try {
+                By option = By.xpath(
+                    "//li[contains(@class,'a-Menu-item')]//button[normalize-space(.)='" + label + "']");
+                WebElement btn = driver.findElement(option);
+                if (btn.isDisplayed() && btn.isEnabled()) {
+                    btn.click();
+                    System.out.println("Column option selected: '" + label + "'");
+                    columnSelected = true;
+                    break;
+                }
+            } catch (Exception ignored) {}
+        }
+        if (!columnSelected) {
+            System.out.println("No specific column matched — proceeding with default search column.");
+            // Press Escape to close menu and continue with default
+            try {
+                driver.findElement(By.tagName("body")).sendKeys(org.openqa.selenium.Keys.ESCAPE);
+            } catch (Exception ignored) {}
         }
 
         // 3. Type the agreement name into the search field

@@ -204,6 +204,17 @@ public class IotronAutomationTest {
             try {
                 List<Map<String, String>> allRows = CsvUtils.readCsv(latestFile.getAbsolutePath());
 
+                // Check for column existence before processing rows
+                if (!allRows.isEmpty()) {
+                    Map<String, String> firstRow = allRows.get(0);
+                    if (!firstRow.containsKey("Discounted Charge EoA")) {
+                        throw new Exception("Column 'Discounted Charge EoA' not found in CSV file");
+                    }
+                    if (!firstRow.containsKey("Discounted Charge Cum")) {
+                        throw new Exception("Column 'Discounted Charge Cum' not found in CSV file");
+                    }
+                }
+
                 // ── [1_step_EoA_DATA]: raw input columns ──────────────────
                 List<Map<String, String>> subsetData = allRows.stream().map(row -> {
                     Map<String, String> subset = new java.util.LinkedHashMap<>();
@@ -245,35 +256,28 @@ public class IotronAutomationTest {
                         double chargeCum;
 
                         String calcType = row.getOrDefault("Discount Calculation Type", "");
-                        String eventType = row.getOrDefault("Discount Event Type", "");
 
-                        if ("Calculated Value of Undiscounted Unit and Undiscounted Premium Numbers".equals(calcType)) {
-                            // --- Discount Charge EoA Override ---
-                            if ("Calculated Value of Undiscounted Unit".equals(eventType)) {
-                                if (!row.containsKey("Discounted Charge EoA") || row.get("Discounted Charge EoA").isEmpty()) {
-                                    throw new Exception("Column 'Discounted Charge EoA' not found in CSV file or is empty");
-                                }
-                                chargeEoA = parseNum(row.get("Discounted Charge EoA"));
-                            } else if ("Undiscounted Premium Numbers".equals(eventType)) {
-                                chargeEoA = tapEoA;
-                            } else {
-                                chargeEoA = volEoA * basisValue;
-                            }
-
-                            // --- Discount Charge Cum Override ---
-                            if ("Calculated Value of Undiscounted Unit".equals(eventType)) {
-                                if (!row.containsKey("Discounted Charge Cum") || row.get("Discounted Charge Cum").isEmpty()) {
-                                    throw new Exception("Column 'Discounted Charge Cum' not found in CSV file or is empty");
-                                }
-                                chargeCum = parseNum(row.get("Discounted Charge Cum"));
-                            } else if ("Undiscounted Premium Numbers".equals(eventType)) {
-                                chargeCum = tapCum;
-                            } else {
-                                chargeCum = volCum * basisValue;
-                            }
+                        // --- Discount Charge EoA Override (checks Discount Calculation Type) ---
+                        if ("Calculated Value of Undiscounted Units".equals(calcType)) {
+                            // Case A1: Read Discounted Charge EoA directly from CSV
+                            chargeEoA = parseNum(row.get("Discounted Charge EoA"));
+                        } else if ("Undiscounted Premium Numbers".equals(calcType)) {
+                            // Case A2: Use TAP Charge EoA of same row
+                            chargeEoA = tapEoA;
                         } else {
-                            // Standard Formulas (unchanged)
+                            // Standard formula (unchanged)
                             chargeEoA = volEoA * basisValue;
+                        }
+
+                        // --- Discount Charge Cum Override (checks Discount Calculation Type) ---
+                        if ("Calculated Value of Undiscounted Units".equals(calcType)) {
+                            // Case B1: Read Discounted Charge Cum directly from CSV
+                            chargeCum = parseNum(row.get("Discounted Charge Cum"));
+                        } else if ("Undiscounted Premium Numbers".equals(calcType)) {
+                            // Case B2: Use TAP Charge Restricted Cum of same row
+                            chargeCum = tapCum;
+                        } else {
+                            // Standard formula (unchanged)
                             chargeCum = volCum * basisValue;
                         }
 
