@@ -3,6 +3,7 @@ tests\SampleTest.class
 tests\ExploreDiscountAgreementsTest.class
 tests\PrintDiscountAgreementsElementsTest.class
 tests\ExtractDiscountAgreementsHtmlTest.class
+tests\IotronAutomationTest$AggregatedData.class
 tests\ExtractAgreementCaptureHtmlTest.class
 tests\ExtractHomeHtmlTest.class
 tests\ExtractHtmlTest.class

@@ -207,6 +207,9 @@ public class IotronAutomationTest {
                 // Check for column existence before processing rows
                 if (!allRows.isEmpty()) {
                     Map<String, String> firstRow = allRows.get(0);
+                    if (!firstRow.containsKey("Direction")) {
+                        throw new Exception("Column 'Direction' not found in CSV file");
+                    }
                     if (!firstRow.containsKey("Discounted Charge EoA")) {
                         throw new Exception("Column 'Discounted Charge EoA' not found in CSV file");
                     }
@@ -218,7 +221,7 @@ public class IotronAutomationTest {
                 // ── [1_step_EoA_DATA]: raw input columns ──────────────────
                 List<Map<String, String>> subsetData = allRows.stream().map(row -> {
                     Map<String, String> subset = new java.util.LinkedHashMap<>();
-                    subset.put("Discount Direction", row.getOrDefault("Discount Direction", ""));
+                    subset.put("Direction", row.getOrDefault("Direction", ""));
                     subset.put("Discount Service Type", row.getOrDefault("Discount Service Type", ""));
                     subset.put("Discount Event Type", row.getOrDefault("Discount Event Type", ""));
                     subset.put("Discount Calculation Type", row.getOrDefault("Discount Calculation Type", ""));
@@ -243,6 +246,7 @@ public class IotronAutomationTest {
 
                 // Build result rows
                 List<Map<String, String>> calcResults = new java.util.ArrayList<>();
+                Map<String, AggregatedData> aggregations = new java.util.LinkedHashMap<>();
                 for (Map<String, String> row : subsetData) {
                     try {
                         double basisValue = parseNum(row.getOrDefault("Discount Basis Value", "0"));
@@ -288,7 +292,7 @@ public class IotronAutomationTest {
                         double rateCum = (volCum != 0) ? chargeCum / volCum : 0.0;
 
                         Map<String, String> result = new java.util.LinkedHashMap<>();
-                        result.put("Discount Direction", row.get("Discount Direction"));
+                        result.put("Direction", row.get("Direction"));
                         result.put("Service Type", row.get("Discount Service Type"));
                         result.put("Event Type", row.get("Discount Event Type"));
                         result.put("Calc Type", row.get("Discount Calculation Type"));
@@ -307,6 +311,16 @@ public class IotronAutomationTest {
                         result.put("Avg Rate Cum", fmt(rateCum));
 
                         calcResults.add(result);
+
+                        // Build aggregation key and accumulate totals
+                        String key = row.get("Direction") + "|" + row.get("Discount Service Type") + "|" + row.get("Discount Event Type");
+                        AggregatedData agg = aggregations.computeIfAbsent(key, k -> new AggregatedData());
+                        agg.volEoA += volEoA;
+                        agg.chargeEoA += chargeEoA;
+                        agg.achievedEoA += achievedEoA;
+                        agg.volCum += volCum;
+                        agg.chargeCum += chargeCum;
+                        agg.achievedCum += achievedCum;
                     } catch (NumberFormatException ex) {
                         System.err.println("Skipping row due to parse error: " + ex.getMessage());
                     }
@@ -318,7 +332,7 @@ public class IotronAutomationTest {
                 // Save as HTML report for easy cross-verification
                 String reportPath = System.getProperty("user.dir") + File.separator + "target"
                         + File.separator + "manual_calculation_report.html";
-                writeHtmlReport(calcResults, reportPath);
+                writeHtmlReport(calcResults, aggregations, reportPath);
                 System.out.println("\n\uD83D\uDCC4 HTML Calculation Report saved to: " + reportPath);
 
             } catch (Exception e) {
@@ -400,7 +414,7 @@ public class IotronAutomationTest {
      * cross-verification.
      * Columns are color-coded: blue = input, green = calculated result.
      */
-    private static void writeHtmlReport(List<Map<String, String>> rows, String filePath) {
+    private static void writeHtmlReport(List<Map<String, String>> rows, Map<String, AggregatedData> aggregations, String filePath) {
         StringBuilder html = new StringBuilder();
         html.append("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n")
                 .append("<meta charset=\"UTF-8\">\n")
@@ -437,7 +451,7 @@ public class IotronAutomationTest {
 
         // Table header
         html.append("<table>\n<thead><tr>\n")
-                .append("  <th class=\"inp\">Discount Direction</th>\n")
+                .append("  <th class=\"inp\">Direction</th>\n")
                 .append("  <th class=\"inp\">Service Type</th>\n")
                 .append("  <th class=\"inp\">Event Type</th>\n")
                 .append("  <th class=\"inp\">Calc Type</th>\n")
@@ -454,26 +468,54 @@ public class IotronAutomationTest {
                 .append("  <th class=\"cum\">Avg Rate Cum<br><small>= Charge / Vol</small></th>\n")
                 .append("</tr></thead>\n<tbody>\n");
 
+        // Group rows by Direction|Service Type|Event Type
+        Map<String, List<Map<String, String>>> groupedRows = new java.util.LinkedHashMap<>();
         for (Map<String, String> row : rows) {
-            html.append("<tr>");
-            html.append("<td class=\"txt\">").append(esc(row.get("Discount Direction"))).append("</td>");
-            html.append("<td class=\"txt\">").append(esc(row.get("Service Type"))).append("</td>");
-            html.append("<td class=\"txt\">").append(esc(row.get("Event Type"))).append("</td>");
-            html.append("<td class=\"txt\">").append(esc(row.get("Calc Type"))).append("</td>");
-            html.append("<td>").append(esc(row.get("Basis Value"))).append("</td>");
-            html.append("<td>").append(esc(row.get("Vol EoA"))).append("</td>");
-            html.append("<td>").append(esc(row.get("TAP EoA"))).append("</td>");
-            html.append("<td>").append(esc(row.get("Vol Cum"))).append("</td>");
-            html.append("<td>").append(esc(row.get("TAP Cum"))).append("</td>");
+            String key = row.get("Direction") + "|" + row.get("Service Type") + "|" + row.get("Event Type");
+            groupedRows.computeIfAbsent(key, k -> new java.util.ArrayList<>()).add(row);
+        }
 
-            html.append("<td style=\"background:#eafaf1;\">").append(esc(row.get("Discount Charge EoA"))).append("</td>");
-            html.append("<td style=\"background:#eafaf1;\">").append(esc(row.get("Discount Achieved EoA"))).append("</td>");
-            html.append("<td style=\"background:#eafaf1;\">").append(esc(row.get("Avg Rate EoA"))).append("</td>");
+        for (Map.Entry<String, List<Map<String, String>>> groupEntry : groupedRows.entrySet()) {
+            String key = groupEntry.getKey();
+            for (Map<String, String> row : groupEntry.getValue()) {
+                html.append("<tr>");
+                html.append("<td class=\"txt\">").append(esc(row.get("Direction"))).append("</td>");
+                html.append("<td class=\"txt\">").append(esc(row.get("Service Type"))).append("</td>");
+                html.append("<td class=\"txt\">").append(esc(row.get("Event Type"))).append("</td>");
+                html.append("<td class=\"txt\">").append(esc(row.get("Calc Type"))).append("</td>");
+                html.append("<td>").append(esc(row.get("Basis Value"))).append("</td>");
+                html.append("<td>").append(esc(row.get("Vol EoA"))).append("</td>");
+                html.append("<td>").append(esc(row.get("TAP EoA"))).append("</td>");
+                html.append("<td>").append(esc(row.get("Vol Cum"))).append("</td>");
+                html.append("<td>").append(esc(row.get("TAP Cum"))).append("</td>");
 
-            html.append("<td style=\"background:#fef5e7;\">").append(esc(row.get("Discount Charge Cum"))).append("</td>");
-            html.append("<td style=\"background:#fef5e7;\">").append(esc(row.get("Discount Achieved Cum"))).append("</td>");
-            html.append("<td style=\"background:#fef5e7;\">").append(esc(row.get("Avg Rate Cum"))).append("</td>");
-            html.append("</tr>\n");
+                html.append("<td style=\"background:#eafaf1;\">").append(esc(row.get("Discount Charge EoA"))).append("</td>");
+                html.append("<td style=\"background:#eafaf1;\">").append(esc(row.get("Discount Achieved EoA"))).append("</td>");
+                html.append("<td style=\"background:#eafaf1;\">").append(esc(row.get("Avg Rate EoA"))).append("</td>");
+
+                html.append("<td style=\"background:#fef5e7;\">").append(esc(row.get("Discount Charge Cum"))).append("</td>");
+                html.append("<td style=\"background:#fef5e7;\">").append(esc(row.get("Discount Achieved Cum"))).append("</td>");
+                html.append("<td style=\"background:#fef5e7;\">").append(esc(row.get("Avg Rate Cum"))).append("</td>");
+                html.append("</tr>\n");
+            }
+
+            // Add aggregated total row for the group
+            AggregatedData agg = aggregations.get(key);
+            if (agg != null) {
+                html.append("<tr style=\"font-weight:bold; background-color:#eaecee;\">");
+                html.append("<td colspan=\"5\" class=\"txt\" style=\"text-align:right;\">TOTAL (" + esc(key.replace("|", " - ")) + ")</td>");
+                html.append("<td>").append(fmt(agg.volEoA)).append("</td>");
+                html.append("<td></td>");
+                html.append("<td>").append(fmt(agg.volCum)).append("</td>");
+                html.append("<td></td>");
+                html.append("<td style=\"background:#d5f5e3; color:#1e8449;\">").append(fmt(agg.chargeEoA)).append("</td>");
+                html.append("<td style=\"background:#d5f5e3; color:#1e8449;\">").append(fmt(agg.achievedEoA)).append("</td>");
+                html.append("<td style=\"background:#d5f5e3; color:#1e8449;\"></td>");
+                html.append("<td style=\"background:#fdebd0; color:#784212;\">").append(fmt(agg.chargeCum)).append("</td>");
+                html.append("<td style=\"background:#fdebd0; color:#784212;\">").append(fmt(agg.achievedCum)).append("</td>");
+                html.append("<td style=\"background:#fdebd0; color:#784212;\"></td>");
+                html.append("</tr>\n");
+            }
         }
 
         html.append("</tbody>\n</table>\n");
@@ -501,5 +543,15 @@ public class IotronAutomationTest {
     /** HTML-escape a string. */
     private static String esc(String s) {
         return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+    }
+
+    /** Aggregated Data model */
+    public static class AggregatedData {
+        public double volEoA = 0.0;
+        public double chargeEoA = 0.0;
+        public double achievedEoA = 0.0;
+        public double volCum = 0.0;
+        public double chargeCum = 0.0;
+        public double achievedCum = 0.0;
     }
 }
