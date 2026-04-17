@@ -1,0 +1,12 @@
+{
+  "agreements": [
+    {
+      "AGREEMENT_NAME": "Orange Group:MAR25 FEB26",
+      "enabled": true
+    },
+    {
+      "AGREEMENT_NAME": "AG67890",
+      "enabled": false
+    }
+  ]
+}
