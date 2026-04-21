@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 
 public class ForecastReportPage extends BasePage {
 
@@ -227,6 +228,39 @@ public class ForecastReportPage extends BasePage {
     }
 
     /**
+     * Selects a value in the Calculation Type dropdown on the IOT Calculation Detail page (Page 688).
+     *
+     * <p>Non-fatal: if the dropdown is not present, or the requested option does not exist,
+     * a warning is logged and execution continues so the download flow is never blocked.
+     *
+     * @param calculationTypeValue The visible text of the option to select
+     *                             (e.g. "Before Send or Pay Financial Commitment").
+     */
+    public void selectCalculationTypeIfAvailable(String calculationTypeValue) {
+        System.out.println("Selecting Calculation Type dropdown value: \"" + calculationTypeValue + "\"");
+        By calcTypeDropdown = By.xpath("//select[@id='P688_CALCULATION_TYPE']");
+        try {
+            WebElement dropdownEl = wait.until(ExpectedConditions.presenceOfElementLocated(calcTypeDropdown));
+            ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", dropdownEl);
+            Thread.sleep(1000);
+
+            Select select = new Select(dropdownEl);
+            select.selectByVisibleText(calculationTypeValue);
+            System.out.println("Calculation Type successfully set to: \"" + calculationTypeValue + "\"");
+            
+            // Wait for any partial page refresh triggered by the selection
+            waitForApexAjax();
+            Thread.sleep(1000); 
+        } catch (org.openqa.selenium.NoSuchElementException e) {
+            System.out.println("[WARNING] Option \"" + calculationTypeValue
+                    + "\" not found in Calculation Type dropdown. Continuing...");
+        } catch (Exception e) {
+            System.out.println("[WARNING] Could not interact with Calculation Type dropdown: "
+                    + e.getMessage() + ". Continuing...");
+        }
+    }
+
+    /**
      * Helper to wait for APEX AJAX calls to finish.
      */
     private void waitForApexAjax() {
@@ -236,18 +270,5 @@ public class ForecastReportPage extends BasePage {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-    }}
-
-    
-            
-                    
-    
-        
-    
-    
-    
-    
-    
-    
-        
-    
+    }
+}

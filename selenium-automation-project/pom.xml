@@ -47,6 +47,13 @@
             <version>1.10.0</version>
         </dependency>
 
+        <!-- Apache POI for reading XLSX settlement files -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.5</version>
+        </dependency>
+
         <!-- Jackson Databind for agreements.json parsing -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

@@ -2,10 +2,18 @@
   "agreements": [
     {
       "AGREEMENT_NAME": "Orange Group:MAR25 FEB26",
+      "enabled": false
+    },
+    {
+      "AGREEMENT_NAME": "Kuwait:STC Kuwait APR25 MAR26",
       "enabled": true
     },
     {
-      "AGREEMENT_NAME": "AG67890",
+      "AGREEMENT_NAME": "Azerbaijan:Azercell Azerbaijan APR25 MAR26",
+      "enabled": false
+    },
+    {
+      "AGREEMENT_NAME": "France:Orange France APR25 MAR26",
       "enabled": false
     }
   ]

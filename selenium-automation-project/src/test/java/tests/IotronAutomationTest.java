@@ -15,6 +15,8 @@ import pages.ForecastReportPage;
 import utils.AgreementConfig;
 import utils.CsvUtils;
 import utils.FileDownloadUtils;
+import utils.XlsxUtils;
+import utils.SettlementDataStore;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -171,6 +173,65 @@ public class IotronAutomationTest {
         detailPage.clickGenerateSettlement();
 
         // ---------------------------------------------------------------
+        // Step 9a – Detect & persist the downloaded Settlement XLSX
+        // (purely additive – no existing steps modified)
+        // ---------------------------------------------------------------
+        System.out.println("Step 9a: Waiting for Settlement XLSX to download...");
+        try { Thread.sleep(5000); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
+
+        File xlsxDir = new File(DOWNLOAD_DIR);
+        File[] xlsxFiles = xlsxDir.listFiles((d, name) -> name.toLowerCase().endsWith(".xlsx"));
+
+        if (xlsxFiles != null && xlsxFiles.length > 0) {
+            // Pick the most-recently modified XLSX file
+            File latestXlsx = Arrays.stream(xlsxFiles)
+                    .max((f1, f2) -> Long.compare(f1.lastModified(), f2.lastModified()))
+                    .get();
+            System.out.println("Step 9a: Found Settlement XLSX: " + latestXlsx.getName());
+
+            // Print available sheet names for easy diagnostics / troubleshooting
+            List<String> sheetNames = XlsxUtils.listSheetNames(latestXlsx.getAbsolutePath());
+            System.out.println("Step 9a: Sheets found in file: " + sheetNames);
+
+            // ── Sheet 1: Settlement Summary ──────────────────────────────
+            // Try by name (case-insensitive), fall back to index 0
+            List<Map<String, String>> summaryRows;
+            String summarySheetName = sheetNames.stream()
+                    .filter(s -> s.equalsIgnoreCase("Settlement Summary"))
+                    .findFirst().orElse(null);
+            if (summarySheetName != null) {
+                summaryRows = XlsxUtils.readSheet(latestXlsx.getAbsolutePath(), summarySheetName);
+            } else {
+                System.out.println("Step 9a: 'Settlement Summary' not found by name; reading sheet index 0: \""
+                        + (sheetNames.isEmpty() ? "N/A" : sheetNames.get(0)) + "\"");
+                summaryRows = XlsxUtils.readSheetByIndex(latestXlsx.getAbsolutePath(), 0);
+            }
+
+            // ── Sheet 2: Discount Parameter ──────────────────────────────
+            // Try by name (case-insensitive), fall back to index 1
+            List<Map<String, String>> paramRows;
+            String paramSheetName = sheetNames.stream()
+                    .filter(s -> s.equalsIgnoreCase("Discount Parameter"))
+                    .findFirst().orElse(null);
+            if (paramSheetName != null) {
+                paramRows = XlsxUtils.readSheet(latestXlsx.getAbsolutePath(), paramSheetName);
+            } else {
+                System.out.println("Step 9a: 'Discount Parameter' not found by name; reading sheet index 1: \""
+                        + (sheetNames.size() > 1 ? sheetNames.get(1) : "N/A") + "\"");
+                paramRows = XlsxUtils.readSheetByIndex(latestXlsx.getAbsolutePath(), 1);
+            }
+
+            // ── Persist both sheets to JSON ───────────────────────────────
+            String targetDir = System.getProperty("user.dir") + File.separator + "target";
+            String settlementJsonPath = SettlementDataStore.buildOutputPath(AGREEMENT_NAME, targetDir);
+            SettlementDataStore.save(AGREEMENT_NAME, summaryRows, paramRows, settlementJsonPath);
+            System.out.println("\uD83D\uDCC4 Settlement data persisted to: " + settlementJsonPath);
+
+        } else {
+            System.out.println("Step 9a: No XLSX file found in download folder — skipping settlement data extraction.");
+        }
+
+        // ---------------------------------------------------------------
         // Step 10 – Extract Parameters
         // ---------------------------------------------------------------
         System.out.println("Step 10: Extracting settlement parameters...");
@@ -203,6 +264,23 @@ public class IotronAutomationTest {
 
         // Step 6 (Phase 3): Click "Refresh" on detail page
         forecastPage.clickDetailRefresh();
+
+        // Step 7 (Phase 3): Evaluate pre-download conditions
+        System.out.println("Step 7 (Phase 3): Evaluating pre-download conditions...");
+        String targetDir = System.getProperty("user.dir") + File.separator + "target";
+        String settlementJsonPath = SettlementDataStore.buildOutputPath(AGREEMENT_NAME, targetDir);
+        SettlementDataStore.SettlementData settlementData = SettlementDataStore.load(settlementJsonPath);
+
+        if (settlementData != null && settlementData.getDiscountParameter() != null) {
+            List<utils.DownloadConditionEvaluator> conditions = java.util.Arrays.asList(
+                new utils.SendOrPayFinancialCondition()
+            );
+            for (utils.DownloadConditionEvaluator condition : conditions) {
+                condition.evaluate(settlementData.getDiscountParameter(), forecastPage);
+            }
+        } else {
+            System.out.println("No Settlement Data found, skipping condition evaluations.");
+        }
 
         // Step 8 (Phase 3): Download via Action menu
         System.out.println("Step 8 (Phase 3): Downloading the report...");
