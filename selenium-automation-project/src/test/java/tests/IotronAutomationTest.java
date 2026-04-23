@@ -311,6 +311,9 @@ public class IotronAutomationTest {
                     if (!firstRow.containsKey("Direction")) {
                         throw new Exception("Column 'Direction' not found in CSV file");
                     }
+                    if (!firstRow.containsKey("Traffic Period")) {
+                        throw new Exception("Column 'Traffic Period' not found in CSV file");
+                    }
                     if (!firstRow.containsKey("Discounted Charge EoA")) {
                         throw new Exception("Column 'Discounted Charge EoA' not found in CSV file");
                     }
@@ -323,6 +326,7 @@ public class IotronAutomationTest {
                 List<Map<String, String>> subsetData = allRows.stream().map(row -> {
                     Map<String, String> subset = new java.util.LinkedHashMap<>();
                     subset.put("Direction", row.getOrDefault("Direction", ""));
+                    subset.put("Traffic Period", row.getOrDefault("Traffic Period", ""));
                     subset.put("Discount Service Type", row.getOrDefault("Discount Service Type", ""));
                     subset.put("Discount Event Type", row.getOrDefault("Discount Event Type", ""));
                     subset.put("Discount Calculation Type", row.getOrDefault("Discount Calculation Type", ""));
@@ -394,6 +398,7 @@ public class IotronAutomationTest {
 
                         Map<String, String> result = new java.util.LinkedHashMap<>();
                         result.put("Direction", row.get("Direction"));
+                        result.put("Traffic Period", row.get("Traffic Period"));
                         result.put("Service Type", row.get("Discount Service Type"));
                         result.put("Event Type", row.get("Discount Event Type"));
                         result.put("Calc Type", row.get("Discount Calculation Type"));
@@ -559,6 +564,7 @@ public class IotronAutomationTest {
         // Table header
         html.append("<table>\n<thead><tr>\n")
                 .append("  <th class=\"inp\">Direction</th>\n")
+                .append("  <th class=\"inp\">Traffic Period</th>\n")
                 .append("  <th class=\"inp\">Service Type</th>\n")
                 .append("  <th class=\"inp\">Event Type</th>\n")
                 .append("  <th class=\"inp\">Calc Type</th>\n")
@@ -587,6 +593,7 @@ public class IotronAutomationTest {
             for (Map<String, String> row : groupEntry.getValue()) {
                 html.append("<tr>");
                 html.append("<td class=\"txt\">").append(esc(row.get("Direction"))).append("</td>");
+                html.append("<td class=\"txt\">").append(esc(row.get("Traffic Period"))).append("</td>");
                 html.append("<td class=\"txt\">").append(esc(row.get("Service Type"))).append("</td>");
                 html.append("<td class=\"txt\">").append(esc(row.get("Event Type"))).append("</td>");
                 html.append("<td class=\"txt\">").append(esc(row.get("Calc Type"))).append("</td>");
@@ -610,7 +617,7 @@ public class IotronAutomationTest {
             AggregatedData agg = aggregations.get(key);
             if (agg != null) {
                 html.append("<tr style=\"font-weight:bold; background-color:#eaecee;\">");
-                html.append("<td colspan=\"5\" class=\"txt\" style=\"text-align:right;\">TOTAL (" + esc(key.replace("|", " - ")) + ")</td>");
+                html.append("<td colspan=\"6\" class=\"txt\" style=\"text-align:right;\">TOTAL (" + esc(key.replace("|", " - ")) + ")</td>");
                 html.append("<td>").append(fmt(agg.volEoA)).append("</td>");
                 html.append("<td></td>");
                 html.append("<td>").append(fmt(agg.volCum)).append("</td>");
