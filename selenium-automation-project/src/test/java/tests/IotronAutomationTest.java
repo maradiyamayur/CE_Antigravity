@@ -419,7 +419,7 @@ public class IotronAutomationTest {
                         calcResults.add(result);
 
                         // Build aggregation key and accumulate totals
-                        String key = row.get("Direction") + "|" + row.get("Discount Service Type") + "|" + row.get("Discount Event Type");
+                        String key = row.get("Direction") + "|" + row.get("Traffic Period");
                         AggregatedData agg = aggregations.computeIfAbsent(key, k -> new AggregatedData());
                         agg.volEoA += volEoA;
                         agg.chargeEoA += chargeEoA;
@@ -581,10 +581,10 @@ public class IotronAutomationTest {
                 .append("  <th class=\"cum\">Avg Rate Cum<br><small>= Charge / Vol</small></th>\n")
                 .append("</tr></thead>\n<tbody>\n");
 
-        // Group rows by Direction|Service Type|Event Type
+        // Group rows by Direction|Traffic Period
         Map<String, List<Map<String, String>>> groupedRows = new java.util.LinkedHashMap<>();
         for (Map<String, String> row : rows) {
-            String key = row.get("Direction") + "|" + row.get("Service Type") + "|" + row.get("Event Type");
+            String key = row.get("Direction") + "|" + row.get("Traffic Period");
             groupedRows.computeIfAbsent(key, k -> new java.util.ArrayList<>()).add(row);
         }
 
