@@ -390,7 +390,11 @@ public class IotronAutomationTest {
                             chargeCum = volCum * basisValue;
                         }
 
-                        double achievedEoA = tapEoA - chargeEoA;
+                        // EXCEPTION: If Calc Type = "Calculated Value of Undiscounted Units",
+                        // Discount Achieved EoA must be 0 (do NOT apply the default formula).
+                        double achievedEoA = "Calculated Value of Undiscounted Units".equals(calcType)
+                                ? 0.0
+                                : tapEoA - chargeEoA;
                         double rateEoA = (volEoA != 0) ? chargeEoA / volEoA : 0.0;
 
                         double achievedCum = tapCum - chargeCum;
