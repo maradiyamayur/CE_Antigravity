@@ -40,7 +40,8 @@ public class IotronAutomationTest {
     private static final String BASE_URL = utils.ConfigReader.getBaseUrl();
     private static final String USERNAME = utils.ConfigReader.getUsername();
     private static final String PASSWORD = utils.ConfigReader.getPassword();
-    // AGREEMENT_NAME is now driven dynamically from agreements.json (see AgreementConfig).
+    // AGREEMENT_NAME is now driven dynamically from agreements.json (see
+    // AgreementConfig).
 
     /** Central download directory – used for cleanup and CSV reading. */
     public static final String DOWNLOAD_DIR = System.getProperty("user.dir") + File.separator + "target"
@@ -132,329 +133,404 @@ public class IotronAutomationTest {
             System.out.println("[AgreementConfig] No enabled agreements found. Skipping Steps 6–11.");
         }
 
+        int iterationIndex = 0;
         for (String AGREEMENT_NAME : enabledAgreements) {
             System.out.println("\n========================================");
             System.out.println("Processing Agreement: " + AGREEMENT_NAME);
             System.out.println("========================================");
 
-        // ---------------------------------------------------------------
-        // Step 6 – Set filter type to "Agreement", search for the agreement
-        // ---------------------------------------------------------------
-        System.out.println("Step 6: Setting filter type to 'Agreement' and searching for: " + AGREEMENT_NAME);
-        DiscountAgreementsPage discountPage = new DiscountAgreementsPage(driver);
+            // ---------------------------------------------------------------
+            // Reset – Two-step Action-menu reset at the START of every
+            // iteration (except the very first one, where the page is already
+            // in its initial state).
+            // ---------------------------------------------------------------
+            DiscountAgreementsPage discountPage = new DiscountAgreementsPage(driver);
+            if (iterationIndex > 0) {
+                System.out.println("[Loop] Iteration " + iterationIndex + ": Navigating back to Discount Agreements...");
+                dashboardPage.navigateToDiscountAgreements();
 
-        // Step 5a – In the right-side Filter region, set "Show Agreements" to "All"
-        System.out.println("Step 5a: Setting 'Show Agreements' filter to 'All'...");
-        discountPage.selectAllAgreements();
-        System.out.println("        'Show Agreements = All' applied.");
-
-        discountPage.searchByAgreementType(AGREEMENT_NAME);
-        System.out.println("       Search completed. Agreement found in results.");
-
-        // ---------------------------------------------------------------
-        // Step 7 – Click the Edit button for the matched agreement
-        // ---------------------------------------------------------------
-        System.out.println("Step 7: Clicking Edit for agreement: " + AGREEMENT_NAME);
-        discountPage.clickEditForAgreement(AGREEMENT_NAME);
-        System.out.println("       Agreement detail page loaded.");
-
-        // ---------------------------------------------------------------
-        // Step 8 – Navigate to the Settlement tab
-        // ---------------------------------------------------------------
-        System.out.println("Step 8: Navigating to the 'Settlement' tab...");
-        AgreementDetailPage detailPage = new AgreementDetailPage(driver);
-        detailPage.clickSettlementTab();
-        System.out.println("       Settlement tab is now active.");
-
-        // ---------------------------------------------------------------
-        // Step 9 – Click Generate Settlement
-        // ---------------------------------------------------------------
-        System.out.println("Step 9: Clicking 'Generate Settlement' button...");
-        detailPage.clickGenerateSettlement();
-
-        // ---------------------------------------------------------------
-        // Step 9a – Detect & persist the downloaded Settlement XLSX
-        // (purely additive – no existing steps modified)
-        // ---------------------------------------------------------------
-        System.out.println("Step 9a: Waiting for Settlement XLSX to download...");
-        try { Thread.sleep(5000); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
-
-        File xlsxDir = new File(DOWNLOAD_DIR);
-        File[] xlsxFiles = xlsxDir.listFiles((d, name) -> name.toLowerCase().endsWith(".xlsx"));
-
-        if (xlsxFiles != null && xlsxFiles.length > 0) {
-            // Pick the most-recently modified XLSX file
-            File latestXlsx = Arrays.stream(xlsxFiles)
-                    .max((f1, f2) -> Long.compare(f1.lastModified(), f2.lastModified()))
-                    .get();
-            System.out.println("Step 9a: Found Settlement XLSX: " + latestXlsx.getName());
-
-            // Print available sheet names for easy diagnostics / troubleshooting
-            List<String> sheetNames = XlsxUtils.listSheetNames(latestXlsx.getAbsolutePath());
-            System.out.println("Step 9a: Sheets found in file: " + sheetNames);
-
-            // ── Sheet 1: Settlement Summary ──────────────────────────────
-            // Try by name (case-insensitive), fall back to index 0
-            List<Map<String, String>> summaryRows;
-            String summarySheetName = sheetNames.stream()
-                    .filter(s -> s.equalsIgnoreCase("Settlement Summary"))
-                    .findFirst().orElse(null);
-            if (summarySheetName != null) {
-                summaryRows = XlsxUtils.readSheet(latestXlsx.getAbsolutePath(), summarySheetName);
-            } else {
-                System.out.println("Step 9a: 'Settlement Summary' not found by name; reading sheet index 0: \""
-                        + (sheetNames.isEmpty() ? "N/A" : sheetNames.get(0)) + "\"");
-                summaryRows = XlsxUtils.readSheetByIndex(latestXlsx.getAbsolutePath(), 0);
+                // Step 1 – Click "Reset" from the Actions menu
+                // Step 2 – Click "Apply" on the confirmation popup
+                System.out.println("[Loop] Running two-step Action-menu reset to clear search field...");
+                discountPage.resetViaActionMenu();
+                System.out.println("[Loop] Search field cleared via Action-menu reset.");
             }
+            iterationIndex++;
 
-            // ── Sheet 2: Discount Parameter ──────────────────────────────
-            // Try by name (case-insensitive), fall back to index 1
-            List<Map<String, String>> paramRows;
-            String paramSheetName = sheetNames.stream()
-                    .filter(s -> s.equalsIgnoreCase("Discount Parameter"))
-                    .findFirst().orElse(null);
-            if (paramSheetName != null) {
-                paramRows = XlsxUtils.readSheet(latestXlsx.getAbsolutePath(), paramSheetName);
-            } else {
-                System.out.println("Step 9a: 'Discount Parameter' not found by name; reading sheet index 1: \""
-                        + (sheetNames.size() > 1 ? sheetNames.get(1) : "N/A") + "\"");
-                paramRows = XlsxUtils.readSheetByIndex(latestXlsx.getAbsolutePath(), 1);
-            }
+            // ---------------------------------------------------------------
+            // Step 6 – Set filter type to "Agreement", search for the agreement
+            // ---------------------------------------------------------------
+            System.out.println("Step 6: Setting filter type to 'Agreement' and searching for: " + AGREEMENT_NAME);
 
-            // ── Persist both sheets to JSON ───────────────────────────────
+            // Step 5a – In the right-side Filter region, set "Show Agreements" to "All"
+            System.out.println("Step 5a: Setting 'Show Agreements' filter to 'All'...");
+            discountPage.selectAllAgreements();
+            System.out.println("        'Show Agreements = All' applied.");
+
+            discountPage.searchByAgreementType(AGREEMENT_NAME);
+            System.out.println("       Search completed. Agreement found in results.");
+
+            // ---------------------------------------------------------------
+            // Step 7 – Click the Edit button for the matched agreement
+            // ---------------------------------------------------------------
+            System.out.println("Step 7: Clicking Edit for agreement: " + AGREEMENT_NAME);
+            discountPage.clickEditForAgreement(AGREEMENT_NAME);
+            System.out.println("       Agreement detail page loaded.");
+
+            // ---------------------------------------------------------------
+            // Step 8 – Navigate to the Settlement tab
+            // ---------------------------------------------------------------
+            System.out.println("Step 8: Navigating to the 'Settlement' tab...");
+            AgreementDetailPage detailPage = new AgreementDetailPage(driver);
+            detailPage.clickSettlementTab();
+            System.out.println("       Settlement tab is now active.");
+
+            // ---------------------------------------------------------------
+            // Step 9 – Click Generate Settlement
+            // ---------------------------------------------------------------
+            // Declare targetDir once — reused in Step 9a and Step 7 Phase 3 (Bug #5 fix)
             String targetDir = System.getProperty("user.dir") + File.separator + "target";
-            String settlementJsonPath = SettlementDataStore.buildOutputPath(AGREEMENT_NAME, targetDir);
-            SettlementDataStore.save(AGREEMENT_NAME, summaryRows, paramRows, settlementJsonPath);
-            System.out.println("\uD83D\uDCC4 Settlement data persisted to: " + settlementJsonPath);
 
-        } else {
-            System.out.println("Step 9a: No XLSX file found in download folder — skipping settlement data extraction.");
-        }
-
-        // ---------------------------------------------------------------
-        // Step 10 – Extract Parameters
-        // ---------------------------------------------------------------
-        System.out.println("Step 10: Extracting settlement parameters...");
-        Map<String, String> params = detailPage.getSettlementParameters();
-
-        System.out.println("\n[SETTLEMENT_PARAMS] = {");
-        params.forEach((key, value) -> System.out.println("  " + key + ": \"" + value + "\","));
-        System.out.println("}");
-
-        // ---------------------------------------------------------------
-        // Step 11 – Phase 3: Forecasting → Forecast Report per Agreement
-        // ---------------------------------------------------------------
-        System.out.println("\n--- Phase 3: Forecast Report Automation ---");
-        System.out.println("Step 11: Navigating to Forcasting -> Forecast Report per Agreement...");
-        dashboardPage.navigateToForecastReportPerAgreement();
-
-        ForecastReportPage forecastPage = new ForecastReportPage(driver);
-
-        // Step 2 (Phase 3): Set "Show Agreements" filter to "All"
-        forecastPage.selectAllAgreements();
-
-        // Step 3 (Phase 3): Search and select agreement
-        forecastPage.selectAgreement(AGREEMENT_NAME);
-
-        // Step 4 (Phase 3): Click "Refresh Report"
-        forecastPage.clickRefreshReport();
-
-        // Step 5 (Phase 3): Click "IOT Calculation Report"
-        forecastPage.clickIotCalculationReport();
-
-        // Step 6 (Phase 3): Click "Refresh" on detail page
-        forecastPage.clickDetailRefresh();
-
-        // Step 7 (Phase 3): Evaluate pre-download conditions
-        System.out.println("Step 7 (Phase 3): Evaluating pre-download conditions...");
-        String targetDir = System.getProperty("user.dir") + File.separator + "target";
-        String settlementJsonPath = SettlementDataStore.buildOutputPath(AGREEMENT_NAME, targetDir);
-        SettlementDataStore.SettlementData settlementData = SettlementDataStore.load(settlementJsonPath);
-
-        if (settlementData != null && settlementData.getDiscountParameter() != null) {
-            List<utils.DownloadConditionEvaluator> conditions = java.util.Arrays.asList(
-                new utils.SendOrPayFinancialCondition()
-            );
-            for (utils.DownloadConditionEvaluator condition : conditions) {
-                condition.evaluate(settlementData.getDiscountParameter(), forecastPage);
+            // Bug #3 fix: snapshot existing XLSX files BEFORE the download starts
+            java.util.Set<String> preXlsxNames = new java.util.HashSet<>();
+            File xlsxDirRef = new File(DOWNLOAD_DIR);
+            {
+                File[] preXlsx = xlsxDirRef.listFiles((d, name) -> name.toLowerCase().endsWith(".xlsx"));
+                if (preXlsx != null)
+                    for (File f : preXlsx)
+                        preXlsxNames.add(f.getName());
             }
-        } else {
-            System.out.println("No Settlement Data found, skipping condition evaluations.");
-        }
+            System.out.println(
+                    "[Snapshot] " + preXlsxNames.size() + " existing XLSX file(s) before Generate Settlement.");
 
-        // Step 8 (Phase 3): Download via Action menu
-        System.out.println("Step 8 (Phase 3): Downloading the report...");
-        forecastPage.clickActionsMenu();
-        forecastPage.selectDownloadFromActions();
-        forecastPage.selectCsvOptionInPopup();
-        forecastPage.clickDownloadInPopup();
+            System.out.println("Step 9: Clicking 'Generate Settlement' button...");
+            detailPage.clickGenerateSettlement();
 
-        // Step 9 (Phase 3): READ downloaded file and SAVE as [1_step_EoA_DATA]
-        System.out.println("Step 9 (Phase 3): Reading downloaded file...");
-        String downloadDir = DOWNLOAD_DIR;
-        File dir = new File(downloadDir);
-        File[] files = dir.listFiles((d, name) -> name.endsWith(".csv"));
-
-        if (files != null && files.length > 0) {
-            // Get latest file by modification time
-            File latestFile = Arrays.stream(files)
-                    .max((f1, f2) -> Long.compare(f1.lastModified(), f2.lastModified()))
-                    .get();
-
-            System.out.println("Reading data from: " + latestFile.getName());
-            try {
-                List<Map<String, String>> allRows = CsvUtils.readCsv(latestFile.getAbsolutePath());
-
-                // Check for column existence before processing rows
-                if (!allRows.isEmpty()) {
-                    Map<String, String> firstRow = allRows.get(0);
-                    if (!firstRow.containsKey("Direction")) {
-                        throw new Exception("Column 'Direction' not found in CSV file");
-                    }
-                    if (!firstRow.containsKey("Traffic Period")) {
-                        throw new Exception("Column 'Traffic Period' not found in CSV file");
-                    }
-                    if (!firstRow.containsKey("Discounted Charge EoA")) {
-                        throw new Exception("Column 'Discounted Charge EoA' not found in CSV file");
-                    }
-                    if (!firstRow.containsKey("Discounted Charge Cum")) {
-                        throw new Exception("Column 'Discounted Charge Cum' not found in CSV file");
+            // ---------------------------------------------------------------
+            // Step 9a – Detect & persist the downloaded Settlement XLSX
+            // (purely additive – no existing steps modified)
+            // ---------------------------------------------------------------
+            // Bug #3 fix: wait up to 30 s for a NEW XLSX that was not in the pre-snapshot
+            System.out.println("Step 9a: Waiting for NEW Settlement XLSX to download...");
+            File latestXlsx = null;
+            long xlsxDeadline = System.currentTimeMillis() + 30_000;
+            while (System.currentTimeMillis() < xlsxDeadline && latestXlsx == null) {
+                File[] current = xlsxDirRef.listFiles((d, name) -> name.toLowerCase().endsWith(".xlsx"));
+                if (current != null) {
+                    for (File f : current) {
+                        if (!preXlsxNames.contains(f.getName())) {
+                            latestXlsx = f;
+                            break;
+                        }
                     }
                 }
-
-                // ── [1_step_EoA_DATA]: raw input columns ──────────────────
-                List<Map<String, String>> subsetData = allRows.stream().map(row -> {
-                    Map<String, String> subset = new java.util.LinkedHashMap<>();
-                    subset.put("Direction", row.getOrDefault("Direction", ""));
-                    subset.put("Traffic Period", row.getOrDefault("Traffic Period", ""));
-                    subset.put("Discount Service Type", row.getOrDefault("Discount Service Type", ""));
-                    subset.put("Discount Event Type", row.getOrDefault("Discount Event Type", ""));
-                    subset.put("Discount Calculation Type", row.getOrDefault("Discount Calculation Type", ""));
-                    subset.put("Discount Basis Value", row.getOrDefault("Discount Basis Value", ""));
-                    subset.put("Traffic Volume Restricted EoA", row.getOrDefault("Traffic Volume Restricted EoA", ""));
-                    subset.put("TAP Charge EoA", row.getOrDefault("TAP Charge EoA", ""));
-                    subset.put("Traffic Volume Restricted Cum", row.getOrDefault("Traffic Volume Restricted Cum", ""));
-                    subset.put("TAP Charge Restricted Cum", row.getOrDefault("TAP Charge Restricted Cum", ""));
-                    subset.put("Discounted Charge EoA", row.getOrDefault("Discounted Charge EoA", ""));
-                    subset.put("Discounted Charge Cum", row.getOrDefault("Discounted Charge Cum", ""));
-                    return subset;
-                }).collect(Collectors.toList());
-
-                System.out.println("[1_step_EoA_DATA] captured " + subsetData.size() + " rows.");
-
-                // ── Step 10: Manual Calculation ───────────────────────────
-                // Formula:
-                // Discount Charge EoA = Traffic Volume Restricted EoA × Discount Basis Value
-                // Discount Achieved EoA = TAP Charge EoA − Discount Charge EoA
-                // Average Rate EoA = Discount Charge EoA / Traffic Volume Restricted EoA
-                System.out.println("\n--- Step 10: Manual Calculation Results ---");
-
-                // Build result rows
-                List<Map<String, String>> calcResults = new java.util.ArrayList<>();
-                Map<String, AggregatedData> aggregations = new java.util.LinkedHashMap<>();
-                for (Map<String, String> row : subsetData) {
+                if (latestXlsx == null) {
                     try {
-                        double basisValue = parseNum(row.getOrDefault("Discount Basis Value", "0"));
-                        double volEoA = parseNum(row.getOrDefault("Traffic Volume Restricted EoA", "0"));
-                        double tapEoA = parseNum(row.getOrDefault("TAP Charge EoA", "0"));
-                        double volCum = parseNum(row.getOrDefault("Traffic Volume Restricted Cum", "0"));
-                        double tapCum = parseNum(row.getOrDefault("TAP Charge Restricted Cum", "0"));
-
-                        // Formulas
-                        double chargeEoA;
-                        double chargeCum;
-
-                        String calcType = row.getOrDefault("Discount Calculation Type", "");
-
-                        // --- Discount Charge EoA Override (checks Discount Calculation Type) ---
-                        if ("Calculated Value of Undiscounted Units".equals(calcType)) {
-                            // Case A1: Read Discounted Charge EoA directly from CSV
-                            chargeEoA = parseNum(row.get("Discounted Charge EoA"));
-                        } else if ("Undiscounted Premium Numbers".equals(calcType)) {
-                            // Case A2: Use TAP Charge EoA of same row
-                            chargeEoA = tapEoA;
-                        } else {
-                            // Standard formula (unchanged)
-                            chargeEoA = volEoA * basisValue;
-                        }
-
-                        // --- Discount Charge Cum Override (checks Discount Calculation Type) ---
-                        if ("Calculated Value of Undiscounted Units".equals(calcType)) {
-                            // Case B1: Read Discounted Charge Cum directly from CSV
-                            chargeCum = parseNum(row.get("Discounted Charge Cum"));
-                        } else if ("Undiscounted Premium Numbers".equals(calcType)) {
-                            // Case B2: Use TAP Charge Restricted Cum of same row
-                            chargeCum = tapCum;
-                        } else {
-                            // Standard formula (unchanged)
-                            chargeCum = volCum * basisValue;
-                        }
-
-                        // EXCEPTION: If Calc Type = "Calculated Value of Undiscounted Units",
-                        // Discount Achieved EoA must be 0 (do NOT apply the default formula).
-                        double achievedEoA = "Calculated Value of Undiscounted Units".equals(calcType)
-                                ? 0.0
-                                : tapEoA - chargeEoA;
-                        double rateEoA = (volEoA != 0) ? chargeEoA / volEoA : 0.0;
-
-                        double achievedCum = tapCum - chargeCum;
-                        double rateCum = (volCum != 0) ? chargeCum / volCum : 0.0;
-
-                        Map<String, String> result = new java.util.LinkedHashMap<>();
-                        result.put("Direction", row.get("Direction"));
-                        result.put("Traffic Period", row.get("Traffic Period"));
-                        result.put("Service Type", row.get("Discount Service Type"));
-                        result.put("Event Type", row.get("Discount Event Type"));
-                        result.put("Calc Type", row.get("Discount Calculation Type"));
-                        result.put("Basis Value", fmt(basisValue));
-
-                        result.put("Vol EoA", fmt(volEoA));
-                        result.put("TAP EoA", fmt(tapEoA));
-                        result.put("Discount Charge EoA", fmt(chargeEoA));
-                        result.put("Discount Achieved EoA", fmt(achievedEoA));
-                        result.put("Avg Rate EoA", fmt(rateEoA));
-
-                        result.put("Vol Cum", fmt(volCum));
-                        result.put("TAP Cum", fmt(tapCum));
-                        result.put("Discount Charge Cum", fmt(chargeCum));
-                        result.put("Discount Achieved Cum", fmt(achievedCum));
-                        result.put("Avg Rate Cum", fmt(rateCum));
-
-                        calcResults.add(result);
-
-                        // Build aggregation key and accumulate totals
-                        String key = row.get("Direction") + "|" + row.get("Traffic Period");
-                        AggregatedData agg = aggregations.computeIfAbsent(key, k -> new AggregatedData());
-                        agg.volEoA += volEoA;
-                        agg.chargeEoA += chargeEoA;
-                        agg.achievedEoA += achievedEoA;
-                        agg.volCum += volCum;
-                        agg.chargeCum += chargeCum;
-                        agg.achievedCum += achievedCum;
-                    } catch (NumberFormatException ex) {
-                        System.err.println("Skipping row due to parse error: " + ex.getMessage());
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
                     }
                 }
-
-                // Print formatted ASCII table
-                printTable(calcResults);
-
-                // Save as HTML report for easy cross-verification.
-                // Report filename is unique per agreement to avoid overwrites.
-                String safeAgreementName = AGREEMENT_NAME.replaceAll("[^a-zA-Z0-9]", "_");
-                String reportPath = System.getProperty("user.dir") + File.separator + "target"
-                        + File.separator + "manual_calculation_report_" + safeAgreementName + ".html";
-                writeHtmlReport(calcResults, aggregations, reportPath, AGREEMENT_NAME);
-                System.out.println("\n\uD83D\uDCC4 HTML Calculation Report saved to: " + reportPath);
-
-            } catch (Exception e) {
-                System.err.println("Failed to read CSV file: " + e.getMessage());
             }
-        } else {
-            System.err.println("No CSV file found in download directory: " + downloadDir);
-        }
 
-        System.out.println("\n✅ Phase 3 + Manual Calculation completed for agreement: " + AGREEMENT_NAME);
+            if (latestXlsx != null) {
+                System.out.println("Step 9a: Found NEW Settlement XLSX: " + latestXlsx.getName());
+
+                // Print available sheet names for easy diagnostics / troubleshooting
+                List<String> sheetNames = XlsxUtils.listSheetNames(latestXlsx.getAbsolutePath());
+                System.out.println("Step 9a: Sheets found in file: " + sheetNames);
+
+                // ── Sheet 1: Settlement Summary ──────────────────────────────
+                // Try by name (case-insensitive), fall back to index 0
+                List<Map<String, String>> summaryRows;
+                String summarySheetName = sheetNames.stream()
+                        .filter(s -> s.equalsIgnoreCase("Settlement Summary"))
+                        .findFirst().orElse(null);
+                if (summarySheetName != null) {
+                    summaryRows = XlsxUtils.readSheet(latestXlsx.getAbsolutePath(), summarySheetName);
+                } else {
+                    System.out.println("Step 9a: 'Settlement Summary' not found by name; reading sheet index 0: \""
+                            + (sheetNames.isEmpty() ? "N/A" : sheetNames.get(0)) + "\"");
+                    summaryRows = XlsxUtils.readSheetByIndex(latestXlsx.getAbsolutePath(), 0);
+                }
+
+                // ── Sheet 2: Discount Parameter ──────────────────────────────
+                // Try by name (case-insensitive), fall back to index 1
+                List<Map<String, String>> paramRows;
+                String paramSheetName = sheetNames.stream()
+                        .filter(s -> s.equalsIgnoreCase("Discount Parameter"))
+                        .findFirst().orElse(null);
+                if (paramSheetName != null) {
+                    paramRows = XlsxUtils.readSheet(latestXlsx.getAbsolutePath(), paramSheetName);
+                } else {
+                    System.out.println("Step 9a: 'Discount Parameter' not found by name; reading sheet index 1: \""
+                            + (sheetNames.size() > 1 ? sheetNames.get(1) : "N/A") + "\"");
+                    paramRows = XlsxUtils.readSheetByIndex(latestXlsx.getAbsolutePath(), 1);
+                }
+
+                // ── Persist both sheets to JSON ─────────────────────────── (reuses
+                // outer-scope targetDir)
+                String settlementJsonPath = SettlementDataStore.buildOutputPath(AGREEMENT_NAME, targetDir);
+                SettlementDataStore.save(AGREEMENT_NAME, summaryRows, paramRows, settlementJsonPath);
+                System.out.println("\uD83D\uDCC4 Settlement data persisted to: " + settlementJsonPath);
+
+            } else {
+                System.out.println("Step 9a: No NEW XLSX appeared within 30 s — skipping settlement data extraction.");
+            }
+
+            // ---------------------------------------------------------------
+            // Step 10 – Extract Parameters
+            // ---------------------------------------------------------------
+            System.out.println("Step 10: Extracting settlement parameters...");
+            Map<String, String> params = detailPage.getSettlementParameters();
+
+            System.out.println("\n[SETTLEMENT_PARAMS] = {");
+            params.forEach((key, value) -> System.out.println("  " + key + ": \"" + value + "\","));
+            System.out.println("}");
+
+            // ---------------------------------------------------------------
+            // Step 11 – Phase 3: Forecasting → Forecast Report per Agreement
+            // ---------------------------------------------------------------
+            System.out.println("\n--- Phase 3: Forecast Report Automation ---");
+            System.out.println("Step 11: Navigating to Forcasting -> Forecast Report per Agreement...");
+            dashboardPage.navigateToForecastReportPerAgreement();
+
+            ForecastReportPage forecastPage = new ForecastReportPage(driver);
+
+            // Step 2 (Phase 3): Set "Show Agreements" filter to "All"
+            forecastPage.selectAllAgreements();
+
+            // Step 3 (Phase 3): Search and select agreement
+            forecastPage.selectAgreement(AGREEMENT_NAME);
+
+            // Step 4 (Phase 3): Click "Refresh Report"
+            forecastPage.clickRefreshReport();
+
+            // Step 5 (Phase 3): Click "IOT Calculation Report"
+            forecastPage.clickIotCalculationReport();
+
+            // Step 6 (Phase 3): Click "Refresh" on detail page
+            forecastPage.clickDetailRefresh();
+
+            // Step 7 (Phase 3): Evaluate pre-download conditions
+            System.out.println("Step 7 (Phase 3): Evaluating pre-download conditions...");
+            // Bug #5 fix: targetDir already declared at top of this loop iteration — reuse
+            // it
+            String settlementJsonPath = SettlementDataStore.buildOutputPath(AGREEMENT_NAME, targetDir);
+            SettlementDataStore.SettlementData settlementData = SettlementDataStore.load(settlementJsonPath);
+
+            if (settlementData != null && settlementData.getDiscountParameter() != null) {
+                List<utils.DownloadConditionEvaluator> conditions = java.util.Arrays.asList(
+                        new utils.SendOrPayFinancialCondition());
+                for (utils.DownloadConditionEvaluator condition : conditions) {
+                    condition.evaluate(settlementData.getDiscountParameter(), forecastPage);
+                }
+            } else {
+                System.out.println("No Settlement Data found, skipping condition evaluations.");
+            }
+
+            // Bug #4 fix: snapshot existing CSVs BEFORE triggering the download
+            java.util.Set<String> preCsvNames = new java.util.HashSet<>();
+            File csvDirRef = new File(DOWNLOAD_DIR);
+            {
+                File[] preCsv = csvDirRef.listFiles((d, name) -> name.toLowerCase().endsWith(".csv"));
+                if (preCsv != null)
+                    for (File f : preCsv)
+                        preCsvNames.add(f.getName());
+            }
+            System.out.println("[Snapshot] " + preCsvNames.size() + " existing CSV file(s) before download.");
+
+            // Step 8 (Phase 3): Download via Action menu
+            System.out.println("Step 8 (Phase 3): Downloading the report...");
+            forecastPage.clickActionsMenu();
+            forecastPage.selectDownloadFromActions();
+            forecastPage.selectCsvOptionInPopup();
+            forecastPage.clickDownloadInPopup();
+
+            // Bug #4 fix: wait up to 30 s for a NEW CSV (not in the pre-snapshot)
+            System.out.println("Step 9 (Phase 3): Waiting for NEW CSV file to appear...");
+            File latestFile = null;
+            long csvDeadline = System.currentTimeMillis() + 30_000;
+            while (System.currentTimeMillis() < csvDeadline && latestFile == null) {
+                File[] currentCsvs = csvDirRef.listFiles((d, name) -> name.toLowerCase().endsWith(".csv"));
+                if (currentCsvs != null) {
+                    for (File f : currentCsvs) {
+                        if (!preCsvNames.contains(f.getName())) {
+                            latestFile = f;
+                            break;
+                        }
+                    }
+                }
+                if (latestFile == null) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
+
+            if (latestFile != null) {
+                System.out.println("Reading data from: " + latestFile.getName());
+                try {
+                    List<Map<String, String>> allRows = CsvUtils.readCsv(latestFile.getAbsolutePath());
+
+                    // Check for column existence before processing rows
+                    if (!allRows.isEmpty()) {
+                        Map<String, String> firstRow = allRows.get(0);
+                        if (!firstRow.containsKey("Direction")) {
+                            throw new Exception("Column 'Direction' not found in CSV file");
+                        }
+                        if (!firstRow.containsKey("Traffic Period")) {
+                            throw new Exception("Column 'Traffic Period' not found in CSV file");
+                        }
+                        if (!firstRow.containsKey("Discounted Charge EoA")) {
+                            throw new Exception("Column 'Discounted Charge EoA' not found in CSV file");
+                        }
+                        if (!firstRow.containsKey("Discounted Charge Cum")) {
+                            throw new Exception("Column 'Discounted Charge Cum' not found in CSV file");
+                        }
+                    }
+
+                    // ── [1_step_EoA_DATA]: raw input columns ──────────────────
+                    List<Map<String, String>> subsetData = allRows.stream().map(row -> {
+                        Map<String, String> subset = new java.util.LinkedHashMap<>();
+                        subset.put("Direction", row.getOrDefault("Direction", ""));
+                        subset.put("Traffic Period", row.getOrDefault("Traffic Period", ""));
+                        subset.put("Discount Service Type", row.getOrDefault("Discount Service Type", ""));
+                        subset.put("Discount Event Type", row.getOrDefault("Discount Event Type", ""));
+                        subset.put("Discount Calculation Type", row.getOrDefault("Discount Calculation Type", ""));
+                        subset.put("Discount Basis Value", row.getOrDefault("Discount Basis Value", ""));
+                        subset.put("Traffic Volume Restricted EoA",
+                                row.getOrDefault("Traffic Volume Restricted EoA", ""));
+                        subset.put("TAP Charge EoA", row.getOrDefault("TAP Charge EoA", ""));
+                        subset.put("Traffic Volume Restricted Cum",
+                                row.getOrDefault("Traffic Volume Restricted Cum", ""));
+                        subset.put("TAP Charge Restricted Cum", row.getOrDefault("TAP Charge Restricted Cum", ""));
+                        subset.put("Discounted Charge EoA", row.getOrDefault("Discounted Charge EoA", ""));
+                        subset.put("Discounted Charge Cum", row.getOrDefault("Discounted Charge Cum", ""));
+                        return subset;
+                    }).collect(Collectors.toList());
+
+                    System.out.println("[1_step_EoA_DATA] captured " + subsetData.size() + " rows.");
+
+                    // ── Step 10: Manual Calculation ───────────────────────────
+                    // Formula:
+                    // Discount Charge EoA = Traffic Volume Restricted EoA × Discount Basis Value
+                    // Discount Achieved EoA = TAP Charge EoA − Discount Charge EoA
+                    // Average Rate EoA = Discount Charge EoA / Traffic Volume Restricted EoA
+                    System.out.println("\n--- Step 10: Manual Calculation Results ---");
+
+                    // Build result rows
+                    List<Map<String, String>> calcResults = new java.util.ArrayList<>();
+                    Map<String, AggregatedData> aggregations = new java.util.LinkedHashMap<>();
+                    for (Map<String, String> row : subsetData) {
+                        try {
+                            double basisValue = parseNum(row.getOrDefault("Discount Basis Value", "0"));
+                            double volEoA = parseNum(row.getOrDefault("Traffic Volume Restricted EoA", "0"));
+                            double tapEoA = parseNum(row.getOrDefault("TAP Charge EoA", "0"));
+                            double volCum = parseNum(row.getOrDefault("Traffic Volume Restricted Cum", "0"));
+                            double tapCum = parseNum(row.getOrDefault("TAP Charge Restricted Cum", "0"));
+
+                            // Formulas
+                            double chargeEoA;
+                            double chargeCum;
+
+                            String calcType = row.getOrDefault("Discount Calculation Type", "");
+
+                            // --- Discount Charge EoA Override (checks Discount Calculation Type) ---
+                            if ("Calculated Value of Undiscounted Units".equals(calcType)) {
+                                // Case A1: Read Discounted Charge EoA directly from CSV
+                                chargeEoA = parseNum(row.get("Discounted Charge EoA"));
+                            } else if ("Undiscounted Premium Numbers".equals(calcType)) {
+                                // Case A2: Use TAP Charge EoA of same row
+                                chargeEoA = tapEoA;
+                            } else {
+                                // Standard formula (unchanged)
+                                chargeEoA = volEoA * basisValue;
+                            }
+
+                            // --- Discount Charge Cum Override (checks Discount Calculation Type) ---
+                            if ("Calculated Value of Undiscounted Units".equals(calcType)) {
+                                // Case B1: Read Discounted Charge Cum directly from CSV
+                                chargeCum = parseNum(row.get("Discounted Charge Cum"));
+                            } else if ("Undiscounted Premium Numbers".equals(calcType)) {
+                                // Case B2: Use TAP Charge Restricted Cum of same row
+                                chargeCum = tapCum;
+                            } else {
+                                // Standard formula (unchanged)
+                                chargeCum = volCum * basisValue;
+                            }
+
+                            // EXCEPTION: If Calc Type = "Calculated Value of Undiscounted Units",
+                            // Discount Achieved EoA must be 0 (do NOT apply the default formula).
+                            double achievedEoA = "Calculated Value of Undiscounted Units".equals(calcType)
+                                    ? 0.0
+                                    : tapEoA - chargeEoA;
+                            double rateEoA = (volEoA != 0) ? chargeEoA / volEoA : 0.0;
+
+                            double achievedCum = tapCum - chargeCum;
+                            double rateCum = (volCum != 0) ? chargeCum / volCum : 0.0;
+
+                            Map<String, String> result = new java.util.LinkedHashMap<>();
+                            result.put("Direction", row.get("Direction"));
+                            result.put("Traffic Period", row.get("Traffic Period"));
+                            result.put("Service Type", row.get("Discount Service Type"));
+                            result.put("Event Type", row.get("Discount Event Type"));
+                            result.put("Calc Type", row.get("Discount Calculation Type"));
+                            result.put("Basis Value", fmt(basisValue));
+
+                            result.put("Vol EoA", fmt(volEoA));
+                            result.put("TAP EoA", fmt(tapEoA));
+                            result.put("Discount Charge EoA", fmt(chargeEoA));
+                            result.put("Discount Achieved EoA", fmt(achievedEoA));
+                            result.put("Avg Rate EoA", fmt(rateEoA));
+
+                            result.put("Vol Cum", fmt(volCum));
+                            result.put("TAP Cum", fmt(tapCum));
+                            result.put("Discount Charge Cum", fmt(chargeCum));
+                            result.put("Discount Achieved Cum", fmt(achievedCum));
+                            result.put("Avg Rate Cum", fmt(rateCum));
+
+                            calcResults.add(result);
+
+                            // Build aggregation key and accumulate totals
+                            String key = row.get("Direction") + "|" + row.get("Traffic Period");
+                            AggregatedData agg = aggregations.computeIfAbsent(key, k -> new AggregatedData());
+                            agg.volEoA += volEoA;
+                            agg.chargeEoA += chargeEoA;
+                            agg.achievedEoA += achievedEoA;
+                            agg.volCum += volCum;
+                            agg.chargeCum += chargeCum;
+                            agg.achievedCum += achievedCum;
+                        } catch (NumberFormatException ex) {
+                            System.err.println("Skipping row due to parse error: " + ex.getMessage());
+                        }
+                    }
+
+                    // Print formatted ASCII table
+                    printTable(calcResults);
+
+                    // Save as HTML report for easy cross-verification.
+                    // Report filename is unique per agreement to avoid overwrites.
+                    String safeAgreementName = AGREEMENT_NAME.replaceAll("[^a-zA-Z0-9]", "_");
+                    String reportPath = System.getProperty("user.dir") + File.separator + "target"
+                            + File.separator + "manual_calculation_report_" + safeAgreementName + ".html";
+                    writeHtmlReport(calcResults, aggregations, reportPath, AGREEMENT_NAME);
+                    System.out.println("\n\uD83D\uDCC4 HTML Calculation Report saved to: " + reportPath);
+
+                } catch (Exception e) {
+                    System.err.println("Failed to read CSV file: " + e.getMessage());
+                }
+            } else {
+                System.err.println("No NEW CSV appeared within 30 s in: " + DOWNLOAD_DIR);
+            }
+
+            System.out.println("\n✅ Phase 3 + Manual Calculation completed for agreement: " + AGREEMENT_NAME);
+
+            // Navigation back to Discount Agreements and the two-step Action-menu
+            // reset are now performed at the START of the NEXT iteration (above),
+            // so no end-of-loop reset is needed here.
 
         } // end for (AGREEMENT_NAME : enabledAgreements)
 
@@ -530,7 +606,8 @@ public class IotronAutomationTest {
      * cross-verification.
      * Columns are color-coded: blue = input, green = calculated result.
      */
-    private static void writeHtmlReport(List<Map<String, String>> rows, Map<String, AggregatedData> aggregations, String filePath, String agreementName) {
+    private static void writeHtmlReport(List<Map<String, String>> rows, Map<String, AggregatedData> aggregations,
+            String filePath, String agreementName) {
         StringBuilder html = new StringBuilder();
         html.append("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n")
                 .append("<meta charset=\"UTF-8\">\n")
@@ -607,12 +684,16 @@ public class IotronAutomationTest {
                 html.append("<td>").append(esc(row.get("Vol Cum"))).append("</td>");
                 html.append("<td>").append(esc(row.get("TAP Cum"))).append("</td>");
 
-                html.append("<td style=\"background:#eafaf1;\">").append(esc(row.get("Discount Charge EoA"))).append("</td>");
-                html.append("<td style=\"background:#eafaf1;\">").append(esc(row.get("Discount Achieved EoA"))).append("</td>");
+                html.append("<td style=\"background:#eafaf1;\">").append(esc(row.get("Discount Charge EoA")))
+                        .append("</td>");
+                html.append("<td style=\"background:#eafaf1;\">").append(esc(row.get("Discount Achieved EoA")))
+                        .append("</td>");
                 html.append("<td style=\"background:#eafaf1;\">").append(esc(row.get("Avg Rate EoA"))).append("</td>");
 
-                html.append("<td style=\"background:#fef5e7;\">").append(esc(row.get("Discount Charge Cum"))).append("</td>");
-                html.append("<td style=\"background:#fef5e7;\">").append(esc(row.get("Discount Achieved Cum"))).append("</td>");
+                html.append("<td style=\"background:#fef5e7;\">").append(esc(row.get("Discount Charge Cum")))
+                        .append("</td>");
+                html.append("<td style=\"background:#fef5e7;\">").append(esc(row.get("Discount Achieved Cum")))
+                        .append("</td>");
                 html.append("<td style=\"background:#fef5e7;\">").append(esc(row.get("Avg Rate Cum"))).append("</td>");
                 html.append("</tr>\n");
             }
@@ -621,16 +702,21 @@ public class IotronAutomationTest {
             AggregatedData agg = aggregations.get(key);
             if (agg != null) {
                 html.append("<tr style=\"font-weight:bold; background-color:#eaecee;\">");
-                html.append("<td colspan=\"6\" class=\"txt\" style=\"text-align:right;\">TOTAL (" + esc(key.replace("|", " - ")) + ")</td>");
+                html.append("<td colspan=\"6\" class=\"txt\" style=\"text-align:right;\">TOTAL ("
+                        + esc(key.replace("|", " - ")) + ")</td>");
                 html.append("<td>").append(fmt(agg.volEoA)).append("</td>");
                 html.append("<td></td>");
                 html.append("<td>").append(fmt(agg.volCum)).append("</td>");
                 html.append("<td></td>");
-                html.append("<td style=\"background:#d5f5e3; color:#1e8449;\">").append(fmt(agg.chargeEoA)).append("</td>");
-                html.append("<td style=\"background:#d5f5e3; color:#1e8449;\">").append(fmt(agg.achievedEoA)).append("</td>");
+                html.append("<td style=\"background:#d5f5e3; color:#1e8449;\">").append(fmt(agg.chargeEoA))
+                        .append("</td>");
+                html.append("<td style=\"background:#d5f5e3; color:#1e8449;\">").append(fmt(agg.achievedEoA))
+                        .append("</td>");
                 html.append("<td style=\"background:#d5f5e3; color:#1e8449;\"></td>");
-                html.append("<td style=\"background:#fdebd0; color:#784212;\">").append(fmt(agg.chargeCum)).append("</td>");
-                html.append("<td style=\"background:#fdebd0; color:#784212;\">").append(fmt(agg.achievedCum)).append("</td>");
+                html.append("<td style=\"background:#fdebd0; color:#784212;\">").append(fmt(agg.chargeCum))
+                        .append("</td>");
+                html.append("<td style=\"background:#fdebd0; color:#784212;\">").append(fmt(agg.achievedCum))
+                        .append("</td>");
                 html.append("<td style=\"background:#fdebd0; color:#784212;\"></td>");
                 html.append("</tr>\n");
             }

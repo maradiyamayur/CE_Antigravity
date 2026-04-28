@@ -1,0 +1,1135 @@
+<html class="page-639 app-NGCMAIN10145" lang="en-gb" style="--js-sticky-top: 50.8px;"><head>
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta charset="utf-8"> 
+  <title>Forecast Report per Agreement</title>
+  <link rel="stylesheet" href="/i/libraries/oraclejet/17.0.2/css/libs/oj/17.0.2/redwood/oj-redwood-notag-min.css?v=24.2.5" type="text/css">
+<link rel="stylesheet" href="/i/app_ui/css/Core.min.css?v=24.2.5" type="text/css">
+<link rel="stylesheet" href="/i/app_ui/css/Theme-Standard.min.css?v=24.2.5" type="text/css">
+<link rel="stylesheet" href="r/prongc/10145/files/plugin/1462472447404390080/v204/uc.aopdownload.min.css" type="text/css">
+
+  <link rel="stylesheet" href="/i/libraries/font-apex/2.4/css/font-apex.min.css?v=24.2.5" type="text/css">
+<link rel="stylesheet" href="/i/themes/theme_42/24.2/css/Core.min.css?v=24.2.5" type="text/css">
+
+  
+  <link rel="stylesheet" href="r/prongc/10145/files/theme/42/v65/300252614542788925.css" type="text/css">
+
+  <link rel="stylesheet" href="r/prongc/files/static/v68/NGC_General_CSS_Lib.css" type="text/css">
+
+  <style nonce="nPcbs0uEeG4XBp2XWflZ8Q">
+/*Filter Region*/
+.t-Body-actionsContent{
+    max-height: calc(100% - 4.55rem);
+}
+
+/* Restore independent scroll for filter region */
+/* 100vh or 100% adjust if needed */
+#P639_FILTERS_R {
+  overflow-y: auto !important;
+ /* max-height: calc(100% - 4.55rem); */
+}
+
+/* Restore independent scroll for IR region */
+#P639_RESULTS_R {
+  overflow-y: auto !important;
+  overflow-x: hidden;
+ /* max-height: calc(100vh - 8rem); */
+}
+
+
+.ajax_shuttle select {
+height: 150px;
+width: 500px;
+}
+
+td:NOT(.shuttleControl):NOT(.shuttleSort2){
+    white-space: nowrap;
+}
+
+/*Radio button*/
+#P639_SHOW_LIVE_AGRMTS > div > div{
+display: flex;
+}
+
+#P639_SHOW_LIVE_AGRMTS > div > div > div > label{
+padding-left:2px;
+padding-right:2px;}
+
+#P639_SHOW_LIVE_AGRMTS > div > div > div:nth-child(-n + 2) > label{
+min-width:32px;
+}
+
+#P639_FILTERS_R .t-Region-body {
+    padding:4px;
+}
+
+/*Move item in new row*/
+#P639_EVENT_TYPE_ID_CONTAINER{
+    transform: translate(120%, -100%);
+    position: absolute;
+}
+
+.width-44{
+    width: 44% !important;
+}
+
+.width-55{
+    width: 55% !important;
+}
+
+.width-60{
+    width: 60% !important;
+}
+
+/*#P639_DATA_AGG_R_heading,*/
+#P639_ADDITIONAL_PARAMS_R_heading{
+    font-size: var(--a-field-display-font-size, var(--a-field-input-font-size, .875rem));
+    font-weight: var(--a-field-display-font-weight, var(--a-base-font-weight-bold, 700));
+    padding-left:8px;
+}
+
+/*Switches*/
+#P639_ONLY_LATEST_MONTH_LABEL,
+#P639_PER_HOME_PMN_LABEL,
+#P639_PER_PARTNER_PMN_LABEL,
+#P639_BLENDED_LABEL {
+    white-space: nowrap;
+}
+
+#P639_BLENDED_CONTAINER .t-Form-itemWrapper,
+#P639_ONLY_LATEST_MONTH_CONTAINER .t-Form-itemWrapper,
+#P639_PER_HOME_PMN_CONTAINER .t-Form-itemWrapper,
+#P639_PER_PARTNER_PMN_CONTAINER .t-Form-itemWrapper,
+#P639_RTI_GROUP_CONTAINER .t-Form-itemWrapper {
+    align-items: center;
+    align-content: center;
+    justify-content: flex-end;
+}
+
+#P639_PER_HOME_PMN_CONTAINER .t-Form-itemWrapper,
+#P639_PER_PARTNER_PMN_CONTAINER .t-Form-itemWrapper,
+#P639_ONLY_LATEST_MONTH_CONTAINER .t-Form-itemWrapper {
+    margin-right:22px;
+}
+
+#P639_BLENDED_CONTAINER .a-Switch,
+#P639_PER_HOME_PMN_CONTAINER .a-Switch,
+#P639_PER_PARTNER_PMN_CONTAINER .a-Switch,
+#P639_ONLY_LATEST_MONTH_CONTAINER .a-Switch,
+#P639_RTI_GROUP_CONTAINER .a-Switch {
+    display:block;
+    padding: 0;
+}
+
+/*Add or Remove*/
+#P639_HOME_PMN_BULK_SEARCH_LABEL,
+#P639_HOME_PMN_BULK_LABEL,
+#P639_PARTNER_PMN_BULK_SEARCH_LABEL,
+#P639_PARTNER_PMN_BULK_LABEL {
+    display:none;
+}
+
+
+
+
+</style>
+
+  <link rel="apple-touch-icon" href="r/prongc/10145/files/static/v334/icons/app-icon-192.png"><link rel="icon" href="r/prongc/10145/files/static/v334/icons/app-icon-32.png">
+  
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="-1"><meta http-equiv="Cache-Control" content="no-cache">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="app-version" content=" v25.Q2.5">
+  <meta name="app-tenant-id" content="">
+  <meta name="app-alias" content="NGCMAIN10145">
+  <meta name="app-page-alias" content="">
+<style type="text/css">.LayerStyles_baseStyle__g9p4b90{position:relative}.LayerStyles_popupPriorityStyle__g9p4b91{z-index:1000}.LayerStyles_dialogPriorityStyle__g9p4b92{z-index:1050}.LayerStyles_messagesPriorityStyle__g9p4b93{z-index:2000}</style><style type="text/css">.t-fht-cell { height: 1px; overflow: hidden; } .t-fht-wrapper { width: 100%; overflow: hidden; position: relative; } .t-fht-thead { overflow: hidden; position: relative; } .t-fht-tbody { overflow: auto; } </style><style>
+	.fch_icon:before {
+		content: url(r/prongc/files/static/v68/FCH_ICON.png);
+		padding-right: 2px;
+	}
+	.iotron_icon:before {
+		content: url(r/prongc/files/static/v68/IOTRON_ICON.png);
+		padding-right: 2px;
+	}
+	.subscription_icon:before {
+		content: url(r/prongc/files/static/v68/subscriptions.png);
+		padding-right: 2px;
+	}
+	.t-Body-actionsControlsIcon:before {
+		content: "\e0f4";
+	}
+    .snb_icon:before {
+		content: url(r/prongc/files/static/v68/snb-icon.svg);
+		padding-right: 2px;
+	}
+	</style><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="ojtranslations/nls/en-GB/localeElements" src="/i/libraries/./oraclejet/17.0.2/js/libs/oj/17.0.2/resources/nls/en-GB/localeElements.js"></script></head>
+<body class="t-PageBody t-PageBody--hideLeft t-PageTemplate--rightSideCol apex-side-nav apex-icons-fontapex apex-theme-ngc-theme js-navCollapsed--icons js-navCollapsed js-ready js-rightExpanded t-PageBody--leftNav" id="t_PageBody" style="">
+<script async="" src="https://cdn.eu.pendo.io/agent/static/6ff4e6e8-dd70-4519-b2d1-5c14b23801bc/pendo.js"></script><script async="" src="https://cdn.eu.pendo.io/agent/static/6ff4e6e8-dd70-4519-b2d1-5c14b23801bc/pendo.js"></script><script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-K823RZ3Z"></script><script nonce="nPcbs0uEeG4XBp2XWflZ8Q">(sessionStorage.getItem("ORA_WWV_apex.toggleCore.right.10145.639.preferenceForExpanded") === "true") ? document.getElementById('t_PageBody').classList.add('js-rightExpanded') : document.getElementById('t_PageBody').classList.add('js-rightCollapsed')</script>
+<a href="#main" id="t_Body_skipToContent">Skip to Main Content</a>
+<form role="none" action="wwv_flow.accept?p_context=10145:639:9553260348680" method="post" name="wwv_flow" id="wwvFlowForm" data-oj-binding-provider="none" novalidate="">
+<input type="hidden" name="p_flow_id" value="10145" id="pFlowId"><input type="hidden" name="p_flow_step_id" value="639" id="pFlowStepId"><input type="hidden" name="p_instance" value="9553260348680" id="pInstance"><input type="hidden" name="p_page_submission_id" value="MzMxOTA5MTIzNDU1ODg4OTY2NjQ3MTk0NDkwNzEwNTAwODkyNDA4/f2G_8GP2BqWC97E32otD8j9blbAakfWgl-30esWgqpQ0SA4yAMFeSzxKvP6iLZZooNewwk8z1dbAlCWKbAyebg" id="pPageSubmissionId"><input type="hidden" name="p_request" value="" id="pRequest"><input type="hidden" name="p_reload_on_submit" value="A" id="pReloadOnSubmit"><input type="hidden" value="10145:639:9553260348680" id="pContext"><input type="hidden" value="331909123455888966647194490710500892408" id="pSalt">
+<header class="t-Header" id="t_Header" role="banner">
+  
+  <div class="t-Header-branding">
+    <div class="t-Header-controls">
+      <button class="t-Button t-Button--icon t-Button--header t-Button--headerTree" aria-label="Main Navigation" title="Main Navigation" id="t_Button_navControl" type="button" aria-controls="t_TreeNav" aria-expanded="false"><span class="t-Header-controlsIcon" aria-hidden="true"></span></button>
+    </div>
+    <div class="t-Header-logo">
+      <a href="f?p=10145:76:9553260348680:::::" class="t-Header-logo-link"><img src="r/prongc/files/static/v68/NGLogo400px.png" alt="Home" class="apex-logo-img"></a>
+      
+    </div><div class="t-Header-brand"><span class="t-Header-brand--Name"><span style="font-weight:bold; color: #2d2a81;">Nextgen Clearing</span></span></div>
+    <div class="t-Header-navBar">
+      <div class="t-Header-navBar--start"></div>
+      <div class="t-Header-navBar--center"><ul class="t-NavigationBar " id="129340975355107725"><li class="t-NavigationBar-item ">
+  <a class="t-Button t-Button--icon t-Button--header t-Button--navBar" href="f?p=10132:35:9553260348680:::::" title="" target="" data-otel-label="">
+    <span class="t-Icon fa fa-home" aria-hidden="true"></span><span class="t-Button-label">Welcome</span><span class="t-Button-badge"></span>
+  </a>
+</li><li class="t-NavigationBar-item ">
+  <a class="t-Button t-Button--icon t-Button--header t-Button--navBar" href="f?p=10132:35:9553260348680:::::" title="" target="" data-otel-label="">
+    <span class="t-Icon fch_icon" aria-hidden="true"></span><span class="t-Button-label">FCH</span><span class="t-Button-badge"></span>
+  </a>
+</li><li class="t-NavigationBar-item ">
+  <a class="t-Button t-Button--icon t-Button--header t-Button--navBar" href="f?p=10145:76:9553260348680:::::" title="" target="" data-otel-label="">
+    <span class="t-Icon iotron_icon" aria-hidden="true"></span><span class="t-Button-label">IOTRON</span><span class="t-Button-badge"></span>
+  </a>
+</li><li class="t-NavigationBar-item ">
+  <a class="t-Button t-Button--icon t-Button--header t-Button--navBar" href="f?p=10145:125:9553260348680:::::" title="" target="" data-otel-label="">
+    <span class="t-Icon snb_icon" aria-hidden="true"></span><span class="t-Button-label">S&amp;B</span><span class="t-Button-badge"></span>
+  </a>
+</li><li class="t-NavigationBar-item user-menu">
+  <button class="t-Button t-Button--icon t-Button t-Button--header t-Button--navBar" type="button" id="L129377231477185527" data-menu="menu_L129377231477185527" title="" aria-haspopup="menu">
+      <span class="t-Icon t-Icon a-Icon icon-user" aria-hidden="true"></span><span class="t-Button-label">MAYUR.MARADIYA</span><span class="t-Button-badge">MM</span><span class="a-Icon icon-down-arrow" aria-hidden="true"></span>
+  </button></li></ul></div>
+      <div class="t-Header-navBar--end"></div>
+    </div>
+  </div>
+  <div class="t-Header-nav"></div>
+</header><div class="container">
+<div class="row ">
+<div class="col col-12 apex-col-auto col-start col-end"><div id="mouse_click_stats" class=""><input type="hidden" name="P1_SAVE_MOUSE_CLICK" id="P1_SAVE_MOUSE_CLICK" value="body#t_PageBody &gt; div:eq(7) &gt; div#PopupLov_639_P639_IOT_AGREEMENT_ID_dlg &gt; div:eq(0) &gt; button &gt; span"><input type="hidden" name="P1_JAVA_SCRIPT_CODE" id="P1_JAVA_SCRIPT_CODE" value=""><input type="hidden" name="P1_LOAD_CLICK_STATS" id="P1_LOAD_CLICK_STATS" value="0"><input type="hidden" name="P1_ANNOUNCEMENT_URL" id="P1_ANNOUNCEMENT_URL" value=""><input type="hidden" name="P1_IOT_REPORT_PARAMETERS_LOG_ID" id="P1_IOT_REPORT_PARAMETERS_LOG_ID" value="716486"><input type="hidden" name="P1_EMAIL_DOMAIN" id="P1_EMAIL_DOMAIN" value="nextgenclearing.com"><input type="hidden" name="P1_EMAIL_DOMAIN_DISP" id="P1_EMAIL_DOMAIN_DISP" value="nextgenclearing.com"></div></div>
+</div>
+</div><div class="t-Body">
+  <div class="t-Body-nav" id="t_Body_nav" role="navigation" aria-label="Application">
+  <div class="a-TreeView t-TreeNav js-defaultCollapsed js-defaultCollapsed js-navCollapsed--default t-TreeNav--styleA" id="t_TreeNav" data-id="639_tree" aria-label="Main Navigation" role="tree" aria-hidden="false" style="visibility: inherit;"><ul role="group"><li id="t_TreeNav_INSTANCE" style="padding:12px; margin-bottom: 1px; background: #f3c83c; text-align: center; cursor: default;" class="a-TreeView-node is-expandable a-TreeView-node--topLevel"><span style="font-weight:bold; color: #345511;" id="instance">UAT</span></li><li id="t_TreeNav_0" role="none" class="a-TreeView-node a-TreeView-node--leaf a-TreeView-node--topLevel"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><span class="fa fa fa-dashboard" aria-hidden="true"></span><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:76:9553260348680:::::" aria-level="1" aria-selected="false">Dashboard</a></div></li><li id="t_TreeNav_1" role="none" class="a-TreeView-node is-expandable a-TreeView-node--topLevel"><div role="none" class="a-TreeView-row"></div><span aria-hidden="true" class="a-TreeView-toggle"></span><div role="none" class="a-TreeView-content"><span class="fa fa fa-user-wrench" aria-hidden="true"></span><span tabindex="-1" role="treeitem" class="a-TreeView-label" aria-level="1" aria-selected="false" aria-expanded="false">Administration</span></div><ul role="group" id="t_TreeNav_1_subtree" style="display: none;"><li id="t_TreeNav_8" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:310:9553260348680:::310::&amp;cs=3jGaKQScL2IjhLVgnKNrhlwxTcjbUQZkHYowoN97g4V4N6xT2CQVI0T8vsoXHoDcByhzBxcUtZ6oDbfqfm7IKpA" aria-level="2" aria-selected="false">Manage Clients</a></div></li><li id="t_TreeNav_9" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:479:9553260348680:::::" aria-level="2" aria-selected="false">Multi-PMN Operators</a></div></li><li id="t_TreeNav_10" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:512:9553260348680:::::" aria-level="2" aria-selected="false">BI Dashboard Parameters</a></div></li><li id="t_TreeNav_11" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:560:9553260348680:::::" aria-level="2" aria-selected="false">Personal Favourites</a></div></li><li id="t_TreeNav_12" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:670:9553260348680:::RP,670::&amp;cs=3HwZ5bvRxxjGHfKHNsOczrMiNckxwc3cnW78LP6DyUKA5TehMV1jhmEk9L8CBCxu_biu7d4dmRyWp5iHJpxj8xw" aria-level="2" aria-selected="false">Client Defined Countries</a></div></li><li id="t_TreeNav_13" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:672:9553260348680:::RP,672::&amp;cs=3VLcWsLMOcgRW5k7JtdQjpvZGRqCcBt4TOagVZ0cteRXWg18lskJEnJjkOVD5TVB2N2LiWxtnCy8myJkX5EDI5g" aria-level="2" aria-selected="false">Client Defined Countries Mapping</a></div></li><li id="t_TreeNav_14" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:47:9553260348680:::47::&amp;cs=3fWNyAZGvsr14ZxWr_kgnCsYvRSD0qOEgMCK6AJv_2huHRrgRhm5fBs0AjzxHQS9V3XmA0FGitkaW-ukwgk99WQ" aria-level="2" aria-selected="false">MCC MNC List</a></div></li><li id="t_TreeNav_15" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:101:9553260348680:::::" aria-level="2" aria-selected="false">Page Access</a></div></li><li id="t_TreeNav_16" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:113:9553260348680:::::" aria-level="2" aria-selected="false">Client Reconciliation Configuration</a></div></li></ul></li><li id="t_TreeNav_2" role="none" class="a-TreeView-node is-expandable a-TreeView-node--topLevel"><div role="none" class="a-TreeView-row"></div><span aria-hidden="true" class="a-TreeView-toggle"></span><div role="none" class="a-TreeView-content"><span class="fa fa fa-file-edit" aria-hidden="true"></span><span tabindex="-1" role="treeitem" class="a-TreeView-label" aria-level="1" aria-selected="false" aria-expanded="false">Agreement Capture</span></div><ul role="group" id="t_TreeNav_2_subtree" style="display: none;"><li id="t_TreeNav_17" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:301:9553260348680::::P301_EDIT_SETTLE:Edit&amp;cs=19048F3F6A92AF35FE4576581CBF616D3" aria-level="2" aria-selected="false">Discount Agreements</a></div></li><li id="t_TreeNav_18" role="none" class="a-TreeView-node is-expandable"><div role="none" class="a-TreeView-row"></div><span aria-hidden="true" class="a-TreeView-toggle"></span><div role="none" class="a-TreeView-content"><span tabindex="-1" role="treeitem" class="a-TreeView-label" aria-level="2" aria-selected="false" aria-expanded="false">TIMS</span></div><ul role="group" id="t_TreeNav_18_subtree" style="display: none;"><li id="t_TreeNav_28" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:86:9553260348680:::86::&amp;cs=3r9qeSKVUDcE-sCsIgWX62-PMtXuz5lRP1MDoxHiwNy6BE7Q39CnzZn2aiGrAZ0y_X9bX8puzOsxvW5-GLR8sYQ" aria-level="3" aria-selected="false">Segmentation &amp; Identification Rules</a></div></li><li id="t_TreeNav_29" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:124:9553260348680:::::" aria-level="3" aria-selected="false">Segmentation Status and History</a></div></li></ul></li><li id="t_TreeNav_19" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:651:9553260348680:::::" aria-level="2" aria-selected="false">Agreement Catalogue</a></div></li><li id="t_TreeNav_20" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:453:9553260348680:453::453::&amp;cs=38RNhE9OZ48mRd_xfE9EOosdpclkTE093icm_FwkMhuoE1aVRu5M04U4b5VamSQl2lDgvCkbadEfVjw_Uu77QZg" aria-level="2" aria-selected="false">Agreement Checklist Review</a></div></li><li id="t_TreeNav_21" role="none" class="a-TreeView-node is-expandable"><div role="none" class="a-TreeView-row"></div><span aria-hidden="true" class="a-TreeView-toggle"></span><div role="none" class="a-TreeView-content"><span tabindex="-1" role="treeitem" class="a-TreeView-label" aria-level="2" aria-selected="false" aria-expanded="false">Manage Agreement Checklist</span></div><ul role="group" id="t_TreeNav_21_subtree" style="display: none;"><li id="t_TreeNav_30" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:328:9553260348680:::::" aria-level="3" aria-selected="false">Agreement Checklist Definition</a></div></li><li id="t_TreeNav_31" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:693:9553260348680:::::" aria-level="3" aria-selected="false">Agreement Checklist Phases</a></div></li><li id="t_TreeNav_32" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:695:9553260348680:::::" aria-level="3" aria-selected="false">Agreement Checklist Job Titles</a></div></li></ul></li><li id="t_TreeNav_22" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:663:9553260348680:::::" aria-level="2" aria-selected="false">SOX Report</a></div></li><li id="t_TreeNav_23" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:298:9553260348680:::::" aria-level="2" aria-selected="false">Agreement Contact Details</a></div></li><li id="t_TreeNav_24" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:311:9553260348680:::311::&amp;cs=3qlXxJjZVtAnUN8l4iFqp2VoRN8cNpb49Tlxy6ZodT9HTh-Q94lctqfKH_snf29r79nbcUqpylwhZ6lHEsC5Vpg" aria-level="2" aria-selected="false">Partner Operator Groups</a></div></li><li id="t_TreeNav_25" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:502:9553260348680:::::" aria-level="2" aria-selected="false">Partner Country Zones</a></div></li><li id="t_TreeNav_26" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:56:9553260348680:::::" aria-level="2" aria-selected="false">Call Destinations Region</a></div></li><li id="t_TreeNav_27" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:653:9553260348680:::RP,653::&amp;cs=3rMbiO_B3xmsP7ZKOQ_epNqIQ8z-m-DfIbR2BqaQ6emstar9SRLDjnt_5ZItP9nFTdmoUJHkNkk8mZmCWdM6aQw" aria-level="2" aria-selected="false">Value Commitment Flexing</a></div></li></ul></li><li id="t_TreeNav_3" role="none" class="a-TreeView-node is-expandable a-TreeView-node--topLevel"><div role="none" class="a-TreeView-row"></div><span aria-hidden="true" class="a-TreeView-toggle"></span><div role="none" class="a-TreeView-content"><span class="fa fa fa-list-alt" aria-hidden="true"></span><span tabindex="-1" role="treeitem" class="a-TreeView-label" aria-level="1" aria-selected="false" aria-expanded="false">Reporting</span></div><ul role="group" id="t_TreeNav_3_subtree" style="display: none;"><li id="t_TreeNav_33" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:507:9553260348680:::507,RIR::&amp;cs=3T3rixmSuttcj6grQFmsZCIWTRzc5tVy4_xk8pltZSgdQ2WVzPS32siWkcjUOoUSzyFa4bWOGFE9ZA-zmF7ebpA" aria-level="2" aria-selected="false">Overview Report</a></div></li><li id="t_TreeNav_34" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:492:9553260348680:::492::&amp;cs=3jc1qW6AExJ7HaZ3ohtUkA9qtS7Jy0PUnSjk0zq3xqbY5RvNKn3g33bsb6dUla6MoNkilwL3a0OtGDh68aFI-Fw" aria-level="2" aria-selected="false">Commitment Report</a></div></li><li id="t_TreeNav_35" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:25:9553260348680:::25,RIR::&amp;cs=30MZnHHg-OD40Y6L6ntwdZAeMU-cRiBJo9X2QFSsnDegA7qFmvXKQ_zg-JF1DQHnp4jjD7QcNi1Q9WqwBFS6g9w" aria-level="2" aria-selected="false">Accrual Report</a></div></li><li id="t_TreeNav_36" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:24:9553260348680:::::" aria-level="2" aria-selected="false">Review Cost Report</a></div></li><li id="t_TreeNav_37" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:279:9553260348680:::RP,279::&amp;cs=3nJkBMyztPq9iUUEhREjOpnRfKPesbujMkU0SYlHuFynoGqHecsWZX3pOWk8RbDue99-XGPN94SLux1yoj_3K0g" aria-level="2" aria-selected="false">Agreement Performance</a></div></li><li id="t_TreeNav_38" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:454:9553260348680:::454::&amp;cs=3uEO0N9CAd45n4BHKJ0wRnZ13CYYe95T_5RVPdh632HqBJTZ8eCQz5uyalEbBjJHii0fbY9oDXJ0OMT5Qn_6Vag" aria-level="2" aria-selected="false">Agreement Performance (Single Month)</a></div></li><li id="t_TreeNav_39" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:498:9553260348680:::498,RIR::&amp;cs=3-Ei4EAOQ_jN8PzsIGPVxgGjAmI_9nf31fphOWZOe9tunsns0rHoikhzgLk9jmQHfRg4-Lx1TYbYrJEbxE7Ti1A" aria-level="2" aria-selected="false">DCH Report</a></div></li><li id="t_TreeNav_40" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:634:9553260348680:::::" aria-level="2" aria-selected="false">Premium Numbers per Agreement</a></div></li><li id="t_TreeNav_41" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:552:9553260348680:::RP,552::&amp;cs=3XGJWgNsuHpkPQEOqDxoavQktKvYgbnvB8-_8607bs5-Qf1hZsZYTO9J6VUXrqtHiWeSBKTWK01YjVpEJ3iz-JQ" aria-level="2" aria-selected="false">Outbound MVNO Split</a></div></li><li id="t_TreeNav_42" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:597:9553260348680:::::" aria-level="2" aria-selected="false">Check TAP Implementations</a></div></li><li id="t_TreeNav_43" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:609:9553260348680:::RP,609::&amp;cs=3YIjRE8Wgg868zfJ5_UmAynArPHLXlh6gh-S1Yt05tjCC7dJFZss8XzjauFCbK4hl34QL9Ln2UlM3iGpCGi_khQ" aria-level="2" aria-selected="false">Monthly Credit Notes</a></div></li><li id="t_TreeNav_44" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:613:9553260348680:::::" aria-level="2" aria-selected="false">IMSI Count Details</a></div></li><li id="t_TreeNav_45" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:673:9553260348680:::673,RIR:P673_TRAFFIC_DIRECTION:Payable&amp;cs=125096BEBE0BE1A07628FBF5834A63EDE" aria-level="2" aria-selected="false">Outstanding Rebates Payable</a></div></li><li id="t_TreeNav_46" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:673:9553260348680:::673,RIR:P673_TRAFFIC_DIRECTION:Receivable&amp;cs=1A91B8CFF41F645879BF379616F7F5E3D" aria-level="2" aria-selected="false">Outstanding Rebates Receivable</a></div></li><li id="t_TreeNav_47" role="none" class="a-TreeView-node is-expandable"><div role="none" class="a-TreeView-row"></div><span aria-hidden="true" class="a-TreeView-toggle"></span><div role="none" class="a-TreeView-content"><span tabindex="-1" role="treeitem" class="a-TreeView-label" aria-level="2" aria-selected="false" aria-expanded="false">Savings Reports</span></div><ul role="group" id="t_TreeNav_47_subtree" style="display: none;"><li id="t_TreeNav_50" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:674:9553260348680:::674::&amp;cs=3z7HJgcqE94g38JQYezAiv-TPvDZhlJ1shtimyrIzuo0t1QKri9KIpQ5kmyYEOz_GamArB4Nvngja7HDPOzIXdg" aria-level="3" aria-selected="false">Savings per Agreement</a></div></li><li id="t_TreeNav_51" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:677:9553260348680:::::" aria-level="3" aria-selected="false">Savings per Country</a></div></li><li id="t_TreeNav_52" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:678:9553260348680:::::" aria-level="3" aria-selected="false">Cumulative Annualised Outpayment Savings</a></div></li></ul></li><li id="t_TreeNav_48" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:107:9553260348680:::RP::" aria-level="2" aria-selected="false">IMSI Segment Report</a></div></li><li id="t_TreeNav_49" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:52:9553260348680:::::" aria-level="2" aria-selected="false">Pricing Report</a></div></li></ul></li><li id="t_TreeNav_4" role="none" class="a-TreeView-node a-TreeView-node--topLevel is-expandable"><div role="none" class="a-TreeView-row is-current--top is-selected"></div><span aria-hidden="true" class="a-TreeView-toggle"></span><div role="none" class="a-TreeView-content is-current--top is-selected"><span class="fa fa fa-line-chart" aria-hidden="true"></span><span tabindex="0" role="treeitem" class="a-TreeView-label" aria-level="1" aria-selected="true" aria-expanded="false" aria-owns="t_TreeNav_4_subtree">Forecasting</span></div><ul role="group" id="t_TreeNav_4_subtree" style="display: none;"><li id="t_TreeNav_53" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=22244:1:9553260348680::::P1_DISPLAY_HEATMAPS:&amp;cs=1D6ADF536377379D8708F7F8E543BCFA1" aria-level="2" aria-selected="false">Forecast Customisation</a></div></li><li id="t_TreeNav_54" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content is-current"><a tabindex="0" role="treeitem" class="a-TreeView-label is-current" href="f?p=10145:639:9553260348680:::639:P639_ACCESSED_FROM:FORECASTING&amp;cs=15065A69D08E5D0CD700D5700D410C94D" aria-level="2" aria-selected="false" aria-current="true">Forecast Report per Agreement</a></div></li><li id="t_TreeNav_55" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:122:9553260348680:::::" aria-level="2" aria-selected="false">Agreements Summary</a></div></li><li id="t_TreeNav_56" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:497:9553260348680:::::" aria-level="2" aria-selected="false">Financial Forecast Report</a></div></li><li id="t_TreeNav_57" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:493:9553260348680:::493::&amp;cs=3-DrAoVNwQE4H_z0K-LVn3-HD03pmWBd0Dba-iTzWUJM__cOdAjZC_H7t30tmoeHn9vAmqhpkYB8EWUMF_N8YYg" aria-level="2" aria-selected="false">Traffic Volume Forecast</a></div></li><li id="t_TreeNav_58" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:82:9553260348680:::::" aria-level="2" aria-selected="false">Business Forecast</a></div></li><li id="t_TreeNav_59" role="none" class="a-TreeView-node a-TreeView-node--leaf"><div role="none" class="a-TreeView-row"></div><div role="none" class="a-TreeView-content"><a tabindex="-1" role="treeitem" class="a-TreeView-label" href="f?p=10145:79:9553260348680:::::" aria-level="2" aria-selected="false">Financial Overview Report</a></div></li></ul></li><li id="t_TreeNav_5" role="none" class="a-TreeView-node is-expandable a-TreeView-node--topLevel"><div role="none" class="a-TreeView-row"></div><span aria-hidden="true" class="a-TreeView-toggle"></span><div role="none" class="a-TreeView-content"><span class="fa fa fa-desktop" aria-hidden="true"></span><span tabindex="-1" role="treeitem" class="a-TreeView-label" aria-level="1" aria-selected="false" aria-expanded="false">Business Intelligence</span></div></li><li id="t_TreeNav_6" role="none" class="a-TreeView-node is-expandable a-TreeView-node--topLevel"><div role="none" class="a-TreeView-row"></div><span aria-hidden="true" class="a-TreeView-toggle"></span><div role="none" class="a-TreeView-content"><span class="fa fa fa-handshake-o" aria-hidden="true"></span><span tabindex="-1" role="treeitem" class="a-TreeView-label" aria-level="1" aria-selected="false" aria-expanded="false">Settlement</span></div></li><li id="t_TreeNav_7" role="none" class="a-TreeView-node is-expandable a-TreeView-node--topLevel"><div role="none" class="a-TreeView-row"></div><span aria-hidden="true" class="a-TreeView-toggle"></span><div role="none" class="a-TreeView-content"><span class="fa fa fa-user-headset" aria-hidden="true"></span><span tabindex="-1" role="treeitem" class="a-TreeView-label" aria-level="1" aria-selected="false" aria-expanded="false">Operations</span></div></li></ul></div>
+</div>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q">
+(() => {
+  const pref = "ORA_WWV_apex.toggleCore.nav.10145.preferenceForExpanded",
+        nav  = document.getElementById('t_TreeNav').classList,
+        body = document.getElementById('t_PageBody');
+  if ( !sessionStorage.getItem( pref ) ) { sessionStorage.setItem( pref, !nav.contains('js-defaultCollapsed') ); }
+  if ( nav.contains('js-navCollapsed--default') ) {
+      body?.classList.add('js-navCollapsed--icons');
+      if ( sessionStorage.getItem( pref ) === "false" ) { body?.classList.add('js-navCollapsed'); }
+  }
+  if ( sessionStorage.getItem( pref ) === "true" && window.matchMedia("(min-width: " + getComputedStyle(document.documentElement).getPropertyValue("--js-mq-lg") + ")").matches) { body?.classList.add('js-navExpanded'); }
+  for (const label of document.querySelectorAll(".a-TreeView .a-TreeView-label")) {
+      label.textContent = label.textContent.replaceAll(/\[(.*?)\]/ig, '');
+  }
+})();
+</script>
+  <div class="t-Body-main">
+    <div class="t-Body-title" id="t_Body_title"><nav id="R311709208918989466" role="navigation" aria-label="Breadcrumb" class="t-BreadcrumbRegion t-BreadcrumbRegion--showBreadcrumb t-BreadcrumbRegion--compactTitle t-BreadcrumbRegion--useBreadcrumbTitle">
+  <div class="t-BreadcrumbRegion-top">
+    <div class="t-BreadcrumbRegion-buttons t-BreadcrumbRegion-buttons--start"></div>
+    <div class="t-BreadcrumbRegion-body">
+      <div class="t-BreadcrumbRegion-breadcrumb"><ul class="t-Breadcrumb "><li class="t-Breadcrumb-item">Forecasting</li><li class="t-Breadcrumb-item is-active" aria-current="page"><h1 class="t-Breadcrumb-label">Forecast Report per Agreement</h1></li></ul></div>
+        <div class="t-BreadcrumbRegion-title">
+        <h1 id="R311709208918989466_heading" class="t-BreadcrumbRegion-titleText" data-apex-heading="">Breadcrumb</h1>
+      </div>
+    </div>
+    <div class="t-BreadcrumbRegion-buttons t-BreadcrumbRegion-buttons--end"></div>
+  </div>
+  <div class="t-BreadcrumbRegion-bottom"></div>
+</nav>
+</div>
+    <div class="t-Body-content" id="t_Body_content"><div id="t_Body_content_offset"></div>
+      <main id="main" class="t-Body-mainContent">
+        <span id="APEX_SUCCESS_MESSAGE" data-template-id="2526646919027767344_S" class="apex-page-success u-hidden"></span><span id="APEX_ERROR_MESSAGE" data-template-id="2526646919027767344_E" class="apex-page-error u-hidden"></span>
+        <div class="t-Body-fullContent"></div>
+        <div class="t-Body-contentInner"><div class="container">
+<div class="row ">
+<div class="col col-12 apex-col-auto col-start col-end"><div id="P639_RESULTS_R" role="region" aria-label="Results" class="t-IRR-region aopdownload t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc js-apex-region">
+  <h2 class="t-IRR-title" id="P639_RESULTS_R_heading" data-apex-heading="" aria-roledescription="Heading level 2, hidden">Results</h2>
+    <div class="t-Region-orderBy"></div>
+    
+    <div id="P639_RESULTS_R_ir" class="a-IRR-container"><div id="P639_RESULTS_R_worksheet_region" class="a-IRR" aria-live="polite"><div id="P639_RESULTS_R_single_row_view" class="a-IRR-singleRowView"></div><div id="P639_RESULTS_R_full_view" class="a-IRR-fullView"><div id="P639_RESULTS_R_toolbar" class="a-IRR-toolbar"><div role="search" aria-label="Search bar of Results" id="P639_RESULTS_R_toolbar_controls" class="a-IRR-controls"><div class="a-IRR-controlGroup a-IRR-controlGroup--search"><div class="a-IRR-search"><input type="hidden" id="P639_RESULTS_R_column_search_current_column"><div class="a-IRR-colSelector"><button id="P639_RESULTS_R_column_search_root" data-menu="P639_RESULTS_R_column_search_drop" class="a-Button a-IRR-button a-IRR-button--colSearch a-Button--withIcon a-Button--noLabel" title="Select columns to search" aria-label="Select columns to search" type="button" aria-haspopup="menu"><span class="a-Icon icon-search" aria-hidden="true"></span><span class="a-Icon icon-menu-drop-down" aria-hidden="true"></span></button></div><div class="a-IRR-searchFieldContainer"><input class="a-IRR-search-field" id="P639_RESULTS_R_search_field" title="Search Report" type="search" size="30" maxlength="4000" value=""></div><div class="a-IRR-searchButtonContainer"><button id="P639_RESULTS_R_search_button" class="a-Button a-IRR-button a-IRR-button--search" type="button"><span>Go</span></button></div></div></div><div class="a-IRR-controlGroup a-IRR-controlGroup--views"><div class="a-IRR-savedReports"><select class="a-IRR-selectList" size="1" id="P639_RESULTS_R_saved_reports" name="p_accept_processing" title="Reports"><optgroup label="Default"><option selected="selected" value="370474697346037008">1. Primary Report</option></optgroup><optgroup label="Private"><option value="76474354820240054">1. Agreement Summary Report</option></optgroup></select></div></div><div class="a-IRR-controlGroup a-IRR-controlGroup--options"><div class="a-IRR-rowSelector"><label for="P639_RESULTS_R_row_select">Rows</label><select class="a-IRR-selectList" size="1" id="P639_RESULTS_R_row_select" name="p_accept_processing"><option value="1">1</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option><option value="25">25</option><option value="50">50</option><option selected="selected" value="100">100</option><option value="1000">1000</option><option value="100000">All</option></select></div><div class="a-IRR-actions"><button id="P639_RESULTS_R_actions_button" class="a-Button a-IRR-button a-IRR-button--actions" type="button" data-menu="P639_RESULTS_R_actions_menu" aria-haspopup="menu">Actions<span aria-hidden="true" class="a-Icon icon-menu-drop-down"></span></button></div></div></div><div role="region" aria-label="Buttons next to search bar of Results" class="a-IRR-buttons"><button class="t-Button t-Button--small" type="button" id="MAINTAIN_AGREEMENT" data-otel-label="MAINTAIN_AGREEMENT"><span class="t-Button-label">Agreement Capture</span></button></div></div><div id="P639_RESULTS_R_content" class="a-IRR-content "><div id="P639_RESULTS_R_dialog_js" class="a-IRR-dialogBody" style="display:none;"></div><input type="hidden" id="P639_RESULTS_R_worksheet_id" value="370464087018974673">
+<input type="hidden" id="P639_RESULTS_R_app_user" value="MAYUR.MARADIYA">
+<input type="hidden" id="P639_RESULTS_R_report_id" value="370474697346037008">
+<input type="hidden" id="P639_RESULTS_R_view_mode" value="REPORT">
+<div role="region" aria-label="Report settings of Results" class="a-MediaBlock a-IRR-controlsContainer a-Collapsible is-expanded" id="P639_RESULTS_R_control_panel"><div class="a-MediaBlock-graphic"><h3 aria-hidden="true" class="u-vh a-Collapsible-heading" id="a_Collapsible1_P639_RESULTS_R_control_panel_heading">Report Settings</h3>
+<span role="heading" aria-level="3"><button type="button" class="a-Button a-IRR-button a-IRR-button--controls" aria-labelledby="a_Collapsible1_P639_RESULTS_R_control_panel_heading" aria-controls="a_Collapsible1_P639_RESULTS_R_control_panel_content" aria-expanded="true"><span class="a-Icon a-Collapsible-icon icon-down-arrow" aria-hidden="true"></span></button></span>
+</div>
+<div class="a-MediaBlock-content a-Collapsible-content" id="a_Collapsible1_P639_RESULTS_R_control_panel_content" aria-hidden="false">
+<ul role="none" class="a-IRR-controls">
+
+
+<li class="a-IRR-controls-item a-IRR-controls-item--controlBreak" aria-labelledby="control_text_TRAFFIC_DIRECTION" role="region"><span class="a-IRR-controls-cell"><input class="a-IRR-controlsCheckbox" data-setting="break" data-break-column="TRAFFIC_DIRECTION" aria-label="Control Break" aria-describedby="control_text_TRAFFIC_DIRECTION" type="checkbox" id="control_TRAFFIC_DIRECTION" checked="checked"><label for="control_TRAFFIC_DIRECTION" aria-hidden="true" class="a-IRR-controlsCheckboxLabel"></label></span><span class="a-IRR-controls-cell"><span class="a-Icon a-IRR-controlsIcon icon-irr-control-break" aria-hidden="true"></span></span><span class="a-IRR-controls-cell a-IRR-controls-cell--label"><button type="button" aria-describedby="control_text_TRAFFIC_DIRECTION" aria-controls="control_TRAFFIC_DIRECTION" class="a-IRR-button--edit a-IRR-controlsLabel" data-setting="break" data-break-column="TRAFFIC_DIRECTION"><span aria-hidden="true">Traffic  Direction</span><span aria-hidden="true" class="u-vh" id="control_text_TRAFFIC_DIRECTION">Control Break: Traffic  Direction</span><span class="u-vh">Edit Control Break</span></button></span><span class="a-IRR-controls-cell a-IRR-controls-cell--remove"><button class="a-Button a-IRR-button a-Button--noUI a-IRR-button--remove" aria-label="Remove Control Break" aria-describedby="control_text_TRAFFIC_DIRECTION" aria-controls="control_TRAFFIC_DIRECTION" type="button" data-setting="break" data-break-column="TRAFFIC_DIRECTION"><span aria-hidden="true" class="a-Icon icon-remove"></span><span class="u-vh">Remove Control Break</span></button></span></li><li class="a-IRR-controls-item a-IRR-controls-item--controlBreak" aria-labelledby="control_text_TRAFFIC_PERIOD" role="region"><span class="a-IRR-controls-cell"><input class="a-IRR-controlsCheckbox" data-setting="break" data-break-column="TRAFFIC_PERIOD" aria-label="Control Break" aria-describedby="control_text_TRAFFIC_PERIOD" type="checkbox" id="control_TRAFFIC_PERIOD" checked="checked"><label for="control_TRAFFIC_PERIOD" aria-hidden="true" class="a-IRR-controlsCheckboxLabel"></label></span><span class="a-IRR-controls-cell"><span class="a-Icon a-IRR-controlsIcon icon-irr-control-break" aria-hidden="true"></span></span><span class="a-IRR-controls-cell a-IRR-controls-cell--label"><button type="button" aria-describedby="control_text_TRAFFIC_PERIOD" aria-controls="control_TRAFFIC_PERIOD" class="a-IRR-button--edit a-IRR-controlsLabel" data-setting="break" data-break-column="TRAFFIC_PERIOD"><span aria-hidden="true">Traffic  Period</span><span aria-hidden="true" class="u-vh" id="control_text_TRAFFIC_PERIOD">Control Break: Traffic  Period</span><span class="u-vh">Edit Control Break</span></button></span><span class="a-IRR-controls-cell a-IRR-controls-cell--remove"><button class="a-Button a-IRR-button a-Button--noUI a-IRR-button--remove" aria-label="Remove Control Break" aria-describedby="control_text_TRAFFIC_PERIOD" aria-controls="control_TRAFFIC_PERIOD" type="button" data-setting="break" data-break-column="TRAFFIC_PERIOD"><span aria-hidden="true" class="a-Icon icon-remove"></span><span class="u-vh">Remove Control Break</span></button></span></li>
+
+</ul>
+</div><div class="a-IRR-reportSummaryContainer" id="P639_RESULTS_R_control_panel_summary" style="display:none;"><ul class="a-IRR-reportSummary"><li class="a-IRR-reportSummary-item a-IRR-reportSummary-item--controlBreak"><a href="#" class="a-IRR-reportSummary-label" data-setting="break"><span class="a-IRR-reportSummary-icon" aria-label="Control Break, 2" role="img"><span class="a-Icon icon-irr-control-break"></span><span class="a-IRR-reportSummary-count">2</span></span><span class="a-IRR-reportSummary-value">Traffic  Direction, Traffic  Period</span></a></li></ul></div></div><style nonce="nPcbs0uEeG4XBp2XWflZ8Q" id="P639_RESULTS_R_worksheet_css">
+</style>
+<div role="region" aria-label="Chart view of Results" id="P639_RESULTS_R_chart" class="a-IRR-chartView"></div><div role="region" aria-label="Group by view of Results" id="P639_RESULTS_R_group_by" class="a-IRR-groupByView"></div><div role="region" aria-label="Pivot view of Results" id="P639_RESULTS_R_pivot" class="a-IRR-pivotView"></div><div role="region" aria-label="Data view of Results" id="P639_RESULTS_R_data_panel" class="a-IRR-reportView"><div role="region" aria-label="Message" class="a-IRR-noDataMsg"><div class="a-IRR-noDataMsg-icon"><span class="a-Icon icon-irr-no-results" aria-hidden="true"></span></div><span class="a-IRR-noDataMsg-text">No data found.</span></div></div></div></div></div></div>This report took            0.06 seconds to run.
+    
+    
+</div>
+
+</div>
+</div><input type="hidden" name="P639_LOAD_DATA_DIFF_ORIG_LATEST" id="P639_LOAD_DATA_DIFF_ORIG_LATEST" value=""><input type="hidden" name="P639_CLIENT_MASTER_ENTITY_ID" id="P639_CLIENT_MASTER_ENTITY_ID" value=""><div class="row ">
+<div class="col col-12 apex-col-auto col-start col-end"><div id="R177063494455037950_parent">
+
+</div></div>
+</div><div class="row ">
+<div class="col col-12 apex-col-auto col-start col-end"><div id="R199667120405857917_parent">
+
+</div></div>
+</div>
+</div></div>
+      </main>
+      <footer class="t-Footer" id="t_Footer" role="contentinfo">
+        <div class="t-Footer-body">
+          <div class="t-Footer-content"></div>
+          <div class="t-Footer-apex">
+            <div class="t-Footer-version"> v25.Q2.5</div>
+            <div class="t-Footer-customize"><a href="#action$a-open-customize-dialog?title=Customize&amp;lang=en-gb" aria-roledescription="action link">Customize</a></div>
+            
+          </div>
+        </div>
+        <div class="t-Footer-top">
+          <a href="#top" class="t-Footer-topButton" id="t_Footer_topButton" title="Start of page" aria-label="Start of page"><span class="a-Icon icon-up-chevron" aria-hidden="true"></span></a>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <div class="t-Body-actions" id="t_Body_actions">
+    <button class="t-Body-actionsToggle is-active" aria-label="Expand / Collapse Side Column" title="Expand / Collapse Side Column" id="t_Button_rightControlButton" type="button" aria-expanded="true"><span class="t-Body-actionsControlsIcon" aria-hidden="true"></span></button>
+    <div class="t-Body-actionsContent" role="complementary" aria-hidden="false" style="visibility: inherit; overflow: inherit;"><div class="t-Region t-Region--noPadding t-Region--scrollBody t-Form--slimPadding" id="P639_FILTERS_R" role="region" aria-label="Filters">
+ <div class="t-Region-header">
+  <div class="t-Region-headerItems t-Region-headerItems--title">
+    <span class="t-Region-headerIcon"><span class="t-Icon " aria-hidden="true"></span></span>
+    <h2 class="t-Region-title" id="P639_FILTERS_R_heading" data-apex-heading="">Filters</h2>
+  </div>
+  <div class="t-Region-headerItems t-Region-headerItems--buttons"><span class="js-maximizeButtonContainer"></span></div>
+ </div>
+ <div class="t-Region-bodyWrap">
+   <div class="t-Region-buttons t-Region-buttons--top">
+    <div class="t-Region-buttons-left"></div>
+    <div class="t-Region-buttons-right"></div>
+   </div>
+   <div class="t-Region-body">
+     <div class="t-Region-orderBy"></div>
+     <div class="t-Region t-Region--noPadding t-Region--removeHeader js-removeLandmark t-Region--noUI t-Region--scrollBody" id="R177062823793037944">
+ <div class="t-Region-header">
+  <div class="t-Region-headerItems t-Region-headerItems--title">
+    <span class="t-Region-headerIcon"><span class="t-Icon " aria-hidden="true"></span></span>
+    <h2 class="t-Region-title" id="R177062823793037944_heading" data-apex-heading="">Agreement_Container</h2>
+  </div>
+  <div class="t-Region-headerItems t-Region-headerItems--buttons"><span class="js-maximizeButtonContainer"></span></div>
+ </div>
+ <div class="t-Region-bodyWrap">
+   <div class="t-Region-buttons t-Region-buttons--top">
+    <div class="t-Region-buttons-left"></div>
+    <div class="t-Region-buttons-right"></div>
+   </div>
+   <div class="t-Region-body">
+     <div class="t-Region-orderBy"></div>
+     <div class="t-Form-fieldContainer t-Form-fieldContainer--stacked t-Form-fieldContainer--stretchInputs t-Form-fieldContainer--radioButtonGroup apex-item-wrapper apex-item-wrapper--has-initial-value apex-item-wrapper--radiogroup" id="P639_SHOW_LIVE_AGRMTS_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_SHOW_LIVE_AGRMTS" id="P639_SHOW_LIVE_AGRMTS_LABEL" class="t-Form-label">Show Agreements</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><div tabindex="-1" id="P639_SHOW_LIVE_AGRMTS" aria-labelledby="P639_SHOW_LIVE_AGRMTS_LABEL" class="radio_group apex-item-group apex-item-group--rc apex-item-radio" role="radiogroup">
+<div role="none" class="apex-item-grid radio_group">
+<div role="none" class="apex-item-grid-row">
+<div class="apex-item-option"><input type="radio" id="P639_SHOW_LIVE_AGRMTS_0" name="P639_SHOW_LIVE_AGRMTS" data-display="Live" value="Y" checked="checked" aria-label="Live"><label class="u-radio" for="P639_SHOW_LIVE_AGRMTS_0" aria-hidden="true">Live</label></div>
+<div class="apex-item-option"><input type="radio" id="P639_SHOW_LIVE_AGRMTS_1" name="P639_SHOW_LIVE_AGRMTS" data-display="All" value="N" aria-label="All"><label class="u-radio" for="P639_SHOW_LIVE_AGRMTS_1" aria-hidden="true">All</label></div>
+<div class="apex-item-option"><input type="radio" id="P639_SHOW_LIVE_AGRMTS_2" name="P639_SHOW_LIVE_AGRMTS" data-display="Virtual" value="V" aria-label="Virtual"><label class="u-radio" for="P639_SHOW_LIVE_AGRMTS_2" aria-hidden="true">Virtual</label></div>
+<div class="apex-item-option"><input type="radio" id="P639_SHOW_LIVE_AGRMTS_3" name="P639_SHOW_LIVE_AGRMTS" data-display="Expired" value="E" aria-label="Expired"><label class="u-radio" for="P639_SHOW_LIVE_AGRMTS_3" aria-hidden="true">Expired</label></div>
+<div class="apex-item-option"><input type="radio" id="P639_SHOW_LIVE_AGRMTS_4" name="P639_SHOW_LIVE_AGRMTS" data-display="Future" value="F" aria-label="Future"><label class="u-radio" for="P639_SHOW_LIVE_AGRMTS_4" aria-hidden="true">Future</label></div>
+</div></div></div>
+</div><span id="P639_SHOW_LIVE_AGRMTS_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div><div class="t-Form-fieldContainer t-Form-fieldContainer--stacked apex-item-wrapper apex-item-wrapper--popup-lov" id="P639_IOT_AGREEMENT_ID_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_IOT_AGREEMENT_ID" id="P639_IOT_AGREEMENT_ID_LABEL" class="t-Form-label">Agreement</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><input type="hidden" name="P639_IOT_AGREEMENT_ID" id="P639_IOT_AGREEMENT_ID_HIDDENVALUE" value=""><div class="apex-item-group apex-item-group--popup-lov"><input type="text" id="P639_IOT_AGREEMENT_ID" class="popup_lov apex-item-text apex-item-popup-lov" size="60" maxlength="" value="" readonly="" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-haspopup="dialog"><button aria-hidden="true" type="button" class="a-Button a-Button--popupLOV" id="P639_IOT_AGREEMENT_ID_lov_btn" tabindex="-1"><span class="a-Icon icon-popup-lov-under"></span></button></div></div><span id="P639_IOT_AGREEMENT_ID_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div>
+     
+   </div>
+   <div class="t-Region-buttons t-Region-buttons--bottom">
+    <div class="t-Region-buttons-left"></div>
+    <div class="t-Region-buttons-right"></div>
+   </div>
+ </div>
+</div>
+<div class="t-Region t-Region--noPadding t-Region--removeHeader js-removeLandmark t-Region--noUI t-Region--scrollBody" id="R177062948702037945">
+ <div class="t-Region-header">
+  <div class="t-Region-headerItems t-Region-headerItems--title">
+    <span class="t-Region-headerIcon"><span class="t-Icon " aria-hidden="true"></span></span>
+    <h2 class="t-Region-title" id="R177062948702037945_heading" data-apex-heading="">Home_PMN_Container</h2>
+  </div>
+  <div class="t-Region-headerItems t-Region-headerItems--buttons"><span class="js-maximizeButtonContainer"></span></div>
+ </div>
+ <div class="t-Region-bodyWrap">
+   <div class="t-Region-buttons t-Region-buttons--top">
+    <div class="t-Region-buttons-left"></div>
+    <div class="t-Region-buttons-right"></div>
+   </div>
+   <div class="t-Region-body">
+     <div class="t-Region-orderBy"></div>
+     <input type="hidden" name="P639_CLIENT_MASTER_ENTITY_ID_MANUAL_LST" id="P639_CLIENT_MASTER_ENTITY_ID_MANUAL_LST" value=""><input type="hidden" name="P639_CLIENT_MASTER_ENTITY_ID_SET_LST" id="P639_CLIENT_MASTER_ENTITY_ID_SET_LST" value=""><div class="t-Form-fieldContainer t-Form-fieldContainer--stacked t-Form-fieldContainer--stretchInputs apex-item-wrapper apex-item-wrapper--has-placeholder apex-item-wrapper--combobox apex-item-wrapper--combobox-many" id="P639_CLIENT_MASTER_ENTITY_ID_LST_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_CLIENT_MASTER_ENTITY_ID_LST" id="P639_CLIENT_MASTER_ENTITY_ID_LST_LABEL" class="t-Form-label">Home PMN</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><a-combobox id="P639_CLIENT_MASTER_ENTITY_ID_LST" name="P639_CLIENT_MASTER_ENTITY_ID_LST" placeholder="ALL" multi-value="true" multi-value-storage="separated" multi-value-separator=":" value="" manual-entries-item="#P639_CLIENT_MASTER_ENTITY_ID_MANUAL_LST" return-display="true" max-results="250" min-characters-search="0" match-type="contains" multi-select="true" ajax-identifier="SVRFTSBUWVBFfjUxMjB-MzEwOTg3NzA1Mjk0MTI5Njkw/JsEV7WvzRWRlofEYwvSPupTX_yfn0Ru5Rf37Y_HcKax80jKijGuJC01ZuhkY3b4I2vMvrvuRPpdc9lzvhjUQcg" parents-required="true"><div class="apex-item-comboselect"><ul class="a-Chips a-Chips--applied a-Chips--wrap" role="presentation"><li class="a-Chip a-Chip--input is-empty"><input type="text" class="apex-item-text" placeholder="ALL" aria-labelledby="P639_CLIENT_MASTER_ENTITY_ID_LST_LABEL" value="" role="combobox" aria-expanded="false" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" aria-autocomplete="list" aria-describedby="P639_CLIENT_MASTER_ENTITY_ID_LST_desc"><span class="a-Chip-clear js-clearInput"><span class="a-Icon icon-multi-remove" aria-hidden="true"></span></span></li></ul><div class="u-vh js-active-description"></div><div id="P639_CLIENT_MASTER_ENTITY_ID_LST_desc" class="apex-item-comboselect-display"></div><div class="u-vh js-results-description" aria-live="polite"></div></div></a-combobox>
+</div><span id="P639_CLIENT_MASTER_ENTITY_ID_LST_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div><button class="t-Button add_or_remove  t-Button--link" type="button" id="B177063326939037949" data-otel-label="ADD_OR_REMOVE_HOME_PMN"><span class="t-Button-label">Add or Remove</span></button>
+     
+   </div>
+   <div class="t-Region-buttons t-Region-buttons--bottom">
+    <div class="t-Region-buttons-left"></div>
+    <div class="t-Region-buttons-right"></div>
+   </div>
+ </div>
+</div>
+<div class="t-Region t-Region--noPadding t-Region--removeHeader js-removeLandmark t-Region--noUI t-Region--scrollBody" id="R177063022564037946">
+ <div class="t-Region-header">
+  <div class="t-Region-headerItems t-Region-headerItems--title">
+    <span class="t-Region-headerIcon"><span class="t-Icon " aria-hidden="true"></span></span>
+    <h2 class="t-Region-title" id="R177063022564037946_heading" data-apex-heading="">Partner_PMN_Container</h2>
+  </div>
+  <div class="t-Region-headerItems t-Region-headerItems--buttons"><span class="js-maximizeButtonContainer"></span></div>
+ </div>
+ <div class="t-Region-bodyWrap">
+   <div class="t-Region-buttons t-Region-buttons--top">
+    <div class="t-Region-buttons-left"></div>
+    <div class="t-Region-buttons-right"></div>
+   </div>
+   <div class="t-Region-body">
+     <div class="t-Region-orderBy"></div>
+     <input type="hidden" name="P639_PARTNER_ME_ID_MANUAL_LST" id="P639_PARTNER_ME_ID_MANUAL_LST" value=""><input type="hidden" name="P639_PARTNER_ME_ID_SET_LST" id="P639_PARTNER_ME_ID_SET_LST" value=""><div class="t-Form-fieldContainer t-Form-fieldContainer--stacked t-Form-fieldContainer--stretchInputs apex-item-wrapper apex-item-wrapper--has-placeholder apex-item-wrapper--combobox apex-item-wrapper--combobox-many" id="P639_PARTNER_ME_ID_LST_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_PARTNER_ME_ID_LST" id="P639_PARTNER_ME_ID_LST_LABEL" class="t-Form-label">Partner PMN</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><a-combobox id="P639_PARTNER_ME_ID_LST" name="P639_PARTNER_ME_ID_LST" placeholder="ALL" multi-value="true" multi-value-storage="separated" multi-value-separator=":" value="" manual-entries-item="#P639_PARTNER_ME_ID_MANUAL_LST" return-display="true" max-results="250" min-characters-search="0" match-type="contains" multi-select="true" ajax-identifier="SVRFTSBUWVBFfjUxMjB-MzExMDY3ODAxMDE3MjExMzgx/MqEucWaoBLUxSHRt2LBRcp4_a3PQbZBkY9B0IWFBewj1Z7WDAG0dQx8dyCNLhhra_myXglFXz9vzj_KcNtlCJw" parents-required="true"><div class="apex-item-comboselect"><ul class="a-Chips a-Chips--applied a-Chips--wrap" role="presentation"><li class="a-Chip a-Chip--input is-empty"><input type="text" class="apex-item-text" placeholder="ALL" aria-labelledby="P639_PARTNER_ME_ID_LST_LABEL" value="" role="combobox" aria-expanded="false" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" aria-autocomplete="list" aria-describedby="P639_PARTNER_ME_ID_LST_desc"><span class="a-Chip-clear js-clearInput"><span class="a-Icon icon-multi-remove" aria-hidden="true"></span></span></li></ul><div class="u-vh js-active-description"></div><div id="P639_PARTNER_ME_ID_LST_desc" class="apex-item-comboselect-display"></div><div class="u-vh js-results-description" aria-live="polite"></div></div></a-combobox>
+</div><span id="P639_PARTNER_ME_ID_LST_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div><button class="t-Button add_or_remove  t-Button--link" type="button" id="B199666856729857914" data-otel-label="ADD_OR_REMOVE_PARTNER_PMN"><span class="t-Button-label">Add or Remove</span></button>
+     
+   </div>
+   <div class="t-Region-buttons t-Region-buttons--bottom">
+    <div class="t-Region-buttons-left"></div>
+    <div class="t-Region-buttons-right"></div>
+   </div>
+ </div>
+</div>
+<div class="t-Region t-Region--noPadding t-Region--removeHeader js-removeLandmark t-Region--noUI t-Region--scrollBody" id="R177063154342037947">
+ <div class="t-Region-header">
+  <div class="t-Region-headerItems t-Region-headerItems--title">
+    <span class="t-Region-headerIcon"><span class="t-Icon " aria-hidden="true"></span></span>
+    <h2 class="t-Region-title" id="R177063154342037947_heading" data-apex-heading="">Other_Filters_Container</h2>
+  </div>
+  <div class="t-Region-headerItems t-Region-headerItems--buttons"><span class="js-maximizeButtonContainer"></span></div>
+ </div>
+ <div class="t-Region-bodyWrap">
+   <div class="t-Region-buttons t-Region-buttons--top">
+    <div class="t-Region-buttons-left"></div>
+    <div class="t-Region-buttons-right"></div>
+   </div>
+   <div class="t-Region-body">
+     <div class="t-Region-orderBy"></div>
+     <div class="t-Form-fieldContainer t-Form-fieldContainer--stacked apex-item-wrapper apex-item-wrapper--has-initial-value apex-item-wrapper--select-list" id="P639_TRAFFIC_DIRECTION_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_TRAFFIC_DIRECTION" id="P639_TRAFFIC_DIRECTION_LABEL" class="t-Form-label">Traffic Direction</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><select id="P639_TRAFFIC_DIRECTION" name="P639_TRAFFIC_DIRECTION" class="selectlist apex-item-select" style="width:300px" ;="" data-native-menu="false" size="1"><option value="3" selected="selected">Bi-Directional</option>
+<option value="1">Customer/Outbound</option>
+<option value="2">Visitor/Inbound</option>
+</select></div><span id="P639_TRAFFIC_DIRECTION_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div><input type="hidden" name="P639_ACCESSED_FROM" id="P639_ACCESSED_FROM" value="FORECASTING"><input type="hidden" data-for="P639_ACCESSED_FROM" value="12MxVN1uIFHQSqTYhUu6D0vuBbnL0y_m4lhJkgw-M-sCk0fJJa-9UUKqWoVpeXWUBdaQvDLnGxCP46dVBcasPA"><input type="hidden" name="P639_MAINTAIN_AGR_PAGE" id="P639_MAINTAIN_AGR_PAGE" value="119"><input type="hidden" data-for="P639_MAINTAIN_AGR_PAGE" value="9eRtTSyGhQbUzhiq0X7d2JVWA5Veh8_c8jO7W48cuCxS8yyiwep1tbV6lShMavlCmwS2G6Ks4C4UJPicYTG1IQ"><input type="hidden" name="P639_PREVIOUS_PAGE" id="P639_PREVIOUS_PAGE" value=""><input type="hidden" data-for="P639_PREVIOUS_PAGE" value="Nmh9ucSvnawVXSf7t_5xZeAErroCn4DVyOws5JvFIIo3-VtDwbG1KcrZQdn6eW3gVADMG9GWcLWOOQLmTEoDRg"><input type="hidden" name="P639_DOWNLOAD_FILENAME" id="P639_DOWNLOAD_FILENAME" value="Forecast Report per Agreement 2026_04_27"><input type="hidden" data-for="P639_DOWNLOAD_FILENAME" value="ML8MS_7DTjYTs_9-i7Zz53EIQqaMI3jca1PYgoBqhbtNx4xlinuAAARM-h49-RbvAoZKfGuDaTrcUihNkHEIEg"><div class="t-Form-fieldContainer t-Form-fieldContainer--stacked width-55 t-Form-fieldContainer--stretchInputs apex-item-wrapper apex-item-wrapper--select-list" id="P639_SERVICE_TYPE_ID_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_SERVICE_TYPE_ID" id="P639_SERVICE_TYPE_ID_LABEL" class="t-Form-label">Service Type</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><select id="P639_SERVICE_TYPE_ID" name="P639_SERVICE_TYPE_ID" class="selectlist apex-item-select" data-native-menu="false" size="1"><option value="" selected="selected">All</option>
+</select></div><span id="P639_SERVICE_TYPE_ID_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div><div class="t-Form-fieldContainer t-Form-fieldContainer--stacked width-44 t-Form-fieldContainer--stretchInputs apex-item-wrapper apex-item-wrapper--select-list" id="P639_EVENT_TYPE_ID_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_EVENT_TYPE_ID" id="P639_EVENT_TYPE_ID_LABEL" class="t-Form-label">Event Type</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><select id="P639_EVENT_TYPE_ID" name="P639_EVENT_TYPE_ID" class="selectlist apex-item-select" style="width:300px" ;="" data-native-menu="false" size="1">
+<option value="">All</option></select></div><span id="P639_EVENT_TYPE_ID_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div><div class="t-Form-fieldContainer t-Form-fieldContainer--stacked t-Form-fieldContainer--stretchInputs apex-item-wrapper apex-item-wrapper--select-many is-disabled" id="P639_CALL_DESTINATION_LEVEL_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_CALL_DESTINATION_LEVEL" id="P639_CALL_DESTINATION_LEVEL_LABEL" class="t-Form-label">Destination Breakdown</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><a-select id="P639_CALL_DESTINATION_LEVEL" name="P639_CALL_DESTINATION_LEVEL" multi-value="true" multi-value-storage="separated" multi-value-separator=":" value="" return-display="true" max-results="250" min-characters-search="0" match-type="contains" multi-select="true" ajax-identifier="SVRFTSBUWVBFfjUxMjB-MjQ5NDA3NDc4NzY3NjUyMw/NZVRDlZ-rgoZEAvOkKb5OiHMLh8c3LxJ3PhdEbcnbNNd_WxUwYPCvkuaqrKKNc4oKkNJDR0V-sWZ_kp1szdu_A" parents-required="true" display-values-as="separated" disabled="false"><div class="apex-item-comboselect apex-item-comboselect--separated"><ul class="a-Chips a-Chips--applied a-Chips--wrap" role="presentation"><li class="a-Chip a-Chip--input is-empty"><input type="text" class="apex-item-text" aria-labelledby="P639_CALL_DESTINATION_LEVEL_LABEL" value="" role="combobox" aria-expanded="false" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" aria-autocomplete="list" aria-describedby="P639_CALL_DESTINATION_LEVEL_desc"><span class="a-Chip-clear js-clearInput"><span class="a-Icon icon-multi-remove" aria-hidden="true"></span></span></li></ul><div class="u-vh js-active-description"></div><div id="P639_CALL_DESTINATION_LEVEL_desc" class="apex-item-comboselect-display"></div><button type="button" class="a-ComboSelect-counter u-hidden" aria-pressed="false">0</button><button class="a-Button a-Button--comboSelect js-expand" type="button" tabindex="-1" aria-hidden="true"><span class="a-Icon icon-popup-lov-under"></span></button><div class="u-vh js-results-description" aria-live="polite"></div></div></a-select>
+</div><span id="P639_CALL_DESTINATION_LEVEL_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div><input type="hidden" name="P639_SAVED_REPORT" id="P639_SAVED_REPORT" value=""><input type="hidden" data-for="P639_SAVED_REPORT" value="wsVlwYebZwzfhCqHfngLjozpMB1ytqX-Yqe3eIVx4yTfSCcAwHBUsVuJnvk8-JCeLsV-5jgcAAUQtEfLtVmOaQ"><input type="hidden" name="P639_SERVICE_EVENT" id="P639_SERVICE_EVENT" value=""><input type="hidden" data-for="P639_SERVICE_EVENT" value="dhrtae8GrNadCo0SehgXDi49XZaj9KHyJjxBFyAs4TYKdCKmutNuJwp3iCh_8PqoDIXzx3BSg9OFxI89YIZBDQ"><input type="hidden" name="P639_LASTVIEWED_REPORT_ID" id="P639_LASTVIEWED_REPORT_ID" value=""><input type="hidden" data-for="P639_LASTVIEWED_REPORT_ID" value="HcEWpbbC9S8jbGTZBhu8EwDs61AClOjurRphVowssok-3jsNNGnfcqSr-mYTBjK2UHZkrb1FEE1M3uOcnZl-9w"><input type="hidden" name="P639_IR_DETAIL_PAGE" id="P639_IR_DETAIL_PAGE" value=""><input type="hidden" data-for="P639_IR_DETAIL_PAGE" value="E84izoEbzaslIXe39hCRXnOwCCH4KrSr2lYHA-aUIMx315s3su0ifj4eQF5pafNqK3e9HBpn1ffDTz9Ie4xK2A"><div class="t-Form-fieldContainer t-Form-fieldContainer--stacked t-Form-fieldContainer--stretchInputs apex-item-wrapper apex-item-wrapper--select-list has-helpbutton" id="P639_CALCULATION_TYPE_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_CALCULATION_TYPE" id="P639_CALCULATION_TYPE_LABEL" class="t-Form-label">Calculation Result Set</label> <button class="t-Form-helpButton js-itemHelp" data-itemhelp="347118299521933190" title="View help text for Calculation Result Set." aria-label="View help text for Calculation Result Set." tabindex="-1" type="button"><span class="a-Icon icon-help" aria-hidden="true"></span></button>
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><select id="P639_CALCULATION_TYPE" name="P639_CALCULATION_TYPE" class="selectlist apex-item-select" data-native-menu="false" size="1"></select></div><span id="P639_CALCULATION_TYPE_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div><div class="t-Form-fieldContainer t-Form-fieldContainer--stacked t-Form-fieldContainer--stretchInputs apex-item-wrapper apex-item-wrapper--has-initial-value apex-item-wrapper--select-list" id="P639_AGREE_HOME_SDR_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_AGREE_HOME_SDR" id="P639_AGREE_HOME_SDR_LABEL" class="t-Form-label">Reporting Currency</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><select id="P639_AGREE_HOME_SDR" name="P639_AGREE_HOME_SDR" class="selectlist apex-item-select" data-native-menu="false" size="1"><option value="P" selected="selected">Discount Currency</option>
+<option value="H">Home Currency</option>
+<option value="S">SDR</option>
+</select></div><span id="P639_AGREE_HOME_SDR_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div><div class="t-Form-fieldContainer t-Form-fieldContainer--stacked apex-item-wrapper apex-item-wrapper--has-initial-value apex-item-wrapper--select-many" id="P639_CALCULATION_TRAFFIC_LOGIC_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_CALCULATION_TRAFFIC_LOGIC" id="P639_CALCULATION_TRAFFIC_LOGIC_LABEL" class="t-Form-label">Calculation Traffic Logic</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><a-select id="P639_CALCULATION_TRAFFIC_LOGIC" name="P639_CALCULATION_TRAFFIC_LOGIC" multi-value="true" multi-value-storage="separated" multi-value-separator=":" value="E:M:C" return-display="true" max-results="250" min-characters-search="0" match-type="contains" multi-select="true" ajax-identifier="SVRFTSBUWVBFfjUxMjB-MjE4OTQyMjE1MDEyMDMyNjU/ZwvhZbrCLzuLAVFoKue9LtKvGh6GstgSBLIw7yRi_tH5FG6Uo4BqflLAlS-X9crTdQmEOhNIWpcTSaXW9yoU2g" parents-required="true" display-values-as="separated"><div class="apex-item-comboselect apex-item-comboselect--separated"><ul class="a-Chips a-Chips--applied a-Chips--wrap" role="presentation"><li class="a-Chip a-Chip--applied" aria-hidden="true" data-value="E"><span class="a-Chip-text"><span class="a-Chip-value">EoA</span></span><span class="a-Chip-divider"></span><span class="a-Chip-remove js-removeChip"><span class="a-Icon icon-multi-remove" aria-hidden="true"></span></span></li><li class="a-Chip a-Chip--applied" aria-hidden="true" data-value="M"><span class="a-Chip-text"><span class="a-Chip-value">Monthly</span></span><span class="a-Chip-divider"></span><span class="a-Chip-remove js-removeChip"><span class="a-Icon icon-multi-remove" aria-hidden="true"></span></span></li><li class="a-Chip a-Chip--applied" aria-hidden="true" data-value="C"><span class="a-Chip-text"><span class="a-Chip-value">Cumulative</span></span><span class="a-Chip-divider"></span><span class="a-Chip-remove js-removeChip"><span class="a-Icon icon-multi-remove" aria-hidden="true"></span></span></li><li class="a-Chip a-Chip--input is-empty"><input type="text" class="apex-item-text" aria-labelledby="P639_CALCULATION_TRAFFIC_LOGIC_LABEL" value="E:M:C" role="combobox" aria-expanded="false" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" aria-autocomplete="list" aria-describedby="P639_CALCULATION_TRAFFIC_LOGIC_desc"><span class="a-Chip-clear js-clearInput"><span class="a-Icon icon-multi-remove" aria-hidden="true"></span></span></li></ul><div class="u-vh js-active-description"></div><div id="P639_CALCULATION_TRAFFIC_LOGIC_desc" class="apex-item-comboselect-display">EoA, Monthly, Cumulative</div><button type="button" class="a-ComboSelect-counter" aria-pressed="false" aria-label="3 values selected">3</button><button class="a-Button a-Button--comboSelect js-expand" type="button" tabindex="-1" aria-hidden="true"><span class="a-Icon icon-popup-lov-under"></span></button><div class="u-vh js-results-description" aria-live="polite"></div></div></a-select>
+</div><span id="P639_CALCULATION_TRAFFIC_LOGIC_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div><div class="t-Form-fieldContainer t-Form-fieldContainer--stacked t-Form-fieldContainer--stretchInputs apex-item-wrapper apex-item-wrapper--has-initial-value apex-item-wrapper--select-list is-required" id="P639_DISCOUNT_METHOD_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_DISCOUNT_METHOD" id="P639_DISCOUNT_METHOD_LABEL" class="t-Form-label">Show Traffic</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><select id="P639_DISCOUNT_METHOD" name="P639_DISCOUNT_METHOD" required="" class="selectlist apex-item-select" data-native-menu="false" size="1"><option value="." selected="selected">Blended Discounted Traffic and Undiscounted Premium Numbers (if exists)</option>
+<option value="C">Only Discounted Traffic</option>
+<option value="U">Only Undiscounted Premium Numbers (if exists)</option>
+</select></div><span id="P639_DISCOUNT_METHOD_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div>
+     
+   </div>
+   <div class="t-Region-buttons t-Region-buttons--bottom">
+    <div class="t-Region-buttons-left"></div>
+    <div class="t-Region-buttons-right"></div>
+   </div>
+ </div>
+</div>
+<div class="t-Region t-Region--noUI t-Region--scrollBody" id="P639_ADDITIONAL_PARAMS_R" role="region" aria-label="Results detail">
+ <div class="t-Region-header">
+  <div class="t-Region-headerItems t-Region-headerItems--title">
+    <span class="t-Region-headerIcon"><span class="t-Icon " aria-hidden="true"></span></span>
+    <h2 class="t-Region-title" id="P639_ADDITIONAL_PARAMS_R_heading" data-apex-heading="">Results detail</h2>
+  </div>
+  <div class="t-Region-headerItems t-Region-headerItems--buttons"><span class="js-maximizeButtonContainer"></span></div>
+ </div>
+ <div class="t-Region-bodyWrap">
+   <div class="t-Region-buttons t-Region-buttons--top">
+    <div class="t-Region-buttons-left"></div>
+    <div class="t-Region-buttons-right"></div>
+   </div>
+   <div class="t-Region-body">
+     <div class="t-Region-orderBy"></div>
+     <div class="t-Form-fieldContainer t-Form-fieldContainer--stacked t-Form-fieldContainer--stretchInputs apex-item-wrapper apex-item-wrapper--has-initial-value apex-item-wrapper--select-many" id="P639_TAX_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_TAX" id="P639_TAX_LABEL" class="t-Form-label">Tax</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><a-select id="P639_TAX" name="P639_TAX" multi-value="true" multi-value-storage="separated" multi-value-separator=":" style="width:300px" ;="" value="N:G" return-display="true" max-results="250" min-characters-search="0" match-type="contains" multi-select="true" ajax-identifier="SVRFTSBUWVBFfjUxMjB-MjQ5NDEwMTUyNjY3NjUyNA/aqYvv1Da23nRSSDor7uMq6QPQWunS4-SAUF4e6HLfbX1Q5lG_yHRyHYD7CIBaqBSJvWWDFgMncU4D6dTM_iFAw" parents-required="true" display-values-as="separated"><div class="apex-item-comboselect apex-item-comboselect--separated"><ul class="a-Chips a-Chips--applied a-Chips--wrap" role="presentation"><li class="a-Chip a-Chip--applied" aria-hidden="true" data-value="N"><span class="a-Chip-text"><span class="a-Chip-value">Net</span></span><span class="a-Chip-divider"></span><span class="a-Chip-remove js-removeChip"><span class="a-Icon icon-multi-remove" aria-hidden="true"></span></span></li><li class="a-Chip a-Chip--applied" aria-hidden="true" data-value="G"><span class="a-Chip-text"><span class="a-Chip-value">Gross</span></span><span class="a-Chip-divider"></span><span class="a-Chip-remove js-removeChip"><span class="a-Icon icon-multi-remove" aria-hidden="true"></span></span></li><li class="a-Chip a-Chip--input is-empty"><input type="text" class="apex-item-text" aria-labelledby="P639_TAX_LABEL" value="N:G" role="combobox" aria-expanded="false" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" aria-autocomplete="list" aria-describedby="P639_TAX_desc"><span class="a-Chip-clear js-clearInput"><span class="a-Icon icon-multi-remove" aria-hidden="true"></span></span></li></ul><div class="u-vh js-active-description"></div><div id="P639_TAX_desc" class="apex-item-comboselect-display">Net, Gross</div><button type="button" class="a-ComboSelect-counter" aria-pressed="false" aria-label="2 values selected">2</button><button class="a-Button a-Button--comboSelect js-expand" type="button" tabindex="-1" aria-hidden="true"><span class="a-Icon icon-popup-lov-under"></span></button><div class="u-vh js-results-description" aria-live="polite"></div></div></a-select>
+</div><span id="P639_TAX_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div><div class="t-Form-fieldContainer rel-col apex-item-wrapper apex-item-wrapper--yes-no" id="P639_PER_HOME_PMN_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer col col-null">
+<label for="P639_PER_HOME_PMN" id="P639_PER_HOME_PMN_LABEL" class="t-Form-label">Per Home PMN</label>
+</div>
+<div class="t-Form-inputContainer col col-null"><div class="t-Form-itemWrapper"><span class="a-Switch"><input type="checkbox" role="switch" id="P639_PER_HOME_PMN" name="P639_PER_HOME_PMN" value="1" data-on-label="On" data-off-value="0" data-off-label="Off"><span class="a-Switch-toggle"></span></span></div><span id="P639_PER_HOME_PMN_error_placeholder" class="a-Form-error" data-template-id="2318601014859922299_ET"></span></div></div><div class="t-Form-fieldContainer rel-col apex-item-wrapper apex-item-wrapper--yes-no" id="P639_PER_PARTNER_PMN_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer col col-null">
+<label for="P639_PER_PARTNER_PMN" id="P639_PER_PARTNER_PMN_LABEL" class="t-Form-label">Per Partner PMN</label>
+</div>
+<div class="t-Form-inputContainer col col-null"><div class="t-Form-itemWrapper"><span class="a-Switch"><input type="checkbox" role="switch" id="P639_PER_PARTNER_PMN" name="P639_PER_PARTNER_PMN" value="1" data-on-label="On" data-off-value="0" data-off-label="Off"><span class="a-Switch-toggle"></span></span></div><span id="P639_PER_PARTNER_PMN_error_placeholder" class="a-Form-error" data-template-id="2318601014859922299_ET"></span></div></div><div class="t-Form-fieldContainer rel-col apex-item-wrapper apex-item-wrapper--yes-no has-helpbutton" id="P639_BLENDED_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer col col-null">
+<label for="P639_BLENDED" id="P639_BLENDED_LABEL" class="t-Form-label">Blend Services</label>
+</div>
+<div class="t-Form-inputContainer col col-null"><div class="t-Form-itemWrapper"><span class="a-Switch"><input type="checkbox" role="switch" id="P639_BLENDED" name="P639_BLENDED" value="1" data-on-label="On" data-off-value="0" data-off-label="Off"><span class="a-Switch-toggle"></span></span><button class="t-Form-helpButton js-itemHelp" data-itemhelp="347220578803589429" title="View help text for Blend Services." aria-label="View help text for Blend Services." tabindex="-1" type="button"><span class="a-Icon icon-help" aria-hidden="true"></span></button></div><span id="P639_BLENDED_error_placeholder" class="a-Form-error" data-template-id="2318601014859922299_ET"></span></div></div><div class="t-Form-fieldContainer rel-col apex-item-wrapper apex-item-wrapper--has-initial-value apex-item-wrapper--yes-no" id="P639_ONLY_LATEST_MONTH_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer col col-null">
+<label for="P639_ONLY_LATEST_MONTH" id="P639_ONLY_LATEST_MONTH_LABEL" class="t-Form-label">Only Latest Month</label>
+</div>
+<div class="t-Form-inputContainer col col-null"><div class="t-Form-itemWrapper"><span class="a-Switch"><input type="checkbox" role="switch" id="P639_ONLY_LATEST_MONTH" name="P639_ONLY_LATEST_MONTH" value="1" data-on-label="On" data-off-value="0" data-off-label="Off" checked="checked"><span class="a-Switch-toggle"></span></span></div><span id="P639_ONLY_LATEST_MONTH_error_placeholder" class="a-Form-error" data-template-id="2318601014859922299_ET"></span></div></div><div class="t-Form-fieldContainer rel-col apex-item-wrapper apex-item-wrapper--yes-no has-helpbutton" id="P639_RTI_GROUP_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer col col-null">
+<label for="P639_RTI_GROUP" id="P639_RTI_GROUP_LABEL" class="t-Form-label">Segment</label>
+</div>
+<div class="t-Form-inputContainer col col-null"><div class="t-Form-itemWrapper"><span class="a-Switch"><input type="checkbox" role="switch" id="P639_RTI_GROUP" name="P639_RTI_GROUP" value="1" data-on-label="On" data-off-value="0" data-off-label="Off"><span class="a-Switch-toggle"></span></span><button class="t-Form-helpButton js-itemHelp" data-itemhelp="291598557587440147" title="View help text for Segment." aria-label="View help text for Segment." tabindex="-1" type="button"><span class="a-Icon icon-help" aria-hidden="true"></span></button></div><span id="P639_RTI_GROUP_error_placeholder" class="a-Form-error" data-template-id="2318601014859922299_ET"></span></div></div>
+     
+   </div>
+   <div class="t-Region-buttons t-Region-buttons--bottom">
+    <div class="t-Region-buttons-left"></div>
+    <div class="t-Region-buttons-right"></div>
+   </div>
+ </div>
+</div>
+
+     
+   </div>
+   <div class="t-Region-buttons t-Region-buttons--bottom">
+    <div class="t-Region-buttons-left"></div>
+    <div class="t-Region-buttons-right"></div>
+   </div>
+ </div>
+</div>
+<div class="t-ButtonRegion t-Form--floatLeft right_side_menu_button_region" id="P639_RIGHT_SIDE_BUTTON_CONTAINER" role="region" aria-label="Buttons Container">
+  <div class="t-ButtonRegion-wrap">
+    <div class="t-ButtonRegion-col t-ButtonRegion-col--left"><div class="t-ButtonRegion-buttons"></div></div>
+    <div class="t-ButtonRegion-col t-ButtonRegion-col--content">
+      
+      <div class="t-ButtonRegion-buttons"></div>
+      
+    </div>
+    <div class="t-ButtonRegion-col t-ButtonRegion-col--right"><div class="t-ButtonRegion-buttons"><button class="t-Button t-Button--icon t-Button--large t-Button--iconLeft t-Button--hot" type="button" id="REFRESH" data-otel-label="REFRESH"><span class="t-Icon t-Icon--left fa fa-check-circle-o" aria-hidden="true"></span><span class="t-Button-label">Apply</span><span class="t-Icon t-Icon--right fa fa-check-circle-o" aria-hidden="true"></span></button><button class="t-Button t-Button--icon t-Button--large t-Button--iconLeft" type="button" id="RESET" data-otel-label="RESET"><span class="t-Icon t-Icon--left fa fa-undo fa-undo fa-flip-horizontal" aria-hidden="true"></span><span class="t-Button-label">Reset</span><span class="t-Icon t-Icon--right fa fa-undo fa-undo fa-flip-horizontal" aria-hidden="true"></span></button></div></div>
+  </div>
+</div></div>
+  </div>
+</div>
+<div class="t-Body-inlineDialogs" id="t_Body_inlineDialogs"></div><input type="hidden" id="pPageFormRegionChecksums" value="[]">
+<input type="hidden" id="pPageItemsRowVersion" value=""><input type="hidden" id="pPageItemsProtected" value="UDYzOV9BQ0NFU1NFRF9GUk9NOlA2MzlfTUFJTlRBSU5fQUdSX1BBR0U6UDYzOV9Q.,UkVWSU9VU19QQUdFOlA2MzlfRE9XTkxPQURfRklMRU5BTUU6UDYzOV9TQVZFRF9S.,RVBPUlQ6UDYzOV9TRVJWSUNFX0VWRU5UOlA2MzlfTEFTVFZJRVdFRF9SRVBPUlRf.,SUQ6UDYzOV9JUl9ERVRBSUxfUEFHRQ/j-6h0otDZckjLqlwTkgjmLKE8zRtKsD0NnZbAh7CCBGcwpGlnwsrzqvANwWK0r9sIS3QPaeQBcgPWfWxbRhw6Q"><div tabindex="-1" role="dialog" class="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog--inline ui-draggable ui-resizable" aria-labelledby="ui-id-1" aria-modal="true" style="display: none; position: fixed;"><div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle"><h1 id="ui-id-1" class="ui-dialog-title" aria-roledescription="Dialog Title">Add or Remove Home PMNs</h1><button type="button" class="ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close" title="Close" aria-label="Close" aria-describedby="ui-id-1"><span class="ui-button-icon ui-icon ui-icon-closethick"></span></button></div><div id="R177063494455037950" class="t-DialogRegion js-modal js-draggable js-resizable js-dialog-autoheight js-dialog-size600x400 js-regionDialog ui-dialog-content ui-widget-content" style="">
+  <div class="t-DialogRegion-wrap">
+    <div class="t-DialogRegion-bodyWrapperOut"><div class="t-DialogRegion-bodyWrapperIn"><div class="t-DialogRegion-body"><div class="container">
+<div class="row ">
+<div class="col col-12 apex-col-auto col-start col-end"><div class="t-Form-fieldContainer t-Form-fieldContainer--stacked t-Form-fieldContainer--stretchInputs t-Form-fieldContainer--large apex-item-wrapper apex-item-wrapper--text-field apex-item-wrapper--has-icon" id="P639_HOME_PMN_BULK_SEARCH_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_HOME_PMN_BULK_SEARCH" id="P639_HOME_PMN_BULK_SEARCH_LABEL" class="t-Form-label">Home Pmn Bulk Search</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><input type="text" id="P639_HOME_PMN_BULK_SEARCH" name="P639_HOME_PMN_BULK_SEARCH" class="text_field apex-item-text apex-item-has-icon" value="" size="30" data-enter-submit="false" data-is-page-item-type="true"><span class="apex-item-icon fa fa-search" aria-hidden="true"></span></div><span id="P639_HOME_PMN_BULK_SEARCH_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div></div>
+</div><div class="row ">
+<div class="col col-12 apex-col-auto col-start col-end"><div class="t-Form-fieldContainer t-Form-fieldContainer--stacked t-Form-fieldContainer--stretchInputs t-Form-fieldContainer--large apex-item-wrapper apex-item-wrapper--shuttle" id="P639_HOME_PMN_BULK_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_HOME_PMN_BULK" id="P639_HOME_PMN_BULK_LABEL" class="t-Form-label">New</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><div class="apex-item-group apex-item-group--shuttle" role="group" id="P639_HOME_PMN_BULK" aria-labelledby="P639_HOME_PMN_BULK_LABEL" tabindex="-1"><table cellpadding="0" cellspacing="0" border="0" role="presentation" class="shuttle"><tbody><tr>
+<td class="shuttleSelect1">
+<div align="left" style="font-size: 0.9rem;">Home PMN Excluded</div><select title="Move from" multiple="multiple" id="P639_HOME_PMN_BULK_LEFT" size="5" class="shuttle_left apex-item-select"></select></td>
+<td align="center" class="shuttleControl">
+<div align="left"><br></div><button id="P639_HOME_PMN_BULK_RESET" class="a-Button a-Button--noLabel a-Button--withIcon a-Button--small a-Button--noUI a-Button--shuttle" type="button" title="Reset" aria-label="Reset"> <span class="a-Icon icon-shuttle-reset" aria-hidden="true"></span></button><button id="P639_HOME_PMN_BULK_MOVE_ALL" class="a-Button a-Button--noLabel a-Button--withIcon a-Button--small a-Button--noUI a-Button--shuttle" type="button" title="Move All" aria-label="Move All"> <span class="a-Icon icon-shuttle-move-all" aria-hidden="true"></span></button><button id="P639_HOME_PMN_BULK_MOVE" class="a-Button a-Button--noLabel a-Button--withIcon a-Button--small a-Button--noUI a-Button--shuttle" type="button" title="Move" aria-label="Move"> <span class="a-Icon icon-shuttle-move" aria-hidden="true"></span></button><button id="P639_HOME_PMN_BULK_REMOVE" class="a-Button a-Button--noLabel a-Button--withIcon a-Button--small a-Button--noUI a-Button--shuttle" type="button" title="Remove" aria-label="Remove"> <span class="a-Icon icon-shuttle-remove" aria-hidden="true"></span></button><button id="P639_HOME_PMN_BULK_REMOVE_ALL" class="a-Button a-Button--noLabel a-Button--withIcon a-Button--small a-Button--noUI a-Button--shuttle" type="button" title="Remove All" aria-label="Remove All"> <span class="a-Icon icon-shuttle-remove-all" aria-hidden="true"></span></button></td>
+<td class="shuttleSelect2">
+<div align="left" style="font-size: 0.9rem;">Home PMN Included</div><select title="Move to" multiple="multiple" id="P639_HOME_PMN_BULK_RIGHT" size="5" name="P639_HOME_PMN_BULK" class="shuttle_right apex-item-select">
+</select></td>
+</tr></tbody></table></div>
+</div><span id="P639_HOME_PMN_BULK_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div></div>
+</div>
+</div></div></div></div>
+    <div class="t-DialogRegion-buttons">
+       <div class="t-ButtonRegion t-ButtonRegion--dialogRegion">
+         <div class="t-ButtonRegion-wrap">
+           <div class="t-ButtonRegion-col t-ButtonRegion-col--left"><div class="t-ButtonRegion-buttons"></div></div>
+           <div class="t-ButtonRegion-col t-ButtonRegion-col--right"><div class="t-ButtonRegion-buttons"><button class="t-Button t-Button--hot " type="button" id="B199666084603857906" data-otel-label="APPLY_HOME_PMN"><span class="t-Button-label">Apply</span></button></div></div>
+         </div>
+       </div>
+    </div>
+  </div>
+</div><div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90;"></div></div><div tabindex="-1" role="dialog" class="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog--inline ui-draggable ui-resizable" aria-labelledby="ui-id-2" aria-modal="true" style="display: none; position: fixed;"><div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle"><h1 id="ui-id-2" class="ui-dialog-title" aria-roledescription="Dialog Title">Add or Remove Partner PMNs</h1><button type="button" class="ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close" title="Close" aria-label="Close" aria-describedby="ui-id-2"><span class="ui-button-icon ui-icon ui-icon-closethick"></span></button></div><div id="R199667120405857917" class="t-DialogRegion js-modal js-draggable js-resizable js-dialog-autoheight js-dialog-size600x400 js-regionDialog ui-dialog-content ui-widget-content" style="">
+  <div class="t-DialogRegion-wrap">
+    <div class="t-DialogRegion-bodyWrapperOut"><div class="t-DialogRegion-bodyWrapperIn"><div class="t-DialogRegion-body"><div class="container">
+<div class="row ">
+<div class="col col-12 apex-col-auto col-start col-end"><div class="t-Form-fieldContainer t-Form-fieldContainer--stacked t-Form-fieldContainer--stretchInputs t-Form-fieldContainer--large apex-item-wrapper apex-item-wrapper--text-field apex-item-wrapper--has-icon" id="P639_PARTNER_PMN_BULK_SEARCH_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_PARTNER_PMN_BULK_SEARCH" id="P639_PARTNER_PMN_BULK_SEARCH_LABEL" class="t-Form-label">Partner Pmn Bulk Search</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><input type="text" id="P639_PARTNER_PMN_BULK_SEARCH" name="P639_PARTNER_PMN_BULK_SEARCH" class="text_field apex-item-text apex-item-has-icon" value="" size="30" data-enter-submit="false" data-is-page-item-type="true"><span class="apex-item-icon fa fa-search" aria-hidden="true"></span></div><span id="P639_PARTNER_PMN_BULK_SEARCH_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div></div>
+</div><div class="row ">
+<div class="col col-12 apex-col-auto col-start col-end"><div class="t-Form-fieldContainer t-Form-fieldContainer--stacked t-Form-fieldContainer--stretchInputs t-Form-fieldContainer--large apex-item-wrapper apex-item-wrapper--shuttle" id="P639_PARTNER_PMN_BULK_CONTAINER" data-otel-label="#CURRENT_ITEM_NAME!ATTR#"><div class="t-Form-labelContainer">
+<label for="P639_PARTNER_PMN_BULK" id="P639_PARTNER_PMN_BULK_LABEL" class="t-Form-label">Partner Pmn Bulk</label> 
+</div><div class="t-Form-inputContainer"><div class="t-Form-itemWrapper"><div class="apex-item-group apex-item-group--shuttle" role="group" id="P639_PARTNER_PMN_BULK" aria-labelledby="P639_PARTNER_PMN_BULK_LABEL" tabindex="-1"><table cellpadding="0" cellspacing="0" border="0" role="presentation" class="shuttle"><tbody><tr>
+<td class="shuttleSelect1">
+<div align="left" style="font-size: 0.9rem;">Home PMN Excluded</div><select title="Move from" multiple="multiple" id="P639_PARTNER_PMN_BULK_LEFT" size="5" class="shuttle_left apex-item-select"></select></td>
+<td align="center" class="shuttleControl">
+<div align="left"><br></div><button id="P639_PARTNER_PMN_BULK_RESET" class="a-Button a-Button--noLabel a-Button--withIcon a-Button--small a-Button--noUI a-Button--shuttle" type="button" title="Reset" aria-label="Reset"> <span class="a-Icon icon-shuttle-reset" aria-hidden="true"></span></button><button id="P639_PARTNER_PMN_BULK_MOVE_ALL" class="a-Button a-Button--noLabel a-Button--withIcon a-Button--small a-Button--noUI a-Button--shuttle" type="button" title="Move All" aria-label="Move All"> <span class="a-Icon icon-shuttle-move-all" aria-hidden="true"></span></button><button id="P639_PARTNER_PMN_BULK_MOVE" class="a-Button a-Button--noLabel a-Button--withIcon a-Button--small a-Button--noUI a-Button--shuttle" type="button" title="Move" aria-label="Move"> <span class="a-Icon icon-shuttle-move" aria-hidden="true"></span></button><button id="P639_PARTNER_PMN_BULK_REMOVE" class="a-Button a-Button--noLabel a-Button--withIcon a-Button--small a-Button--noUI a-Button--shuttle" type="button" title="Remove" aria-label="Remove"> <span class="a-Icon icon-shuttle-remove" aria-hidden="true"></span></button><button id="P639_PARTNER_PMN_BULK_REMOVE_ALL" class="a-Button a-Button--noLabel a-Button--withIcon a-Button--small a-Button--noUI a-Button--shuttle" type="button" title="Remove All" aria-label="Remove All"> <span class="a-Icon icon-shuttle-remove-all" aria-hidden="true"></span></button></td>
+<td class="shuttleSelect2">
+<div align="left" style="font-size: 0.9rem;">Home PMN Included</div><select title="Move to" multiple="multiple" id="P639_PARTNER_PMN_BULK_RIGHT" size="5" name="P639_PARTNER_PMN_BULK" class="shuttle_right apex-item-select">
+</select></td>
+<td align="center" class="shuttleSort2">
+<div align="left"><br></div><button id="P639_PARTNER_PMN_BULK_TOP" class="a-Button a-Button--noLabel a-Button--withIcon a-Button--small a-Button--noUI a-Button--shuttle" type="button" title="Top" aria-label="Top"> <span class="a-Icon icon-shuttle-top" aria-hidden="true"></span></button><button id="P639_PARTNER_PMN_BULK_UP" class="a-Button a-Button--noLabel a-Button--withIcon a-Button--small a-Button--noUI a-Button--shuttle" type="button" title="Up" aria-label="Up"> <span class="a-Icon icon-shuttle-up" aria-hidden="true"></span></button><button id="P639_PARTNER_PMN_BULK_DOWN" class="a-Button a-Button--noLabel a-Button--withIcon a-Button--small a-Button--noUI a-Button--shuttle" type="button" title="Down" aria-label="Down"> <span class="a-Icon icon-shuttle-down" aria-hidden="true"></span></button><button id="P639_PARTNER_PMN_BULK_BOTTOM" class="a-Button a-Button--noLabel a-Button--withIcon a-Button--small a-Button--noUI a-Button--shuttle" type="button" title="Bottom" aria-label="Bottom"> <span class="a-Icon icon-shuttle-bottom" aria-hidden="true"></span></button></td>
+</tr></tbody></table></div>
+</div><span id="P639_PARTNER_PMN_BULK_error_placeholder" class="a-Form-error" data-template-id="3031561666792084173_ET"></span></div></div></div>
+</div>
+</div></div></div></div>
+    <div class="t-DialogRegion-buttons">
+       <div class="t-ButtonRegion t-ButtonRegion--dialogRegion">
+         <div class="t-ButtonRegion-wrap">
+           <div class="t-ButtonRegion-col t-ButtonRegion-col--left"><div class="t-ButtonRegion-buttons"></div></div>
+           <div class="t-ButtonRegion-col t-ButtonRegion-col--right"><div class="t-ButtonRegion-buttons"><button class="t-Button t-Button--hot " type="button" id="B199667810561857924" data-otel-label="APPLY_PARTNER_PMN"><span class="t-Button-label">Apply</span></button></div></div>
+         </div>
+       </div>
+    </div>
+  </div>
+</div><div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90;"></div></div></form>
+
+
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q">
+var apex_img_dir = "\u002Fi\u002F";
+var apex = {env: {APP_USER: "MAYUR.MARADIYA",APP_ID: "10145",APP_PAGE_ID: "639",APP_SESSION: "9553260348680",APP_FILES: "r\u002Fprongc\u002F10145\u002Ffiles\u002Fstatic\u002Fv334\u002F",WORKSPACE_FILES: "r\u002Fprongc\u002Ffiles\u002Fstatic\u002Fv68\u002F",APEX_VERSION: "24.2.5",APEX_BASE_VERSION: "24.2",COMPATIBILITY_MODE: 21.2,NONCE: "nPcbs0uEeG4XBp2XWflZ8Q"},
+libVersions:{cropperJs:"1.6.2",domPurify:"3.2.4",fontapex:"2.4",fullcalendar:"6.1.15",hammer:"2.0.8",jquery:"3.6.4",jqueryUi:"1.13.2",maplibre:"4.6.0",mapboxGlRtlText:"0.3.0",markedJs:"14.1.2",prismJs:"1.30.0",oraclejet:"17.0.2",turndown:"7.2.0",monacoEditor:"0.51.0",lessJs:"4.2.0"}};
+</script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/desktop_all.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="wwv_flow.js_messages?p_app_id=10145&amp;p_lang=en-gb&amp;p_version=24.2.5-34556071947&amp;p_nls_settings=eyJudW1lcmljQ2hhcmFjdGVycyI6Ii4sIiwiY3VycmVuY3kiOiKjIiwiaXNvQ3VycmVuY3kiOiJVTklURUQgS0lOR0RPTSIsImR1YWxDdXJyZW5jeSI6Ir8ifQ"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="wwv_flow.js_dialogs?p_app_id=10145&amp;p_version=24.2.5-34556071947"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/legacy_pre18.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/legacy_18.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/jquery-migrate/3.5.2/jquery-migrate.min.js?v=24.2.5"></script>
+
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q">
+apex.da.initDaEventList = function(){
+apex.da.gEventList = [
+{"executionType":"IMMEDIATE","bindEventType":"ready","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"waitForResult":true,javascriptFunction:apex.da.executePlSqlCode,"ajaxIdentifier":"REEgVFlQRX5-MjAyMDI2MjAyOTUzNzMyOTAz\u002FswM5qb2zoUV4cLOtpiY3HmFe7v09YLpD98_F-y_xVqBQ_8F-827vSpkNHsq8xICSzFr_0teD1HuD5suFBL62VA","attribute02":"#P1_EMAIL_DOMAIN","attribute04":"N","action":"NATIVE_EXECUTE_PLSQL_CODE"}]},
+{"executionType":"IMMEDIATE","bindEventType":"ready","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ //Add enviroment indicator to nav menu
+var app_notif = '<span style="font-weight:bold; color: #345511;" id="instance">UAT</span>';
+
+if (app_notif) {
+   $("#t_TreeNav > ul").prepend('<li id="t_TreeNav_INSTANCE" style="padding:12px; margin-bottom: 1px; background: #f3c83c; text-align: center; cursor: default;" class="a-TreeView-node is-expandable a-TreeView-node--topLevel"><span style="font-weight:bold; color: #345511;" id="instance">UAT</span></li>');
+}
+
+//Add brand to page header
+//$("#t_Header > div.t-Header-branding > div.t-Header-logo").after('<div class="t-Header-brand" style="flex: 1; display:flex;"><span style="font-weight:bold; color: #2d2a81;">Nextgen Clearing</span></div>');
+$("#t_Header > div.t-Header-branding > div.t-Header-logo").after('<div class="t-Header-brand"><span class="t-Header-brand--Name"><span style="font-weight:bold; color: #2d2a81;">Nextgen Clearing</span></span></div>');
+//Add Accordion-Like Navigation menu
+$('#t_Body_nav #t_TreeNav').on('click', 'ul li.a-TreeView-node div.a-TreeView-content:not(:has(a))', function(){
+		$('#t_Body_nav #t_TreeNav .is-selected').removeClass("is-selected");
+		$(this).prev('span.a-TreeView-toggle').click();
+});
+
+$('#t_Button_navControl').on('click',this, function(){
+		$('#t_Body_nav #t_TreeNav .is-selected').removeClass("is-selected");
+});
+
+//Add Tooltip if navigation is not expanded
+ if( $('#t_Body_nav #t_TreeNav').length > 0 )
+{
+		 //Tooltip for Menu Text
+$("#t_TreeNav").treeView("option", "tooltip", {
+		content: function(cb, node) {
+				if ($(".js-navCollapsed ").length > 0) {
+				 return node.label;;
+			}
+				else {
+				 return "";
+			}
+		},
+		position: {
+			my: "left+10 center", at: "right center"
+		}
+} );
+ //This tells the tooltip to show up for the whole node content including the icon.
+$("#t_TreeNav").tooltip("option", "items", ".a-TreeView-content");
+}
+
+//Collapse Navigation menu on page load
+if ($('#t_Button_navControl').attr('aria-expanded') === "true") {
+		$('#t_Button_navControl').click();
+}
+
+// Save Mouse Click for Heatmaps
+
+function getDomPath(el) {
+var stack = [];
+while ( el.parentNode != null ) {
+var sibCount = 0;
+var sibIndex = 0;
+for ( var i = 0; i < el.parentNode.childNodes.length; i++ ) {
+	var sib = el.parentNode.childNodes[i];
+	if ( sib.nodeName == el.nodeName ) {
+	if ( sib === el ) {
+		sibIndex = sibCount;
+	}
+	sibCount++;
+	}
+}
+if ( el.hasAttribute('id') && el.id != '' ) {
+	stack.unshift(el.nodeName.toLowerCase() + '#' + el.id);
+} else if ( sibCount > 1 ) {
+	stack.unshift(el.nodeName.toLowerCase() + ':eq(' + sibIndex + ')');
+} else {
+	stack.unshift(el.nodeName.toLowerCase());
+}
+el = el.parentNode;
+}
+
+return stack.slice(1); // removes the html element
+}
+
+function log_click(event) {
+	if ($('#apex_session_alert_dlg').length > 0 || $('.ui-dialog-content > p').text().indexOf("Your session has expired") > -1) {return false;}
+	if (event.target.id != '') {
+	var element_path_selector = '#'+event.target.id;
+	} else if	(event.target.previousSibling != null) {
+	var element_path_selector = '#'+event.target.previousSibling.id;
+	} else {
+	var element_path = getDomPath(event.target);
+	var element_path_selector = element_path.join(' > ');
+	}
+
+	if (element_path_selector == '#undefined') {
+		var element_path = getDomPath(event.target);
+		var element_path_selector = element_path.join(' > ');
+	}
+
+	if( element_path_selector != '#menu_L129377231477185527_2i') {
+		$s('P1_SAVE_MOUSE_CLICK', element_path_selector);	 
+	}
+}
+
+$("body").click(function( event ) {log_click(event);});
+$("a").click(function(event) {log_click(event);return true;});
+},"action":"NATIVE_JAVASCRIPT_CODE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ 	const style = document.createElement('style');
+	style.textContent = `
+	.fch_icon:before {
+		content: url(r/prongc/files/static/v68/FCH_ICON.png);
+		padding-right: 2px;
+	}
+	.iotron_icon:before {
+		content: url(r/prongc/files/static/v68/IOTRON_ICON.png);
+		padding-right: 2px;
+	}
+	.subscription_icon:before {
+		content: url(r/prongc/files/static/v68/subscriptions.png);
+		padding-right: 2px;
+	}
+	.t-Body-actionsControlsIcon:before {
+		content: "\\e0f4";
+	}
+    .snb_icon:before {
+		content: url(r/prongc/files/static/v68/snb-icon.svg);
+		padding-right: 2px;
+	}
+	`;
+
+	// Append the <style> element to the <head> of the page
+	document.head.appendChild(style);
+},"action":"NATIVE_JAVASCRIPT_CODE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ /*console.log("APP_GTM_CONTAINER_ID =", "GTM\u002DK823RZ3Z"); 
+console.log("APP_USER_ID =", "7691"); 
+console.log("APP_USER_EMAIL =", "mayur.maradiya\u0040nextgenclearing.com"); 
+console.log("APP_USER_NAME =", "Mayur"); 
+console.log("APP_USER_SURNAME =", "Maradiya"); 
+console.log("APP_USER_ORG_ID =", "1"); 
+console.log("APP_USER_ORGANIZATION =", "NGC"); 
+console.log("APP_ENVIRONMENT =", "UAT");*/
+
+if (window.ApexPendoTracking) {
+    ApexPendoTracking.initTracking({
+        gtmContainerId: "GTM\u002DK823RZ3Z",
+        pendoContext: {
+            env: "UAT",
+            product: "IOTRON",
+            id: "7691",
+            email: "mayur.maradiya\u0040nextgenclearing.com",
+            firstName: "Mayur",
+            lastName: "Maradiya",
+            organization: {
+                id: "1",
+                name: "NGC"
+            }
+        }
+    })
+}
+},"action":"NATIVE_JAVASCRIPT_CODE"}]},
+{"triggeringElementType":"ITEM","triggeringElement":"P1_SAVE_MOUSE_CLICK","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"change","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ // Call Apex Application Process SAVE_HEATMAPS_CLICK and pass clicked elment dom path via x01 parameter
+apex.server.process("SAVE_HEATMAPS_CLICK", {x01: $v('P1_SAVE_MOUSE_CLICK')}, {dataType: "text", success: function( data ) { 
+    // Session valid
+}, error: function(err){ 
+    if (err.responseText !== undefined && err.responseText.includes("Your session has expired")) {
+        $("body").hide();
+        $("head > style[type='text/css']").last().append("#apex_session_alert_dlg, .ui-dialog-content{display:none;}")
+        var login_url = 'https://connectedplatform.net/oauth2/sign_out?rd=https://sso.connectedplatform.net/auth/realms/connected-platform/protocol/openid-connect/logout?redirect_uri=https://login.nextgenclearing.com'; 
+        window.location = login_url.replace('LOGIN_DESKTOP', '').replace('10145', '10145'); // 
+    } 
+}});
+},"action":"NATIVE_JAVASCRIPT_CODE"}]},
+{"triggeringElementType":"JQUERY_SELECTOR","triggeringElement":"#apexir_CONTROL_PANEL_DROP","bindType":"live","executionType":"IMMEDIATE","bindEventType":"focusin","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){  $('div[style="width:200px;height:180px;overflow-x: hidden;overflow-y:scroll;overflow:-moz-scrollbars-vertical !important;"]').filter(":not(:contains('ADD_MONTHS'))").css({"width" : "420px", "height" : "250px"});
+},"action":"NATIVE_JAVASCRIPT_CODE"}]},
+{"triggeringElementType":"ITEM","triggeringElement":"P639_SERVICE_EVENT","conditionElement":"P639_SERVICE_EVENT","triggeringConditionType":"EQUALS","triggeringConditionExpression":"0","bindType":"one","bindEventType":"change","anyActionsFireOnInit":true,actionList:[{"eventResult":true,"executeOnPageInit":true,"stopExecutionOnError":true,javascriptFunction:apex.da.submitPage,"attribute02":"Y","action":"NATIVE_SUBMIT_PAGE"}]},
+{"triggeringElementType":"ITEM","triggeringElement":"P1_LOAD_CLICK_STATS","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"change","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"waitForResult":true,javascriptFunction:apex.da.executePlSqlCode,"ajaxIdentifier":"REEgVFlQRX5-MTM4OTIxNDUwNzU4NjA5ODE4\u002FDPO73bj9alU_L4D4eCio2rrJ83m89QGAi6W_-s6JpK5WcTAQcrs356xwNPAiMfJJrBh79_RTrEu8V9sVJxvy3g","attribute02":"#P1_JAVA_SCRIPT_CODE","attribute04":"N","action":"NATIVE_EXECUTE_PLSQL_CODE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ /*
+// Auto-refresh disabled
+var html_decoded_javascript_code = $('<textarea />').html($v('P1_JAVA_SCRIPT_CODE')).text();
+eval(html_decoded_javascript_code);
+*/
+
+var html_decoded_javascript_code = $('<textarea />').html($v('P1_JAVA_SCRIPT_CODE')).text();
+eval(html_decoded_javascript_code);
+$s('P1_JAVA_SCRIPT_CODE', 'disabled'); 
+
+// Auto-refresh enabled
+setTimeout(function(){ 
+   
+   if (isNaN(parseInt($v('P1_LOAD_CLICK_STATS')))) {
+       looad_click_stats = 0;
+   } else {
+       looad_click_stats = parseInt($v('P1_LOAD_CLICK_STATS')) + 1;
+   }
+   $s('P1_LOAD_CLICK_STATS', looad_click_stats); 
+}, 5000);
+
+
+
+
+},"action":"NATIVE_JAVASCRIPT_CODE"}]},
+{"triggeringElementType":"ITEM","triggeringElement":"P639_SHOW_LIVE_AGRMTS","conditionElement":"P639_SHOW_LIVE_AGRMTS","triggeringConditionType":"EQUALS","triggeringConditionExpression":"S","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"change","anyActionsFireOnInit":true,actionList:[{"eventResult":false,"executeOnPageInit":true,"stopExecutionOnError":true,"affectedElementsType":"BUTTON","affectedButtonId":"3rd_STEP_MON_CALCULATION",javascriptFunction:apex.da.show,"attribute01":"N","action":"NATIVE_SHOW"},{"eventResult":true,"executeOnPageInit":true,"stopExecutionOnError":true,"affectedElementsType":"BUTTON","affectedButtonId":"3rd_STEP_MON_CALCULATION",javascriptFunction:apex.da.hide,"attribute01":"N","action":"NATIVE_HIDE"}]},
+{"triggeringElementType":"JQUERY_SELECTOR","triggeringElement":".apex-item-group--popup-lov","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"click","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ /*POPUP LOV default behavior is to remove browser scroll on click.
+Since right column side of the page is affected by this removal and it changes item dimensions this was 
+added to emulate this behavior*/
+$('.t-PageBody').addClass('apex-no-scroll')
+},"action":"NATIVE_JAVASCRIPT_CODE"}]},
+{"triggeringElementType":"ITEM","triggeringElement":"P639_BLENDED","triggeringConditionType":"JAVASCRIPT_EXPRESSION","triggeringConditionExpression": function() {
+return (Number($v('P639_BLENDED')) == 1
+); },"bindType":"bind","executionType":"IMMEDIATE","bindEventType":"change","anyActionsFireOnInit":true,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"affectedElementsType":"ITEM","affectedElements":"P639_CALL_DESTINATION_LEVEL",javascriptFunction:apex.da.clear,"action":"NATIVE_CLEAR"},{"eventResult":false,"executeOnPageInit":true,"stopExecutionOnError":true,"affectedElementsType":"ITEM","affectedElements":"P639_CALL_DESTINATION_LEVEL",javascriptFunction:apex.da.enable,"action":"NATIVE_ENABLE"},{"eventResult":true,"executeOnPageInit":true,"stopExecutionOnError":true,"affectedElementsType":"ITEM","affectedElements":"P639_CALL_DESTINATION_LEVEL",javascriptFunction:apex.da.disable,"action":"NATIVE_DISABLE"}]},
+{"triggeringElementType":"ITEM","triggeringElement":"P639_SHOW_LIVE_AGRMTS","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"change","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"waitForResult":true,javascriptFunction:apex.da.executePlSqlCode,"ajaxIdentifier":"REEgVFlQRX5-NzcwODQwODkyNzg4NTMxMjg\u002FXOqhesM2lDiI4YYPaQtXMqQM5rGvtA5JmyDDhF8tITw--HiygxDUxjBnn3E5U3ct-XUUob-l3qQRi-lQHoCBgw","attribute01":"#P639_SHOW_LIVE_AGRMTS","attribute04":"N","action":"NATIVE_EXECUTE_PLSQL_CODE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"affectedElementsType":"ITEM","affectedElements":"P639_IOT_AGREEMENT_ID",javascriptFunction:apex.da.refresh,"attribute01":"N","action":"NATIVE_REFRESH"}]},
+{"triggeringElementType":"ITEM","triggeringElement":"P639_IOT_AGREEMENT_ID_1","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"change","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"waitForResult":true,javascriptFunction:apex.da.executePlSqlCode,"ajaxIdentifier":"REEgVFlQRX5-MjkxNTk3MDg3MTE2NDQwMTMy\u002F0mzmUM444Ff8Qbw7O_q7ccO1b9GBWC5wATuenzvHT2XHSZgVf9J-VW8L_GMR5zX9t5AFQbwUzNWcg5lG8JKjUg","attribute01":"#P639_IOT_AGREEMENT_ID_1","attribute04":"N","action":"NATIVE_EXECUTE_PLSQL_CODE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"affectedElementsType":"ITEM","affectedElements":"P639_CALCULATION_TYPE",javascriptFunction:apex.da.refresh,"attribute01":"N","action":"NATIVE_REFRESH"}]},
+{"executionType":"IMMEDIATE","bindEventType":"ready","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"affectedElementsType":"JQUERY_SELECTOR","affectedElements":".aopdownload",javascriptFunction:function(){  
+      options = $.extend(true, this, { 
+        "render": { 
+          "attr": {
+            "app": {
+              "emailFrom": "iotron@nextgenclearing.com"
+            }
+          },
+          "apex": "24.2.5",
+          "debug": false,
+          "messages": {
+            "codes": "AOP_DOWNLOAD_LABEL_ITEM_AOP_TEMPLATE,AOP_DOWNLOAD_LABEL_ITEM_AOP_TPL_DOCX,AOP_DOWNLOAD_LABEL_ITEM_AOP_TPL_HTML,AOP_DOWNLOAD_LABEL_ITEM_AOP_TPL_MD,AOP_DOWNLOAD_LABEL_ITEM_AOP_TPL_PPTX,AOP_DOWNLOAD_LABEL_ITEM_AOP_TPL_XLSX,AOP_DOWNLOAD_LABEL_ITEM_EMAIL_BCC,AOP_DOWNLOAD_LABEL_ITEM_EMAIL_BODY,AOP_DOWNLOAD_LABEL_ITEM_EMAIL_CC,AOP_DOWNLOAD_LABEL_ITEM_EMAIL_SUBJECT,AOP_DOWNLOAD_LABEL_ITEM_EMAIL_TO,AOP_DOWNLOAD_LABEL_ITEM_FREQUENCY_DAILY,AOP_DOWNLOAD_LABEL_ITEM_FREQUENCY_HOURLY,AOP_DOWNLOAD_LABEL_ITEM_FREQUENCY_MINUTELY,AOP_DOWNLOAD_LABEL_ITEM_FREQUENCY_MONTHLY,AOP_DOWNLOAD_LABEL_ITEM_FREQUENCY_WEEKLY,AOP_DOWNLOAD_LABEL_ITEM_FREQUENCY_YEARLY,AOP_DOWNLOAD_LABEL_ITEM_OUTPUTTO,AOP_DOWNLOAD_LABEL_ITEM_OUTPUTTO_BROWSWER,AOP_DOWNLOAD_LABEL_ITEM_OUTPUTTO_EMAIL,AOP_DOWNLOAD_LABEL_ITEM_OUTPUTTO_FILE_AOP,AOP_DOWNLOAD_LABEL_ITEM_OUTPUTTO_FILE_DB,AOP_DOWNLOAD_LABEL_ITEM_OUTPUTTO_TABLE,AOP_DOWNLOAD_LABEL_ITEM_REPORT_TYPE,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAYS,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAY_FRI,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAY_MON,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAY_SAT,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAY_SUN,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAY_THU,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAY_TUE,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_DAY_WED,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_ENDS,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_ENDS_DATE,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_ENDS_NEVER,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_END_DATE,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_REPEAT,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_SCOPE,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_STARTS,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_STARTS_DATE,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_STARTS_NOW,AOP_DOWNLOAD_LABEL_ITEM_SCHEDULE_START_DATE,AOP_DOWNLOAD_LABEL_ITEM_TEMPLATE_SELECTION,AOP_DOWNLOAD_LABEL_ITEM_WHEN,AOP_DOWNLOAD_LABEL_ITEM_WHEN_BACKGROUND,AOP_DOWNLOAD_LABEL_ITEM_WHEN_NOW,AOP_DOWNLOAD_LABEL_ITEM_WHEN_SCHEDULED,AOP_DOWNLOAD_LABEL_MENU_ENTRY,AOP_DOWNLOAD_MSG_BROWSER_BACKGROUND,AOP_DOWNLOAD_MSG_BROWSER_NOW,AOP_DOWNLOAD_MSG_BROWSER_SCHEDULED,AOP_DOWNLOAD_MSG_CUSTOM_BACKGROUND,AOP_DOWNLOAD_MSG_CUSTOM_NOW,AOP_DOWNLOAD_MSG_CUSTOM_SCHEDULED,AOP_DOWNLOAD_MSG_EMAIL_BACKGROUND,AOP_DOWNLOAD_MSG_EMAIL_NOW,AOP_DOWNLOAD_MSG_EMAIL_SCHEDULED,AOP_DOWNLOAD_MSG_FILE_AOP_BACKGROUND,AOP_DOWNLOAD_MSG_FILE_AOP_NOW,AOP_DOWNLOAD_MSG_FILE_AOP_SCHEDULED,AOP_DOWNLOAD_MSG_FILE_DB_BACKGROUND,AOP_DOWNLOAD_MSG_FILE_DB_NOW,AOP_DOWNLOAD_MSG_FILE_DB_SCHEDULED,AOP_DOWNLOAD_MSG_TABLE_BACKGROUND,AOP_DOWNLOAD_MSG_TABLE_NOW,AOP_DOWNLOAD_MSG_TABLE_SCHEDULED,AOP_DOWNLOAD_HELP_ITEM_EMAIL_BODY,AOP_DOWNLOAD_LABEL_BUTTON_CANCEL,AOP_DOWNLOAD_LABEL_BUTTON_GENERATE,AOP_DOWNLOAD_LABEL_CR_ANCHOR",
+            "texts": "Generate template,Word (docx),HTML,Markdown,Powerpoint (pptx),Excel (xlsx),E-mail BCC,E-mail Body,E-mail CC,E-mail Subject,E-mail To,Day,Hour,Minute,Month,Week,Year,Output To,Browser,E-mail,AOP Folder,FTP,Table,Report Type,Days of the week:,Fri,Mon,Sat,Sun,Thu,Tue,Wed,Ends,On specific date,Never,End Date,Repeat Every,Frequency,Starts,On specific date,Now,Start Date,Choose your template,When,Background,Now,Scheduled,Download \u0026 Subscribe,File is being generating in the background.,File \"\u0026AOP_FILENAME.\" generated.,File has been scheduled to be generated.,File is generating into custom output location in the background,File generated to custom output location,File is scheduled to generate to custom output location,File will be sent to e-mail \"\u0026AOP_EMAIL_TO.\" when generation is finished in the background,File generated and sent to e-mail \"\u0026AOP_EMAIL_TO.\",File scheduled to be sent to e-mail \"\u0026AOP_EMAIL_TO.\",File is generating into file system (AOP directory) in the background,File is generated into file system (AOP directory),File is scheduled to generate into file system (AOP directory),File is generating into file system (db directory) in the background,File is generated into file system (db directory),File is scheduled to generate into file system (db directory),File is generating in the background,File generated into table,File has been scheduled to generate,-,Cancel,Go,Print with AOP"
+          },
+          "templates": { 
+            "label": { 
+              "names": "OPTIONAL_FLOATING,OPTIONAL_ABOVE", 
+              "ids": "1609121967514267634,3031561666792084173" 
+            } 
+          }, 
+          "da": { 
+            "id"   : "134693314849423089", 
+            "name" : "AOP_SCHEDULE", 
+            "event": "ready",
+            "initJavascriptCode"  : "function(pOptions){\nvalidate_domain( pOptions );\nreturn pOptions;\n}"
+          }, 
+          "actionId": "134693771703423096", 
+          "region": { 
+            "hidden"        : false, 
+            "id"            : "", 
+            "type"          : "",
+            "staticId"      : "",
+            "itemsToSubmit" : ""
+          }, 
+          "regionId": "", 
+          "waitFor": "" 
+        } 
+      }); 
+       
+      uc.aopdownload.init_pageload( options ); 
+    },"ajaxIdentifier":"REEgVFlQRX5-MTM0NjkzNzcxNzAzNDIzMDk2\u002FdaWILz-f2WDKytZ6XUn35cO2j6b2-wuFHZNywR8T7GR3FCgIEuALfHxAeviPnTH-FQIC2Zie2BOHnNHgyc7sbw","attribute01":"xlsx:csv","attribute03":"APEX","attribute04":"INIT","attribute08":"BROWSER:EMAIL","attribute10":"NOW:SCHEDULED","attribute11":"APEX_REPORT","attribute12":"AOP_JSON_DEBUG:DISPLAY_MESSAGE:DISPLAY_SPINNER:HIDE_NATIVE_PRINT","attribute13":"P639_SHOW_LIVE_AGRMTS,P639_CLIENT_MASTER_ENTITY_ID_LST,P639_ORIGINAL_LATEST,P639_EVENT_TYPE_ID,P639_SERVICE_TYPE_ID,P639_PARTNER_ME_ID_LST,P639_IOT_AGREEMENT_ID,P639_CLIENT_MASTER_ENTITY_ID","action":"PLUGIN_UNITEDCODES_AOP_DOWNLOAD"}]},
+{"triggeringElementType":"BUTTON","triggeringButtonId":"B34696054001619858","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"click","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"waitForResult":true,"affectedElementsType":"ITEM","affectedElements":"P639_LOAD_DATA_DIFF_ORIG_LATEST",javascriptFunction:apex.da.setValue,"ajaxIdentifier":"REEgVFlQRX5-MzQ2OTU4Mjc5MzI2MTk4NTU\u002Fxxo8f6C759sB7IdNhSY5OwUkTfL73L2Hv02D8vpxZfiDgqFsSSAcEIrSfy2hU0ICq1NSaQUIoDSQ-E_6FyQ51Q","attribute01":"STATIC_ASSIGNMENT","attribute02":"Y","attribute09":"N","action":"NATIVE_SET_VALUE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"affectedElementsType":"REGION","affectedRegionId":"R370480902259568279",javascriptFunction:apex.da.refresh,"attribute01":"N","action":"NATIVE_REFRESH"}]},
+{"triggeringElementType":"ITEM","triggeringElement":"P639_IOT_AGREEMENT_ID","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"change","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"waitForResult":true,javascriptFunction:apex.da.executePlSqlCode,"ajaxIdentifier":"REEgVFlQRX5-MTc3MDYyMTUyMzg2MDM3OTM3\u002FudoHRo560eDMBcFndnJJV35pi6JfQshCuTvybgR821z4pn4xyDOgpvLGRBSkgmYdqxfUgNJjhaza3H8UPzDb0g","attribute01":"#P639_IOT_AGREEMENT_ID","attribute02":"#P639_CLIENT_MASTER_ENTITY_ID_SET_LST,#P639_PARTNER_ME_ID_SET_LST","attribute04":"N","action":"NATIVE_EXECUTE_PLSQL_CODE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"affectedElementsType":"ITEM","affectedElements":"P639_CLIENT_MASTER_ENTITY_ID_LST,P639_PARTNER_ME_ID_LST",javascriptFunction:apex.da.refresh,"attribute01":"N","action":"NATIVE_REFRESH"}]},
+{"triggeringElementType":"BUTTON","triggeringButtonId":"B177063326939037949","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"click","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"affectedElementsType":"ITEM","affectedElements":"P639_HOME_PMN_BULK",javascriptFunction:apex.da.refresh,"attribute01":"N","action":"NATIVE_REFRESH"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"waitForResult":true,javascriptFunction:apex.da.executePlSqlCode,"ajaxIdentifier":"REEgVFlQRX5-MTk5NjY2NDk1MzkzODU3OTEw\u002Fsxeipa4sx4SygCYyInWEu67iAl0UU9gIgIDBeZLr9SDNCWoOg1iBfdI6fFodAX2zX4LdMOzysVQH6n_MlApTJA","attribute02":"#P639_HOME_PMN_BULK_SEARCH","attribute04":"N","action":"NATIVE_EXECUTE_PLSQL_CODE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"waitForResult":true,"affectedElementsType":"ITEM","affectedElements":"P639_HOME_PMN_BULK",javascriptFunction:apex.da.setValue,"ajaxIdentifier":"REEgVFlQRX5-MTk5NjY2NTMyNTc2ODU3OTEx\u002FCO-hTXDc8Scz_Pcy9M7_zRfQwQJ60HOL7UtWk1_j4cT2NYP1zBn6oaUniR6EpRE4zBHgInQrdLviZvYzBoJ-Tw","attribute01":"FUNCTION_BODY","attribute04":"#P639_CLIENT_MASTER_ENTITY_ID_LST","attribute09":"N","action":"NATIVE_SET_VALUE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ sortSelectedOptions(P639_HOME_PMN_BULK_LEFT);
+sortSelectedOptions(P639_HOME_PMN_BULK_RIGHT);
+},"action":"NATIVE_JAVASCRIPT_CODE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"affectedElementsType":"REGION","affectedRegionId":"R177063494455037950",javascriptFunction:function() {apex.theme.openRegion(this.affectedElements);},"action":"NATIVE_OPEN_REGION"}]},
+{"triggeringElementType":"BUTTON","triggeringButtonId":"B199666084603857906","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"click","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ apex.item("P639_CLIENT_MASTER_ENTITY_ID_LST").setValue($v("P639_HOME_PMN_BULK").split(":"));
+},"action":"NATIVE_JAVASCRIPT_CODE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"affectedElementsType":"REGION","affectedRegionId":"R177063494455037950",javascriptFunction:function() {apex.theme.closeRegion(this.affectedElements);},"action":"NATIVE_CLOSE_REGION"}]},
+{"triggeringElementType":"BUTTON","triggeringButtonId":"B199666856729857914","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"click","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"affectedElementsType":"ITEM","affectedElements":"P639_PARTNER_PMN_BULK",javascriptFunction:apex.da.refresh,"attribute01":"N","action":"NATIVE_REFRESH"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"waitForResult":true,javascriptFunction:apex.da.executePlSqlCode,"ajaxIdentifier":"REEgVFlQRX5-MTk5NjY3NDI3NDI2ODU3OTIw\u002FWwdDJQ6nsAHftwdEaQ9beZBEHRB6-NrRZ0z18thU9KBFzgIiaWzTwGyoaVq0LJjxnfTAthZ_ZD9AsOaAd2KkHg","attribute02":"#P639_PARTNER_PMN_BULK_SEARCH","attribute04":"N","action":"NATIVE_EXECUTE_PLSQL_CODE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"waitForResult":true,"affectedElementsType":"ITEM","affectedElements":"P639_PARTNER_PMN_BULK",javascriptFunction:apex.da.setValue,"ajaxIdentifier":"REEgVFlQRX5-MTk5NjY3NTU0MjM4ODU3OTIx\u002FjD-figFP4hfRtifc6ANMtKMzE1ugdAeUfFNvcCa77S6247XQ_0YKKaW3wWEBLVVgl_btQhSK52HVyiMv4LP3qQ","attribute01":"FUNCTION_BODY","attribute04":"#P639_PARTNER_ME_ID_LST","attribute09":"N","action":"NATIVE_SET_VALUE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ sortSelectedOptions(P639_PARTNER_PMN_BULK_LEFT);
+sortSelectedOptions(P639_PARTNER_PMN_BULK_RIGHT);
+},"action":"NATIVE_JAVASCRIPT_CODE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"affectedElementsType":"REGION","affectedRegionId":"R199667120405857917",javascriptFunction:function() {apex.theme.openRegion(this.affectedElements);},"action":"NATIVE_OPEN_REGION"}]},
+{"triggeringElementType":"BUTTON","triggeringButtonId":"B199667810561857924","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"click","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ apex.item("P639_PARTNER_ME_ID_LST").setValue($v("P639_PARTNER_PMN_BULK").split(":"));
+},"action":"NATIVE_JAVASCRIPT_CODE"},{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,"affectedElementsType":"REGION","affectedRegionId":"R199667120405857917",javascriptFunction:function() {apex.theme.closeRegion(this.affectedElements);},"action":"NATIVE_CLOSE_REGION"}]},
+{"triggeringElementType":"ITEM","triggeringElement":"P639_PARTNER_ME_ID_LST","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"apexafterrefresh","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ /*console.log('Started AfterRefresh_PartnerPMN');
+console.log("partner hidden before =", $v("P639_PARTNER_ME_ID_SET_LST"));
+console.log("partner item before =", $v("P639_PARTNER_ME_ID_LST"));*/
+
+apex.item("P639_PARTNER_ME_ID_LST").setValue($v("P639_PARTNER_ME_ID_SET_LST").split(":"));
+
+/*console.log("partner item after =", $v("P639_PARTNER_ME_ID_LST"));
+console.log('Ended AfterRefresh_HomePMN');*/
+},"action":"NATIVE_JAVASCRIPT_CODE"}]},
+{"triggeringElementType":"ITEM","triggeringElement":"P639_CLIENT_MASTER_ENTITY_ID_LST","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"apexafterrefresh","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ /*console.log('Started AfterRefresh_HomePMN');
+console.log("home hidden before=", $v("P639_CLIENT_MASTER_ENTITY_ID_SET_LST"));
+console.log("home item before =", $v("P639_CLIENT_MASTER_ENTITY_ID_LST"));*/
+
+apex.item("P639_CLIENT_MASTER_ENTITY_ID_LST").setValue($v("P639_CLIENT_MASTER_ENTITY_ID_SET_LST").split(":"));
+
+/*console.log("home item after =", $v("P639_CLIENT_MASTER_ENTITY_ID_LST"));
+console.log('Ended AfterRefresh_HomePMN');*/
+},"action":"NATIVE_JAVASCRIPT_CODE"}]},
+{"triggeringElementType":"JQUERY_SELECTOR","triggeringElement":".t-Button--hot:contains(\u0027Go\u0027)","bindType":"bind","executionType":"IMMEDIATE","bindEventType":"click","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ setTimeout(function() {$('#t_Alert_Notification').hide();}, 10);
+},"action":"NATIVE_JAVASCRIPT_CODE"}]},
+{"triggeringElementType":"JAVASCRIPT_EXPRESSION","triggeringElement": function() {
+return (document
+); },"bindType":"bind","executionType":"IMMEDIATE","bindEventType":"scroll","anyActionsFireOnInit":false,actionList:[{"eventResult":true,"executeOnPageInit":false,"stopExecutionOnError":true,javascriptFunction:function (){ if(window.scrollY==0){
+    $( ".t-BreadcrumbRegion" ).removeClass( "page-scrolled" );
+} else {
+    $( ".t-BreadcrumbRegion" ).addClass( "page-scrolled" );
+};
+},"action":"NATIVE_JAVASCRIPT_CODE"}]}];
+}
+</script>
+
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/themes/theme_42/24.2/js/theme42.min.js?v=24.2.5"></script>
+
+
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="r/prongc/files/static/v68/NGC_AOP_lib.js"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="r/prongc/files/static/v68/NGC_Lib.js"></script>
+
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q">
+/*
+ * Generic shuttle filter with parent-aware recapture.
+ */
+window.APEXShuttleFilter = window.APEXShuttleFilter || {
+  valuesStore:   {}, // { shuttleId: [ {text,value,ShuttleItemID}, ... ] }
+  parentSig:     {}, // { shuttleId: "P1=..|P2=.." }
+  capturedSig:   {}, // { shuttleId: "..." }
+  initDone:      {}  // { shuttleId: true }
+};
+
+
+window.APEXShuttleFilter.init = function (pShuttleItemID, pSearchItemID, pParentItemIDs) {
+
+  const self = window.APEXShuttleFilter;
+  const ns = ".apexShuttle_" + pShuttleItemID;
+
+  function normalizeParents(x) {
+    if (!x) return [];
+    if (Array.isArray(x)) return x.filter(Boolean);
+    return String(x)
+      .split(/[,:\s]+/)
+      .map(s => s.trim())
+      .filter(Boolean);
+  }
+
+  const parents = normalizeParents(pParentItemIDs);
+
+  function escapeRegExp(s) {
+    return String(s || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  function getLists() {
+    return {
+      $left:  $("#" + pShuttleItemID + "_LEFT"),
+      $right: $("#" + pShuttleItemID + "_RIGHT")
+    };
+  }
+
+  function getParentSignature() {
+    return parents.map(id => id + "=" + String($v(id) || "")).join("|");
+  }
+
+  function invalidateIfParentsChanged() {
+    const sig = getParentSignature();
+    const prev = self.parentSig[pShuttleItemID];
+
+    if (sig !== prev) {
+      self.parentSig[pShuttleItemID]   = sig;
+      self.valuesStore[pShuttleItemID] = [];   // store reflects current parents
+      self.capturedSig[pShuttleItemID] = null; // allow capture after refresh
+    }
+  }
+
+  function captureOnceForSignature() {
+    const sig = getParentSignature();
+
+    // already captured for this parent signature
+    if (self.capturedSig[pShuttleItemID] === sig) return;
+
+    const { $left, $right } = getLists();
+    if ($left.length === 0 || $right.length === 0) return;
+
+    const $opts = $left.add($right).children("option");
+
+    // capture even if empty => means "no rows for these parents"
+    self.valuesStore[pShuttleItemID] = $opts.map(function () {
+      return {
+        ShuttleItemID: pShuttleItemID,
+        text:  String(this.text || ""),
+        value: String(this.value || "")
+      };
+    }).get();
+
+    self.capturedSig[pShuttleItemID] = sig;
+  }
+
+  function applyFilter() {
+    invalidateIfParentsChanged();
+
+    const { $left, $right } = getLists();
+    if ($left.length === 0 || $right.length === 0) return;
+
+    const allValues = self.valuesStore[pShuttleItemID] || [];
+
+    // if the store is empty for current parents, keep UI empty too
+    if (allValues.length === 0) {
+      $left.empty();
+      return;
+    }
+
+    const term = escapeRegExp($v(pSearchItemID));
+    const re = new RegExp("^" + term, "i");
+
+    const selectedValues = $right.children("option").map(function () {
+      return String(this.value || "");
+    }).get();
+
+    $left.empty();
+
+    allValues.forEach(function (o) {
+      if (re.test(o.text) && selectedValues.indexOf(String(o.value)) === -1) {
+        $left.append(new Option(o.text, o.value));
+      }
+    });
+  }
+
+  // ---- bind once (delegated, survives refresh) ----
+  if (!self.initDone[pShuttleItemID]) {
+
+    // parent changes => invalidate store; wait for shuttle refresh to capture
+    parents.forEach(function (pid) {
+      $(document)
+        .off("change" + ns, "#" + pid)
+        .on("change" + ns, "#" + pid, function () {
+          invalidateIfParentsChanged();
+        });
+    });
+
+    // search keyup
+    $(document)
+      .off("keyup" + ns, "#" + pSearchItemID)
+      .on("keyup" + ns, "#" + pSearchItemID, applyFilter);
+
+    // shuttle list changes
+    $(document)
+      .off("change" + ns, "#" + pShuttleItemID + "_LEFT, #" + pShuttleItemID + "_RIGHT")
+      .on("change" + ns, "#" + pShuttleItemID + "_LEFT, #" + pShuttleItemID + "_RIGHT", applyFilter);
+
+    // after shuttle refresh => capture once for current signature then filter
+    $(document)
+      .off("apexafterrefresh" + ns, "#" + pShuttleItemID)
+      .on("apexafterrefresh" + ns, "#" + pShuttleItemID, function () {
+        invalidateIfParentsChanged();
+        captureOnceForSignature();
+        applyFilter();
+      });
+
+    self.initDone[pShuttleItemID] = true;
+  }
+
+  // initial pass (if shuttle already has options, it captures; if not, it won¿t wipe unless store empty)
+  invalidateIfParentsChanged();
+  captureOnceForSignature();
+  applyFilter();
+};
+</script>  
+
+
+
+
+
+
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/widget.treeView.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/widget.interactiveReport.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/widget.iconList.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/widget.stickyTableHeader.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/widget.stickyWidget.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/item.Colorpicker.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/widget.shuttle.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/modelViewBase.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/widget.datepicker.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/widget.timepicker.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="r/prongc/10145/files/plugin/1462472447404390080/v204/uc.aopdownload.min.js"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="r/prongc/10145/files/plugin/1462472447404390080/v204/uc.aopdownloadCommon.min.js"></script>
+
+
+
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/oraclejet/17.0.2/js/libs/require/require.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/requirejs.jetConfig.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/jetCommonBundle.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q" src="/i/libraries/apex/minified/chartBundle.min.js?v=24.2.5"></script>
+<script nonce="nPcbs0uEeG4XBp2XWflZ8Q">
+apex.session.initTimeouts(300,{"idle_time_ms":3600000,"life_time_ms":35856000,"max_idle_time_ms":3600000},'apex_authentication.logout?p_app_id=10132\u0026p_session_id=','apex_authentication.logout?p_app_id=10132\u0026p_session_id=');
+apex.jQuery( function() {
+apex.page.init( this, function() {
+try {
+(function(){apex.jQuery('body').addClass('t-PageBody--leftNav');})();
+(function(){apex.jQuery("#MAINTAIN_AGREEMENT").click( event => { apex.submit({request:'MAINTAIN_AGREEMENT'}); });})();
+(function(){apex.jQuery('#P639_RESULTS_R_ir').interactiveReport({"regionId":"P639_RESULTS_R","rowsPerPageSelect":true,"rowsPerPage":false,"currentRowsPerPage":100,"maxRowCount":"1000000","flashback":false,"helpLink":"wwv_flow_utilities.show_ir_help?p_app_id=10145\u0026p_worksheet_id=370464087018974673\u0026p_lang=en-gb","downloadContentDisposition":"ATTACHMENT","subscription":false,"pageItems":"#P639_ONLY_LATEST_MONTH,#P639_AGREE_HOME_SDR,#P639_DISCOUNT_METHOD","actionsMenuStructure":"LEGACY","lazyLoading":false,"ajaxIdentifier":"UkVHSU9OIFRZUEV-fjM3MDQ2NDAxMDYyNjk3NDY3Mw\u002FkqX5mZV5-fgDCsXNn8i9gh3t0EXweAJchYqTOU0O6jN-zwRMDA_bzHuWso3zBTPpqhWdXkCjm9Nag0VyGxfP-A"});})();
+(function(){apex.widget.shuttle("#P639_HOME_PMN_BULK",{"storageType":"separated","separator":":","ajaxIdentifier":"SVRFTSBUWVBFfjUxMjB-MTk5NjY1OTQ4MTM3ODU3OTA1\u002FBRxt0_o1a4c-9mLridqYOnswEzunKwFQnk4TzZOv8XNXn8SWt13MVnUBNv0qeJv7CiybmCm66WHtRoIa-Vki-g","optimizeRefresh":true,"optionAttributes":""});})();
+(function(){apex.widget.shuttle("#P639_PARTNER_PMN_BULK",{"storageType":"separated","separator":":","ajaxIdentifier":"SVRFTSBUWVBFfjUxMjB-MTk5NjY3MzI3MDg3ODU3OTE5\u002FCpZnLijKxk2WleoW-BL0XbyOGMmXAkSQobcuMbJpwFvfW_hOcw8bENkw2-k8At2jnhaO4YUY5uRkYznfV1Ly-w","optimizeRefresh":true,"optionAttributes":""});})();
+(function(){apex.widget.checkboxAndRadio("#P639_SHOW_LIVE_AGRMTS","radio",{"ajaxIdentifier":"SVRFTSBUWVBFfjUxMjB-MzEwOTg4MDkwMjczMTI5Njkz\u002FdRRJjLKW3TRoRp5IJPGpPlK_Mx_yzDK9BX1DXdlQSDXtRXOFeo8h-BnQxbyw2RxdceAfMVWnEPrxicUPu-wIJg","optimizeRefresh":true,"inputName":"P639_SHOW_LIVE_AGRMTS"});})();
+(function(){apex.widget.popupLov({"itemId":"P639_IOT_AGREEMENT_ID","ajaxIdentifier":"SVRFTSBUWVBFfjUxMjB-MzEwOTg2NjgyMTYxMTI5Njc5\u002FNChloTI3VvLzKJo5hxxZzfbNpCiWQPR37LsNOM9sHhqjepmb1-kUofmpElaTegW1eHG7q2oOSjXSGa0Zcf4CIw","optimizeRefresh":true,"isPopup":true,"nullDisplayValue":"- Select Agreement -","dynamicDefault":false,"columns": {"D": {"heading":"Display","headingAlignment":"start","alignment":"start","index":0}, "R": {"heading":"Value","headingAlignment":"start","alignment":"start","index":1}},"valueColumn":"R","displayColumn":"D","extraOut": {},"persistState":true});})();
+(function(){apex.widget.selectList("#P639_TRAFFIC_DIRECTION",{"ajaxIdentifier":"SVRFTSBUWVBFfjUxMjB-MzEwOTg3Mjg5ODEwMTI5Njg5\u002F7g0yjzg5RMXC0uF1Bfb1EpswujdbsDGmBXzInxZtm3rh6w3f-dAwM52eTVD2VgEsexU9-9GCeKEiFZqmdzQ3ow"});})();
+(function(){apex.widget.selectList("#P639_SERVICE_TYPE_ID",{"nullValue":"","dependingOnSelector":"#P639_IOT_AGREEMENT_ID","optimizeRefresh":true,"ajaxIdentifier":"SVRFTSBUWVBFfjUxMjB-MzEwOTg2ODg2ODU3MTI5Njg4\u002FIqS5wFvLqF3woeIy4SpZapO2XfTJpjZJua0MHNkBm5Kloi7Rhfagc14Fa7tRL65ib7aNrSCI6oGVJoOEfwKb8g"});})();
+(function(){apex.widget.selectList("#P639_EVENT_TYPE_ID",{"dependingOnSelector":"#P639_SERVICE_TYPE_ID","optimizeRefresh":false,"pageItemsToSubmit":"#P639_IOT_AGREEMENT_ID","ajaxIdentifier":"SVRFTSBUWVBFfjUxMjB-MzEwOTg3MTA1NDY2MTI5Njg4\u002FQ5L0hRnbFkciDbEd6MZI0RXhHUbGC3wah63S1K-B1X9OoCoKi98PsEzK78SYDyJFWw1476UA1oDljWZz3fsy5w"});})();
+(function(){apex.widget.selectList("#P639_CALCULATION_TYPE",{"dependingOnSelector":"#P639_IOT_AGREEMENT_ID,#P639_ORIGINAL_LATEST","optimizeRefresh":true,"pageItemsToSubmit":"#P639_IOT_AGREEMENT_ID,#P639_ORIGINAL_LATEST","ajaxIdentifier":"SVRFTSBUWVBFfjUxMjB-MzQ3MTE4Mjk5NTIxOTMzMTkw\u002F2x9WYPYpeZoqHibLktz1R7mrDJ7LkDrUw3A_YNJhZCDI6bl4sl31LWZAS1yRDQp8vaZkC1HGloS7kikXG8rhzg"});})();
+(function(){apex.widget.selectList("#P639_AGREE_HOME_SDR",{"ajaxIdentifier":"SVRFTSBUWVBFfjUxMjB-MzcwMzg0Mjc5MjU2MDIxNTg0\u002FPE8iPSWk373jWcz3lRQJD62JWPzND8-c1J_Me7pQ9pdciIC-3WYWjHA_WWHf6gBsBXZdSTHm-igzYLOLWVoZrQ"});})();
+(function(){apex.widget.selectList("#P639_DISCOUNT_METHOD",{"ajaxIdentifier":"SVRFTSBUWVBFfjUxMjB-MTEyMTk2MDYzMjI0MDQxODUz\u002FCp7AibRsv223Ia3pp5g4hfDgJsiOd45sVVUFAV1CLqtoa5Uigz0gwFym3ycCJ28SGVM1vxS0o389AVo9DszLOw"});})();
+(function(){apex.widget.yesNo("P639_PER_HOME_PMN","SWITCH_CB");})();
+(function(){apex.widget.yesNo("P639_PER_PARTNER_PMN","SWITCH_CB");})();
+(function(){apex.widget.yesNo("P639_BLENDED","SWITCH_CB");})();
+(function(){apex.widget.yesNo("P639_ONLY_LATEST_MONTH","SWITCH_CB");})();
+(function(){apex.widget.yesNo("P639_RTI_GROUP","SWITCH_CB");})();
+(function(){apex.jQuery("#REFRESH").click( event => { apex.submit({request:'REFRESH',validate:true}); });})();
+(function(){apex.jQuery("#RESET").click( event => { apex.submit({request:'RESET',validate:true}); });})();
+} catch(e) {apex.debug.error(e)};
+apex.item.waitForDelayLoadItems().done(function() {
+try {
+(function(){apex.da.initDaEventList();
+apex.da.init();})();
+apex.theme42.initializePage.rightSideCol();
+rename_shuttle("P639_HOME_PMN_BULK", "Home PMN Excluded", "Home PMN Included");
+rename_shuttle("P639_PARTNER_PMN_BULK", "Home PMN Excluded", "Home PMN Included");
+
+
+//Shuttle filter for Add or remove
+APEXShuttleFilter.init(
+  "P639_HOME_PMN_BULK",
+  "P639_HOME_PMN_BULK_SEARCH",
+  ["P639_IOT_AGREEMENT_ID"]
+);
+
+APEXShuttleFilter.init(
+  "P639_PARTNER_PMN_BULK",
+  "P639_PARTNER_PMN_BULK_SEARCH",
+  ["P639_IOT_AGREEMENT_ID"]
+);
+
+} finally {
+apex.event.trigger(apex.gPageContext$,'apexreadyend');
+};
+});
+});
+});apex.pwa.cleanup( { serviceWorkerPath:'\u002Ffuat\u002Fr\u002Fprongc\u002Fngcmain10145\u002Fsw.js?v=24.2.5-34556071947\u0026lang=en-gb' } );
+</script>
+
+
+<input id="apexCBMDummySelection" class="u-hidden" value="x"><div id="pushModal" class="u-DisplayNone u-Overlay--glass"></div><div id="P639_RESULTS_R_column_search_drop" class="a-IRR-colSearch a-Menu" role="menu" style="display: none;"></div><div id="P639_RESULTS_R_actions_menu" role="menu" class="a-Menu" style="display: none;"></div><div role="dialog" aria-label="Column Actions" aria-modal="true" class="a-IRR-sortWidget" id="P639_RESULTS_R_sort_widget" style="display:none;"><h1 class="u-vh" aria-roledescription="Visually hidden dialog title">Column Actions</h1><ul role="toolbar" class="a-IRR-sortWidget-actions" id="P639_RESULTS_R_sort_widget_actions"><li role="none" class="a-IRR-sortWidget-actions-item" id="P639_RESULTS_R_sort_widget_action_up"><button class="a-Button a-IRR-button a-IRR-sortWidget-button" type="button" title="Sort Ascending" aria-label="Sort Ascending" data-option="up"><span aria-hidden="true" class="a-Icon icon-irr-sort-asc"></span></button></li><li role="none" class="a-IRR-sortWidget-actions-item" id="P639_RESULTS_R_sort_widget_action_down"><button class="a-Button a-IRR-button a-IRR-sortWidget-button" type="button" title="Sort Descending" aria-label="Sort Descending" data-option="down"><span aria-hidden="true" class="a-Icon icon-irr-sort-desc"></span></button></li><li role="none" class="a-IRR-sortWidget-actions-item" id="P639_RESULTS_R_sort_widget_action_hide"><button class="a-Button a-IRR-button a-IRR-sortWidget-button" type="button" title="Hide Column" aria-label="Hide Column" data-option="hide"><span aria-hidden="true" class="a-Icon icon-irr-remove-col"></span></button></li><li role="none" class="a-IRR-sortWidget-actions-item" id="P639_RESULTS_R_sort_widget_action_break"><button class="a-Button a-IRR-button a-IRR-sortWidget-button" type="button" title="Control Break" aria-label="Control Break" data-option="break"><span aria-hidden="true" class="a-Icon icon-irr-control-break"></span></button></li><li role="none" class="a-IRR-sortWidget-actions-item" id="P639_RESULTS_R_sort_widget_action_help"><button class="a-Button a-IRR-button a-IRR-sortWidget-button" type="button" title="Help" aria-label="Help" data-option="help" aria-pressed="false"><span aria-hidden="true" class="a-Icon icon-irr-help"></span></button></li><li role="none" class="a-IRR-sortWidget-actions-item" id="P639_RESULTS_R_sort_widget_action_computation"><button class="a-Button a-IRR-button a-IRR-sortWidget-button" type="button" title="Compute" aria-label="Compute" data-option="computation"><span aria-hidden="true" class="a-Icon icon-irr-calculator"></span></button></li></ul><div role="region" aria-label="Help" class="a-IRR-sortWidget-help" id="P639_RESULTS_R_sort_widget_help"></div><div role="search" class="a-IRR-sortWidget-search" id="P639_RESULTS_R_sort_widget_search"><label for="P639_RESULTS_R_sort_widget_search_field"><span aria-hidden="true" class="a-IRR-sortWidget-searchLabel"></span><span class="u-vh">Search</span></label><input id="P639_RESULTS_R_sort_widget_search_field" class="a-IRR-sortWidget-searchField" type="text" placeholder="Filter..."><div role="group" aria-label="Filter suggestions" class="a-IRR-sortWidget-rows" id="P639_RESULTS_R_sort_widget_rows"></div></div></div><div role="log" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></div><div tabindex="-1" role="dialog" class="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-draggable ui-resizable" aria-labelledby="ui-id-5" style="display: none; position: absolute;"><div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle"><h1 id="ui-id-5" class="ui-dialog-title" aria-roledescription="Dialog Title">AOP Download</h1><button type="button" class="ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close" title="Close" aria-label="Close" aria-describedby="ui-id-5"><span class="ui-button-icon ui-icon ui-icon-closethick"></span></button></div><div id="ui-id-4" class="ui-dialog-content t-DialogRegion uc-aop--dialog uc-aop--apex24 uc-aop--ui-id-3 ui-widget-content"><div class="t-DialogRegion-wrap">                                   <div class="t-DialogRegion-bodyWrapperOut">                         <div class="t-DialogRegion-bodyWrapperIn">                          <div class="t-DialogRegion-body uc-aop-DialogRegion-body"></div>                         </div>                                                          </div>                                                            <div class="t-DialogRegion-buttons">                                <div class="t-ButtonRegion t-ButtonRegion--dialogRegion">           <div class="t-ButtonRegion-wrap">                                   <div class="t-ButtonRegion-col t-ButtonRegion-col--left">           <div class="t-ButtonRegion-buttons"><button class="t-Button t-Button--iconRight" type="button" id=""><span class="t-Icon t-Icon--left fa undefined" aria-hidden="true"></span><span class="t-Button-label">Cancel</span><span class="t-Icon t-Icon--right fa undefined" aria-hidden="true"></span></button></div>                      </div>                                                            <div class="t-ButtonRegion-col t-ButtonRegion-col--right">          <div class="t-ButtonRegion-buttons"><button class="t-Button t-Button--hot t-Button--iconRight" type="button" id=""><span class="t-Icon t-Icon--left fa undefined" aria-hidden="true"></span><span class="t-Button-label">Go</span><span class="t-Icon t-Icon--right fa undefined" aria-hidden="true"></span></button></div>                      </div>                                                          </div>                                                          </div>                                                          </div>                                                          </div></div><div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90;"></div></div><div class="t-NavigationBar-menu a-Menu" style="display:none;" id="menu_L129377231477185527" role="menu"><ul><li class="username" data-current="false" data-icon=""><a href="" title="" target="" data-otel-label="">Username: MAYUR.MARADIYA</a></li><li class="" data-current="false" data-icon=""><a href="f?p=10132:429:9553260348680:639:::P429_REGION_DISPLAY:Y" title="" target="" data-otel-label="">Change Password</a></li><li class="" data-current="false" data-icon=""><a href="#action$a-dialog-open?url=f%3Fp%3D10145%3A55%3A9553260348680%3A%3A%3A55%26p_dialog_cs%3DXelO9VdLZ9z9Q5Oe09bzFlmeRmGBBXRT3-gzx0sD323TQFprZ5JPwhx6WIkAu_hZkIVat_ZKpqIl_CdYbn9MLA&amp;appId=10145&amp;pageId=55&amp;tmpl=MODAL_DIALOG&amp;title=Confirm%20Logout&amp;h=200&amp;w=350&amp;mxw=960&amp;isModal=true&amp;dlgCls=&amp;pageCls=&amp;trgEl=apex.gPageContext%24" title="" target="" data-otel-label="" aria-roledescription="dialog link">Logout</a></li></ul></div><script type="text/javascript" id="" charset="">(function(h){(function(a,c,g,d,b){b=a[d]=a[d]||{};b._q=b._q||[];var f="initialize identify updateOptions pageLoad track trackAgent".split(" ");a=0;for(d=f.length;a<d;++a)(function(e){b[e]=b[e]||function(){b._q[e===f[0]?"unshift":"push"]([e].concat([].slice.call(arguments,0)))}})(f[a]);a=c.createElement(g);a.async=!0;a.src="https://cdn.eu.pendo.io/agent/static/"+h+"/pendo.js";c=c.getElementsByTagName(g)[0];c.parentNode.insertBefore(a,c)})(window,document,"script","pendo");pendo.initialize({visitor:{id:google_tag_manager["rm"]["242674320"](5),
+email:google_tag_manager["rm"]["242674320"](6),firstName:google_tag_manager["rm"]["242674320"](7),lastName:google_tag_manager["rm"]["242674320"](8)},account:{id:"",accountName:google_tag_manager["rm"]["242674320"](9),environment:google_tag_manager["rm"]["242674320"](10),product:google_tag_manager["rm"]["242674320"](11)}})})("6ff4e6e8-dd70-4519-b2d1-5c14b23801bc");</script><script type="text/javascript" id="" charset="">(function(h){(function(a,c,g,d,b){b=a[d]=a[d]||{};b._q=b._q||[];var f="initialize identify updateOptions pageLoad track trackAgent".split(" ");a=0;for(d=f.length;a<d;++a)(function(e){b[e]=b[e]||function(){b._q[e===f[0]?"unshift":"push"]([e].concat([].slice.call(arguments,0)))}})(f[a]);a=c.createElement(g);a.async=!0;a.src="https://cdn.eu.pendo.io/agent/static/"+h+"/pendo.js";c=c.getElementsByTagName(g)[0];c.parentNode.insertBefore(a,c)})(window,document,"script","pendo");pendo.initialize({visitor:{id:google_tag_manager["rm"]["242674320"](13),
+email:google_tag_manager["rm"]["242674320"](14),firstName:google_tag_manager["rm"]["242674320"](15),lastName:google_tag_manager["rm"]["242674320"](16)},account:{id:"",accountName:google_tag_manager["rm"]["242674320"](17),environment:google_tag_manager["rm"]["242674320"](18),product:google_tag_manager["rm"]["242674320"](19)}})})("6ff4e6e8-dd70-4519-b2d1-5c14b23801bc");</script><div tabindex="-1" role="dialog" class="ui-dialog ui-dialog-popuplov ui-widget ui-widget-content ui-front ui-dialog--popup" aria-describedby="PopupLov_639_P639_IOT_AGREEMENT_ID_dlg" aria-labelledby="ui-id-6" style="position: fixed; height: auto; width: 208.8px; top: 197.4px; left: 1297px; display: none;"><div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix" style="display: none;"><span id="ui-id-6" class="ui-dialog-title">Search</span><button type="button" class="ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close" title="Close"><span class="ui-button-icon ui-icon ui-icon-closethick"></span><span class="ui-button-icon-space"> </span>Close</button></div><div class="a-PopupLOV-dialog ui-dialog-content ui-widget-content" id="PopupLov_639_P639_IOT_AGREEMENT_ID_dlg" role="application" style="width: auto; min-height: 0px; max-height: none; height: 280px;"><div class="a-PopupLOV-searchBar"><input type="text" aria-label="Search" maxlength="100" class="a-PopupLOV-search apex-item-text" value=""><button type="button" class="a-Button a-PopupLOV-doSearch" aria-label="Search"><span class="a-Icon icon-search" aria-hidden="true"></span></button></div><div class="a-PopupLOV-clear"><button class="a-PopupLOV-clearButton" type="button">- Select Agreement -</button></div><div class="a-PopupLOV-results a-TMV js-no-select"><div class="a-TMV-body" style="height: 198.8px;"><div class="a-GV-noDataMsg a-GV-altMessage" style="display:none;" role="region" aria-label="No data found"><div class="a-GV-altMessage-icon" role="img" aria-label="No data found"><span class="a-Icon icon-irr-no-results"></span></div><div role="status"><span class="a-GV-altMessage-text">No results found.</span></div></div><div class="a-GV-moreDataMsg a-GV-altMessage" style="display:none;"><div class="a-GV-altMessage-icon" aria-hidden="true"><span class="a-Icon icon-warning"></span></div><div role="status"><span class="a-GV-altMessage-text"></span></div></div><div class="a-TMV-w-scroll" tabindex="-1" style="width: 208.8px; height: 198.8px;"><span id="il3_info" class="u-DisplayNone">Presented in 1 rows</span><ul class="a-IconList" role="listbox" aria-labelledby="il3_info" aria-orientation="undefined"><li data-id="168437" class="a-IconList-item" role="option" tabindex="0" aria-selected="true"><span class="popup-lov-highlight">Orange Group:MAR25 FEB26</span>   (ID: 168437)</li></ul><div class="a-GV-loadMore"><button type="button" class="a-Button js-load a-GV-loadMoreButton" disabled="disabled">Show More</button></div></div></div></div></div></div></body></html>

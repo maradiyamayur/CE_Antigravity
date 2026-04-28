@@ -18,6 +18,9 @@ public class DiscountAgreementsPage extends BasePage {
     private By allAgreementsRadio = By.id("P301_SHOW_LIVE_AGRMTS_1");
     private By applyButton       = By.id("P86_APPLY_B");
 
+    /** Reset button – clears the IR search/filter state */
+    private By resetButton        = By.xpath("//button[@id='P301_RESET_B']");
+
     /** Interactive Report search controls */
     private By searchField        = By.id("p301ir1_search_field");
     private By searchButton       = By.id("p301ir1_search_button");
@@ -69,6 +72,63 @@ public class DiscountAgreementsPage extends BasePage {
     }
 
     /**
+     * Resets the Interactive Report via the Action menu — three-step flow:
+     *
+     * <ol>
+     *   <li>Wait for the Actions menu button to be CLICKABLE, then click it
+     *       (XPath: {@code //button[@id='p301ir1_actions_button']})</li>
+     *   <li>Wait for the Reset menu option to be CLICKABLE, then click it
+     *       (XPath: {@code //button[@id='p301ir1_actions_menu_10i']})</li>
+     *   <li>Wait for the Apply confirmation popup button to be VISIBLE, then
+     *       click it (XPath: {@code //button[@class='ui-button--hot ui-button
+     *       ui-corner-all ui-widget']})</li>
+     * </ol>
+     *
+     * After clicking Apply this method waits for the IR data panel to finish
+     * reloading before returning, so the next iteration can start cleanly.
+     *
+     * Call this at the START of every loop iteration (before searching) to
+     * guarantee the search field is fully cleared from the previous run.
+     */
+    public void resetViaActionMenu() {
+        WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(60));
+
+        // ── STEP 1: Open the Actions menu ────────────────────────────────────
+        By actionsBtn = By.xpath("//button[@id='p301ir1_actions_button']");
+        System.out.println("[Reset] Step 1 – Waiting for Actions menu button to be clickable...");
+        WebElement actionsBtnEl = longWait.until(ExpectedConditions.elementToBeClickable(actionsBtn));
+        actionsBtnEl.click();
+        System.out.println("[Reset] Step 1 – Actions menu opened.");
+
+        // ── STEP 2: Click the "Reset" option from the Actions menu ───────────
+        By resetMenuItem = By.xpath("//button[@id='p301ir1_actions_menu_10i']");
+        System.out.println("[Reset] Step 2 – Waiting for Reset menu option to be clickable...");
+        WebElement resetMenuEl = longWait.until(ExpectedConditions.elementToBeClickable(resetMenuItem));
+        resetMenuEl.click();
+        System.out.println("[Reset] Step 2 – Reset menu option clicked.");
+
+        // ── STEP 3: Click "Apply" on the confirmation popup ──────────────────
+        By applyPopupBtn = By.xpath(
+                "//button[@class='ui-button--hot ui-button ui-corner-all ui-widget']");
+        System.out.println("[Reset] Step 3 – Waiting for Apply popup button to be visible...");
+        WebElement applyBtn = longWait.until(ExpectedConditions.visibilityOfElementLocated(applyPopupBtn));
+        applyBtn.click();
+        System.out.println("[Reset] Step 3 – Apply popup button clicked. Waiting for page/report to reload...");
+
+        // ── Wait for the IR data panel to finish reloading after Apply ────────
+        try {
+            longWait.until(ExpectedConditions.textToBePresentInElementLocated(
+                    By.id("p301ir1_data_panel"), "Agreements data is loading"));
+        } catch (Exception e) {
+            // Reload was too fast – the loading message may never appear; continue
+        }
+        longWait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElementLocated(
+                By.id("p301ir1_data_panel"), "Agreements data is loading")));
+
+        System.out.println("[Reset] Report reset via Action menu completed. Page fully reloaded.");
+    }
+
+    /**
      * Sets the search filter type to "Agreement" (column selector), types the
      * agreement name, presses Search, and waits for the result row to appear.
      *
@@ -110,7 +170,10 @@ public class DiscountAgreementsPage extends BasePage {
         // 3. Type the agreement name into the search field
         System.out.println("Entering search term: " + agreementName);
         WebElement searchBox = wait.until(ExpectedConditions.visibilityOfElementLocated(searchField));
+        // Triple-clear: ensures previous agreement name does not persist on iteration 2+
         searchBox.clear();
+        searchBox.sendKeys(org.openqa.selenium.Keys.chord(org.openqa.selenium.Keys.CONTROL, "a"));
+        searchBox.sendKeys(org.openqa.selenium.Keys.DELETE);
         searchBox.sendKeys(agreementName);
 
         // 4. Click the Search button
@@ -129,7 +192,10 @@ public class DiscountAgreementsPage extends BasePage {
     }
 
     /**
-     * Clicks the Edit link in the row that contains {@code agreementName}.
+     * Clicks the Edit link in the row that contains {@code agreementName}
+     * and waits until the Agreement detail page (Page 119) has fully loaded
+     * before returning.  The caller can safely call
+     * {@link AgreementDetailPage#clickSettlementTab()} immediately after this.
      */
     public void clickEditForAgreement(String agreementName) {
         System.out.println("Clicking Edit for agreement: " + agreementName);
@@ -142,6 +208,24 @@ public class DiscountAgreementsPage extends BasePage {
             editLink.click();
         } catch (Exception e) {
             jsClick(editLink);
+        }
+
+        // ── Wait for the Agreement detail page to fully load ─────────────────
+        // We wait for the tab-bar container on Page 119.  This element is only
+        // present once the browser has navigated away from Page 301, so it acts
+        // as a reliable "page-ready" sentinel before any tab interaction.
+        WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        By detailPageTabBar = By.id("SR_P119_tabs");           // outer tab container on page 119
+        By fallbackTabBar   = By.id("SR_P119_SETTLEMENT_R_tab"); // the Settlement tab itself
+        System.out.println("[clickEditForAgreement] Waiting for Agreement detail page to load...");
+        try {
+            longWait.until(ExpectedConditions.or(
+                ExpectedConditions.presenceOfElementLocated(detailPageTabBar),
+                ExpectedConditions.presenceOfElementLocated(fallbackTabBar)
+            ));
+            System.out.println("[clickEditForAgreement] Agreement detail page loaded.");
+        } catch (Exception e) {
+            System.out.println("[clickEditForAgreement] WARNING: Detail page load sentinel not found within 60 s. Proceeding anyway.");
         }
     }
 

@@ -6,11 +6,11 @@
     },
     {
       "AGREEMENT_NAME": "Kuwait:STC Kuwait APR25 MAR26",
-      "enabled": false
+      "enabled": true
     },
     {
       "AGREEMENT_NAME": "Azerbaijan:Azercell Azerbaijan APR25 MAR26",
-      "enabled": false
+      "enabled": true
     },
     {
       "AGREEMENT_NAME": "France:Orange France APR25 MAR26",
@@ -18,7 +18,7 @@
     },
     {
       "AGREEMENT_NAME": "Guernsey:Sure Guernsey JAN24 DEC24",
-      "enabled": true
+      "enabled": false
     },
     {
       "AGREEMENT_NAME": "Guernsey:Sure Guernsey JAN24 DEC24",

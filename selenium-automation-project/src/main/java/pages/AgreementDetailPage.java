@@ -28,7 +28,15 @@ public class AgreementDetailPage extends BasePage {
 
     public void clickSettlementTab() {
         System.out.println("Clicking Settlement Tab...");
-        
+
+        // ── Guard: ensure we are on the Agreement detail page before touching tabs ──
+        // Wait for the Settlement tab element to be PRESENT in the DOM first.
+        // This handles the race condition where clickSettlementTab() is called
+        // while the browser is still navigating from Page 301 to Page 119.
+        System.out.println("[clickSettlementTab] Waiting for Settlement tab to be present in DOM...");
+        wait.until(ExpectedConditions.presenceOfElementLocated(settlementTab));
+        System.out.println("[clickSettlementTab] Settlement tab is present. Waiting for it to be clickable...");
+
         try {
             WebElement tab = wait.until(ExpectedConditions.elementToBeClickable(settlementTab));
             scrollToElement(tab);
