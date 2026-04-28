@@ -421,6 +421,22 @@ public class IotronAutomationTest {
                     // Average Rate EoA = Discount Charge EoA / Traffic Volume Restricted EoA
                     System.out.println("\n--- Step 10: Manual Calculation Results ---");
 
+                    // ── [Send or Pay Financial] Lower Bound extraction ────────────
+                    // Read once per agreement from the Discount Parameter XLSX sheet.
+                    boolean sendOrPayActive = false;
+                    double lowerBound = 0.0;
+                    if (settlementData != null && settlementData.getDiscountParameter() != null) {
+                        for (Map<String, String> pRow : settlementData.getDiscountParameter()) {
+                            if ("Send or Pay Financial (All Services)".equals(pRow.get("Calculation Type"))) {
+                                sendOrPayActive = true;
+                                lowerBound = parseNum(pRow.getOrDefault("Lower Bound", "0"));
+                                break;
+                            }
+                        }
+                    }
+                    System.out.println("[CommitmentCheck] sendOrPayActive=" + sendOrPayActive
+                            + (sendOrPayActive ? ", lowerBound=" + fmt(lowerBound) : ""));
+
                     // Build result rows
                     List<Map<String, String>> calcResults = new java.util.ArrayList<>();
                     Map<String, AggregatedData> aggregations = new java.util.LinkedHashMap<>();
@@ -511,12 +527,53 @@ public class IotronAutomationTest {
                     // Print formatted ASCII table
                     printTable(calcResults);
 
+                    // ── [Send or Pay Financial] Commitment condition check ────────
+                    // Condition: sendOrPayActive AND SUM(chargeEoA across all rows) < lowerBound
+                    boolean commitmentNotAchieved = false;
+                    double totalChargeEoA = 0.0;
+                    if (sendOrPayActive) {
+                        for (Map<String, String> r : calcResults) {
+                            totalChargeEoA += parseNum(r.get("Discount Charge EoA"));
+                        }
+                        commitmentNotAchieved = totalChargeEoA < lowerBound;
+                        System.out.println("[CommitmentCheck] totalChargeEoA=" + fmt(totalChargeEoA)
+                                + ", lowerBound=" + fmt(lowerBound)
+                                + ", commitmentNotAchieved=" + commitmentNotAchieved);
+                    }
+
+                    // ── [Send or Pay Financial] Per-row override ─────────────────
+                    // Applies ONLY when commitmentNotAchieved == true.
+                    if (commitmentNotAchieved) {
+                        System.out.println("[CommitmentCheck] Applying commitment override (Discounted Charge EoA < Lower Bound).");
+                        for (Map<String, String> r : calcResults) {
+                            double chEoA  = parseNum(r.get("Discount Charge EoA"));
+                            double tEoA   = parseNum(r.get("TAP EoA"));
+                            double vEoA   = parseNum(r.get("Vol EoA"));
+                            // Step 2 – Share Split
+                            double split  = (totalChargeEoA != 0) ? chEoA / totalChargeEoA : 0.0;
+                            // Step 3 – New Discount Charge EoA
+                            double newCh  = split * lowerBound;
+                            // Step 4 – Override Discount Achieved EoA
+                            double newAch = tEoA - newCh;
+                            // Step 5 – Override Avg Rate EoA
+                            double newRate = (vEoA != 0) ? newCh / vEoA : 0.0;
+
+                            // Step 1 – Commitment label
+                            r.put("Commitment",              "Commitment Not Achieved");
+                            r.put("Share Split",             fmt(split));
+                            r.put("New Discount Charge EoA", fmt(newCh));
+                            // Overrides (Steps 4 & 5)
+                            r.put("Discount Achieved EoA",   fmt(newAch));
+                            r.put("Avg Rate EoA",            fmt(newRate));
+                        }
+                    }
+
                     // Save as HTML report for easy cross-verification.
                     // Report filename is unique per agreement to avoid overwrites.
                     String safeAgreementName = AGREEMENT_NAME.replaceAll("[^a-zA-Z0-9]", "_");
                     String reportPath = System.getProperty("user.dir") + File.separator + "target"
                             + File.separator + "manual_calculation_report_" + safeAgreementName + ".html";
-                    writeHtmlReport(calcResults, aggregations, reportPath, AGREEMENT_NAME);
+                    writeHtmlReport(calcResults, aggregations, reportPath, AGREEMENT_NAME, commitmentNotAchieved, lowerBound);
                     System.out.println("\n\uD83D\uDCC4 HTML Calculation Report saved to: " + reportPath);
 
                 } catch (Exception e) {
@@ -656,7 +713,7 @@ public class IotronAutomationTest {
      * Columns are color-coded: blue = input, green = calculated result.
      */
     private static void writeHtmlReport(List<Map<String, String>> rows, Map<String, AggregatedData> aggregations,
-            String filePath, String agreementName) {
+            String filePath, String agreementName, boolean commitmentNotAchieved, double lowerBound) {
         StringBuilder html = new StringBuilder();
         html.append("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n")
                 .append("<meta charset=\"UTF-8\">\n")
@@ -703,8 +760,14 @@ public class IotronAutomationTest {
                 .append("  <th class=\"inp\">TAP Charge EoA</th>\n")
                 .append("  <th class=\"inp\">Traffic Volume Restricted Cum</th>\n")
                 .append("  <th class=\"inp\">TAP Charge Restricted Cum</th>\n")
-                .append("  <th class=\"eoa\">Discount Charge EoA<br><small>= Vol EoA &times; Basis</small></th>\n")
-                .append("  <th class=\"eoa\">Discount Achieved EoA<br><small>= TAP EoA &minus; Charge</small></th>\n")
+                .append("  <th class=\"eoa\">Discount Charge EoA<br><small>= Vol EoA &times; Basis</small></th>\n");
+        if (commitmentNotAchieved) {
+            html.append("  <th class=\"eoa\">Commitment</th>\n")
+                .append("  <th class=\"eoa\">Share Split<br><small>= Charge EoA / &sum; Charge EoA</small></th>\n")
+                .append("  <th class=\"eoa\">New Discount Charge EoA<br><small>= Share Split &times; Lower Bound (")
+                .append(fmt(lowerBound)).append(")</small></th>\n");
+        }
+        html.append("  <th class=\"eoa\">Discount Achieved EoA<br><small>= TAP EoA &minus; Charge</small></th>\n")
                 .append("  <th class=\"eoa\">Avg Rate EoA<br><small>= Charge / Vol</small></th>\n")
                 .append("  <th class=\"cum\">Discount Charge Cum<br><small>= Vol Cum &times; Basis</small></th>\n")
                 .append("  <th class=\"cum\">Discount Achieved Cum<br><small>= TAP Cum &minus; Charge</small></th>\n")
@@ -735,6 +798,11 @@ public class IotronAutomationTest {
 
                 html.append("<td style=\"background:#eafaf1;\">").append(esc(row.get("Discount Charge EoA")))
                         .append("</td>");
+                if (commitmentNotAchieved) {
+                    html.append("<td class=\"txt\" style=\"background:#fde8d8; color:#7b241c; font-weight:bold;\">").append(esc(row.getOrDefault("Commitment", ""))).append("</td>");
+                    html.append("<td style=\"background:#fde8d8; color:#7b241c;\">").append(esc(row.getOrDefault("Share Split", ""))).append("</td>");
+                    html.append("<td style=\"background:#fde8d8; color:#7b241c; font-weight:bold;\">").append(esc(row.getOrDefault("New Discount Charge EoA", ""))).append("</td>");
+                }
                 html.append("<td style=\"background:#eafaf1;\">").append(esc(row.get("Discount Achieved EoA")))
                         .append("</td>");
                 html.append("<td style=\"background:#eafaf1;\">").append(esc(row.get("Avg Rate EoA"))).append("</td>");
@@ -759,6 +827,11 @@ public class IotronAutomationTest {
                 html.append("<td></td>");
                 html.append("<td style=\"background:#d5f5e3; color:#1e8449;\">").append(fmt(agg.chargeEoA))
                         .append("</td>");
+                if (commitmentNotAchieved) {
+                    html.append("<td></td>");
+                    html.append("<td></td>");
+                    html.append("<td></td>");
+                }
                 html.append("<td style=\"background:#d5f5e3; color:#1e8449;\">").append(fmt(agg.achievedEoA))
                         .append("</td>");
                 html.append("<td style=\"background:#d5f5e3; color:#1e8449;\"></td>");
@@ -781,8 +854,15 @@ public class IotronAutomationTest {
                 .append("&nbsp;&nbsp;Avg Rate EoA = <b>Discount Charge EoA</b> &divide; <b>Traffic Volume Restricted EoA</b><br>\n")
                 .append("&nbsp;&nbsp;Discount Charge Cum = <b>Traffic Volume Restricted Cum</b> &times; <b>Discount Basis Value</b><br>\n")
                 .append("&nbsp;&nbsp;Discount Achieved Cum = <b>TAP Charge Restricted Cum</b> &minus; <b>Discount Charge Cum</b><br>\n")
-                .append("&nbsp;&nbsp;Avg Rate Cum = <b>Discount Charge Cum</b> &divide; <b>Traffic Volume Restricted Cum</b>\n")
-                .append("</div>\n");
+                .append("&nbsp;&nbsp;Avg Rate Cum = <b>Discount Charge Cum</b> &divide; <b>Traffic Volume Restricted Cum</b>\n");
+        if (commitmentNotAchieved) {
+            html.append("<br><b>Send or Pay Financial &mdash; Commitment Not Achieved Overrides:</b><br>\n")
+                    .append("&nbsp;&nbsp;Share Split = <b>Discount Charge EoA (row)</b> &divide; <b>&sum; Discount Charge EoA (all rows)</b><br>\n")
+                    .append("&nbsp;&nbsp;New Discount Charge EoA = <b>Share Split</b> &times; <b>Lower Bound (" + fmt(lowerBound) + ")</b><br>\n")
+                    .append("&nbsp;&nbsp;Discount Achieved EoA <i>(overridden)</i> = <b>TAP Charge EoA</b> &minus; <b>New Discount Charge EoA</b><br>\n")
+                    .append("&nbsp;&nbsp;Avg Rate EoA <i>(overridden)</i> = <b>New Discount Charge EoA</b> &divide; <b>Traffic Volume Restricted EoA</b>\n");
+        }
+        html.append("</div>\n");
 
         html.append("</body>\n</html>\n");
 
