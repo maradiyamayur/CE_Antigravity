@@ -549,14 +549,23 @@ public class IotronAutomationTest {
                             double chEoA  = parseNum(r.get("Discount Charge EoA"));
                             double tEoA   = parseNum(r.get("TAP EoA"));
                             double vEoA   = parseNum(r.get("Vol EoA"));
+                            double vCum   = parseNum(r.get("Vol Cum"));
+                            double tCum   = parseNum(r.get("TAP Cum"));
+
                             // Step 2 – Share Split
-                            double split  = (totalChargeEoA != 0) ? chEoA / totalChargeEoA : 0.0;
+                            double split    = (totalChargeEoA != 0) ? chEoA / totalChargeEoA : 0.0;
                             // Step 3 – New Discount Charge EoA
-                            double newCh  = split * lowerBound;
+                            double newCh    = split * lowerBound;
                             // Step 4 – Override Discount Achieved EoA
-                            double newAch = tEoA - newCh;
+                            double newAch   = tEoA - newCh;
                             // Step 5 – Override Avg Rate EoA
-                            double newRate = (vEoA != 0) ? newCh / vEoA : 0.0;
+                            double newRate  = (vEoA != 0) ? newCh / vEoA : 0.0;
+                            // Step 6 – Override Discount Charge Cum  = Avg Rate EoA * Vol Cum
+                            double newChCum  = newRate * vCum;
+                            // Step 6b – Cascade: Discount Achieved Cum = TAP Cum - Discount Charge Cum
+                            double newAchCum = tCum - newChCum;
+                            // Step 6c – Cascade: Avg Rate Cum = Discount Charge Cum / Vol Cum
+                            double newRateCum = (vCum != 0) ? newChCum / vCum : 0.0;
 
                             // Step 1 – Commitment label
                             r.put("Commitment",              "Commitment Not Achieved");
@@ -565,7 +574,29 @@ public class IotronAutomationTest {
                             // Overrides (Steps 4 & 5)
                             r.put("Discount Achieved EoA",   fmt(newAch));
                             r.put("Avg Rate EoA",            fmt(newRate));
+                            // Overrides (Step 6 cascades)
+                            r.put("Discount Charge Cum",    fmt(newChCum));
+                            r.put("Discount Achieved Cum",  fmt(newAchCum));
+                            r.put("Avg Rate Cum",           fmt(newRateCum));
                         }
+
+                        // Rebuild aggregation totals from the overridden per-row values
+                        // so the TOTAL row in the HTML report reflects the correct numbers.
+                        for (AggregatedData agg : aggregations.values()) {
+                            agg.achievedEoA = 0.0;
+                            agg.chargeCum   = 0.0;
+                            agg.achievedCum = 0.0;
+                        }
+                        for (Map<String, String> r : calcResults) {
+                            String aggKey = r.get("Direction") + "|" + r.get("Traffic Period");
+                            AggregatedData agg = aggregations.get(aggKey);
+                            if (agg != null) {
+                                agg.achievedEoA += parseNum(r.get("Discount Achieved EoA"));
+                                agg.chargeCum   += parseNum(r.get("Discount Charge Cum"));
+                                agg.achievedCum += parseNum(r.get("Discount Achieved Cum"));
+                            }
+                        }
+                        System.out.println("[CommitmentCheck] Aggregation totals rebuilt from overridden values.");
                     }
 
                     // Save as HTML report for easy cross-verification.
