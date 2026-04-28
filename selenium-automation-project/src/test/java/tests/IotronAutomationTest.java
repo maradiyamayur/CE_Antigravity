@@ -534,6 +534,55 @@ public class IotronAutomationTest {
 
         } // end for (AGREEMENT_NAME : enabledAgreements)
 
+        // ---------------------------------------------------------------
+        // Post-run cleanup: remove stale files for disabled agreements
+        // Targets:  manual_calculation_report_*.html
+        //           settlement_data_*.json
+        // ---------------------------------------------------------------
+        System.out.println("\n[Cleanup] Removing stale report/data files for disabled agreements...");
+
+        // Build expected filenames from the currently-enabled agreements
+        java.util.Set<String> expectedHtmlNames = new java.util.HashSet<>();
+        java.util.Set<String> expectedJsonNames = new java.util.HashSet<>();
+        for (String name : enabledAgreements) {
+            String safe = name.replaceAll("[^a-zA-Z0-9]", "_");
+            expectedHtmlNames.add("manual_calculation_report_" + safe + ".html");
+            expectedJsonNames.add("settlement_data_" + safe + ".json");
+        }
+
+        File targetDirFile = new File(System.getProperty("user.dir") + File.separator + "target");
+
+        // --- Clean up stale HTML reports ---
+        File[] allHtmlFiles = targetDirFile.listFiles(
+                (d, n) -> n.startsWith("manual_calculation_report_") && n.endsWith(".html"));
+        int htmlDeleted = 0;
+        if (allHtmlFiles != null) {
+            for (File htmlFile : allHtmlFiles) {
+                if (!expectedHtmlNames.contains(htmlFile.getName())) {
+                    boolean deleted = htmlFile.delete();
+                    System.out.println("[Cleanup] HTML " + (deleted ? "Deleted" : "FAILED to delete") + ": " + htmlFile.getName());
+                    if (deleted) htmlDeleted++;
+                }
+            }
+        }
+
+        // --- Clean up stale settlement JSON files ---
+        File[] allJsonFiles = targetDirFile.listFiles(
+                (d, n) -> n.startsWith("settlement_data_") && n.endsWith(".json"));
+        int jsonDeleted = 0;
+        if (allJsonFiles != null) {
+            for (File jsonFile : allJsonFiles) {
+                if (!expectedJsonNames.contains(jsonFile.getName())) {
+                    boolean deleted = jsonFile.delete();
+                    System.out.println("[Cleanup] JSON " + (deleted ? "Deleted" : "FAILED to delete") + ": " + jsonFile.getName());
+                    if (deleted) jsonDeleted++;
+                }
+            }
+        }
+
+        System.out.println("[Cleanup] Done — deleted " + htmlDeleted + " HTML report(s) and "
+                + jsonDeleted + " settlement JSON(s) for disabled agreements.");
+
         System.out.println("\n✅ All enabled agreements processed successfully!");
     }
 
