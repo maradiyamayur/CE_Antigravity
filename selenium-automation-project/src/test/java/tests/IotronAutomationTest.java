@@ -527,33 +527,40 @@ public class IotronAutomationTest {
                     // Print formatted ASCII table
                     printTable(calcResults);
 
-                    // ── [Send or Pay Financial] Commitment condition check ────────
-                    // Condition: sendOrPayActive AND SUM(chargeEoA across all rows) < lowerBound
-                    boolean commitmentNotAchieved = false;
-                    double totalChargeEoA = 0.0;
+                    // ── [Send or Pay Financial] Per-group commitment condition check ──
+                    // Each (Direction + Traffic Period) group is evaluated independently:
+                    // commitment is not achieved if that group's total chargeEoA < lowerBound.
+                    boolean anyCommitmentNotAchieved = false;
                     if (sendOrPayActive) {
-                        for (Map<String, String> r : calcResults) {
-                            totalChargeEoA += parseNum(r.get("Discount Charge EoA"));
+                        for (Map.Entry<String, AggregatedData> e : aggregations.entrySet()) {
+                            boolean notAchieved = e.getValue().chargeEoA < lowerBound;
+                            e.getValue().commitmentNotAchieved = notAchieved;
+                            if (notAchieved) anyCommitmentNotAchieved = true;
+                            System.out.println("[CommitmentCheck] Group=" + e.getKey()
+                                    + ", chargeEoA=" + fmt(e.getValue().chargeEoA)
+                                    + ", lowerBound=" + fmt(lowerBound)
+                                    + ", commitmentNotAchieved=" + notAchieved);
                         }
-                        commitmentNotAchieved = totalChargeEoA < lowerBound;
-                        System.out.println("[CommitmentCheck] totalChargeEoA=" + fmt(totalChargeEoA)
-                                + ", lowerBound=" + fmt(lowerBound)
-                                + ", commitmentNotAchieved=" + commitmentNotAchieved);
                     }
 
                     // ── [Send or Pay Financial] Per-row override ─────────────────
-                    // Applies ONLY when commitmentNotAchieved == true.
-                    if (commitmentNotAchieved) {
-                        System.out.println("[CommitmentCheck] Applying commitment override (Discounted Charge EoA < Lower Bound).");
+                    // Applies ONLY to rows whose group has commitment not achieved.
+                    if (anyCommitmentNotAchieved) {
+                        System.out.println("[CommitmentCheck] Applying commitment override for group(s) below lower bound.");
                         for (Map<String, String> r : calcResults) {
+                            String groupKey = r.get("Direction") + "|" + r.get("Traffic Period");
+                            AggregatedData groupAgg = aggregations.get(groupKey);
+                            if (groupAgg == null || !groupAgg.commitmentNotAchieved) continue;
+
                             double chEoA  = parseNum(r.get("Discount Charge EoA"));
                             double tEoA   = parseNum(r.get("TAP EoA"));
                             double vEoA   = parseNum(r.get("Vol EoA"));
                             double vCum   = parseNum(r.get("Vol Cum"));
                             double tCum   = parseNum(r.get("TAP Cum"));
 
-                            // Step 2 – Share Split
-                            double split    = (totalChargeEoA != 0) ? chEoA / totalChargeEoA : 0.0;
+                            // Step 2 – Share Split: denominator is this group's total chargeEoA
+                            double groupTotal = groupAgg.chargeEoA;
+                            double split    = (groupTotal != 0) ? chEoA / groupTotal : 0.0;
                             // Step 3 – New Discount Charge EoA
                             double newCh    = split * lowerBound;
                             // Step 4 – Override Discount Achieved EoA
@@ -580,23 +587,25 @@ public class IotronAutomationTest {
                             r.put("Avg Rate Cum",           fmt(newRateCum));
                         }
 
-                        // Rebuild aggregation totals from the overridden per-row values
-                        // so the TOTAL row in the HTML report reflects the correct numbers.
-                        for (AggregatedData agg : aggregations.values()) {
-                            agg.achievedEoA = 0.0;
-                            agg.chargeCum   = 0.0;
-                            agg.achievedCum = 0.0;
+                        // Rebuild aggregation totals only for not-achieved groups.
+                        for (Map.Entry<String, AggregatedData> e : aggregations.entrySet()) {
+                            if (!e.getValue().commitmentNotAchieved) continue;
+                            AggregatedData agg = e.getValue();
+                            agg.newChargeEoA = 0.0;
+                            agg.achievedEoA  = 0.0;
+                            agg.chargeCum    = 0.0;
+                            agg.achievedCum  = 0.0;
                         }
                         for (Map<String, String> r : calcResults) {
                             String aggKey = r.get("Direction") + "|" + r.get("Traffic Period");
                             AggregatedData agg = aggregations.get(aggKey);
-                            if (agg != null) {
-                                agg.achievedEoA += parseNum(r.get("Discount Achieved EoA"));
-                                agg.chargeCum   += parseNum(r.get("Discount Charge Cum"));
-                                agg.achievedCum += parseNum(r.get("Discount Achieved Cum"));
-                            }
+                            if (agg == null || !agg.commitmentNotAchieved) continue;
+                            agg.newChargeEoA += parseNum(r.getOrDefault("New Discount Charge EoA", "0"));
+                            agg.achievedEoA  += parseNum(r.get("Discount Achieved EoA"));
+                            agg.chargeCum    += parseNum(r.get("Discount Charge Cum"));
+                            agg.achievedCum  += parseNum(r.get("Discount Achieved Cum"));
                         }
-                        System.out.println("[CommitmentCheck] Aggregation totals rebuilt from overridden values.");
+                        System.out.println("[CommitmentCheck] Aggregation totals rebuilt for not-achieved group(s).");
                     }
 
                     // Save as HTML report for easy cross-verification.
@@ -604,7 +613,7 @@ public class IotronAutomationTest {
                     String safeAgreementName = AGREEMENT_NAME.replaceAll("[^a-zA-Z0-9]", "_");
                     String reportPath = System.getProperty("user.dir") + File.separator + "target"
                             + File.separator + "manual_calculation_report_" + safeAgreementName + ".html";
-                    writeHtmlReport(calcResults, aggregations, reportPath, AGREEMENT_NAME, commitmentNotAchieved, lowerBound);
+                    writeHtmlReport(calcResults, aggregations, reportPath, AGREEMENT_NAME, anyCommitmentNotAchieved, lowerBound);
                     System.out.println("\n\uD83D\uDCC4 HTML Calculation Report saved to: " + reportPath);
 
                 } catch (Exception e) {
@@ -794,7 +803,7 @@ public class IotronAutomationTest {
                 .append("  <th class=\"eoa\">Discount Charge EoA<br><small>= Vol EoA &times; Basis</small></th>\n");
         if (commitmentNotAchieved) {
             html.append("  <th class=\"eoa\">Commitment</th>\n")
-                .append("  <th class=\"eoa\">Share Split<br><small>= Charge EoA / &sum; Charge EoA</small></th>\n")
+                .append("  <th class=\"eoa\">Share Split<br><small>= Discount Charge EoA / &sum; Discount Charge EoA</small></th>\n")
                 .append("  <th class=\"eoa\">New Discount Charge EoA<br><small>= Share Split &times; Lower Bound (")
                 .append(fmt(lowerBound)).append(")</small></th>\n");
         }
@@ -861,7 +870,11 @@ public class IotronAutomationTest {
                 if (commitmentNotAchieved) {
                     html.append("<td></td>");
                     html.append("<td></td>");
-                    html.append("<td></td>");
+                    if (agg.commitmentNotAchieved) {
+                        html.append("<td style=\"background:#fde8d8; color:#7b241c; font-weight:bold;\">").append(fmt(agg.newChargeEoA)).append("</td>");
+                    } else {
+                        html.append("<td></td>");
+                    }
                 }
                 html.append("<td style=\"background:#d5f5e3; color:#1e8449;\">").append(fmt(agg.achievedEoA))
                         .append("</td>");
@@ -913,9 +926,11 @@ public class IotronAutomationTest {
     public static class AggregatedData {
         public double volEoA = 0.0;
         public double chargeEoA = 0.0;
+        public double newChargeEoA = 0.0;
         public double achievedEoA = 0.0;
         public double volCum = 0.0;
         public double chargeCum = 0.0;
         public double achievedCum = 0.0;
+        public boolean commitmentNotAchieved = false;
     }
 }

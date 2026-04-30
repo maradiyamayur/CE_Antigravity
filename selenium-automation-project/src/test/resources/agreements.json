@@ -10,7 +10,7 @@
     },
     {
       "AGREEMENT_NAME": "Azerbaijan:Azercell Azerbaijan APR25 MAR26",
-      "enabled": false
+      "enabled": true
     },
     {
       "AGREEMENT_NAME": "France:Orange France APR25 MAR26",
@@ -18,10 +18,14 @@
     },
     {
       "AGREEMENT_NAME": "Gibraltar:GibTel Gibraltar JAN26 DEC26",
-      "enabled": true
+      "enabled": false
     },
     {
       "AGREEMENT_NAME": "Guernsey:Sure Guernsey JAN24 DEC24",
+      "enabled": false
+    },
+    {
+      "AGREEMENT_NAME": "Cyprus:PrimeTel Cyprus JAN24 DEC26",
       "enabled": false
     }
   ]
