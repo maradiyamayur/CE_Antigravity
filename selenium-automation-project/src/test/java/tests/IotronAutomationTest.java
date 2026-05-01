@@ -21,7 +21,6 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.Arrays;
 
 /**
  * End-to-end automation test for the Discount Agreements flow:
@@ -329,6 +328,27 @@ public class IotronAutomationTest {
                 System.out.println("No Settlement Data found, skipping condition evaluations.");
             }
 
+            // [SingleDirection] Detect if only one Discount Direction is present for Send or Pay Financial.
+            // When true, two CSVs must be downloaded: first with the existing dropdown value (already set
+            // by SendOrPayFinancialCondition), then a second with "Standard EoA" for the missing direction.
+            boolean isSingleDirectionSendOrPay = false;
+            String singleDirPresent = null;
+            String singleDirMissing = null;
+            if (settlementData != null && settlementData.getDiscountParameter() != null) {
+                isSingleDirectionSendOrPay = utils.SendOrPaySingleDirectionHelper.isSingleDirectionCase(
+                        settlementData.getDiscountParameter());
+                if (isSingleDirectionSendOrPay) {
+                    singleDirPresent = utils.SendOrPaySingleDirectionHelper.getPresentDirection(
+                            settlementData.getDiscountParameter());
+                    singleDirMissing = utils.SendOrPaySingleDirectionHelper.getMissingDirection(
+                            settlementData.getDiscountParameter());
+                    System.out.println("[SingleDirection] Send or Pay Financial — present: \""
+                            + singleDirPresent + "\", missing: \"" + singleDirMissing + "\"");
+                }
+            }
+            List<Map<String, String>> secondDirectionRows = null;
+            List<Map<String, String>> firstDirectionRows  = null; // pre-read of first CSV (single-direction case)
+
             // Bug #4 fix: snapshot existing CSVs BEFORE triggering the download
             java.util.Set<String> preCsvNames = new java.util.HashSet<>();
             File csvDirRef = new File(DOWNLOAD_DIR);
@@ -370,10 +390,116 @@ public class IotronAutomationTest {
                 }
             }
 
+            // [SingleDirection] Step 2: download second CSV for the missing direction with "Standard EoA".
+            // Only runs when a single Discount Direction is present and the first CSV was downloaded.
+            if (isSingleDirectionSendOrPay && latestFile != null) {
+
+                // Pre-read the first CSV into memory NOW, before triggering the second download.
+                // This protects the data if the browser saves the second file under the same name
+                // (overwriting the first file on disk).
+                try {
+                    firstDirectionRows = CsvUtils.readCsv(latestFile.getAbsolutePath());
+                    System.out.println("[SingleDirection] Pre-read first CSV (\""
+                            + singleDirPresent + "\"): " + firstDirectionRows.size() + " rows.");
+                } catch (Exception preReadEx) {
+                    System.err.println("[SingleDirection] Failed to pre-read first CSV: " + preReadEx.getMessage());
+                }
+
+                // Download the second CSV. Snapshot by (filename + lastModified) so we detect both
+                // a browser-renamed file (e.g. "report (1).csv") AND a same-name overwrite.
+                try {
+                    System.out.println("[SingleDirection] Step 2: Downloading second sheet for missing direction (\""
+                            + singleDirMissing + "\") with Calculation Type: \"Standard EoA\"...");
+                    forecastPage.selectCalculationTypeIfAvailable("Standard EoA");
+                    forecastPage.clickDetailRefresh();
+
+                    java.util.Map<String, Long> csvSnapshot2 = new java.util.HashMap<>();
+                    {
+                        File[] pre2 = csvDirRef.listFiles((d, name) -> name.toLowerCase().endsWith(".csv"));
+                        if (pre2 != null)
+                            for (File f : pre2)
+                                csvSnapshot2.put(f.getName(), f.lastModified());
+                    }
+                    forecastPage.clickActionsMenu();
+                    forecastPage.selectDownloadFromActions();
+                    forecastPage.selectCsvOptionInPopup();
+                    forecastPage.clickDownloadInPopup();
+
+                    File secondCsvFile = null;
+                    long csv2Deadline = System.currentTimeMillis() + 30_000;
+                    while (System.currentTimeMillis() < csv2Deadline && secondCsvFile == null) {
+                        File[] cur2 = csvDirRef.listFiles((d, name) -> name.toLowerCase().endsWith(".csv"));
+                        if (cur2 != null) {
+                            for (File f : cur2) {
+                                Long snapMod = csvSnapshot2.get(f.getName());
+                                // New file (not in snapshot) OR existing file overwritten (lastModified changed)
+                                if (snapMod == null || f.lastModified() > snapMod) {
+                                    secondCsvFile = f;
+                                    break;
+                                }
+                            }
+                        }
+                        if (secondCsvFile == null) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException ie) {
+                                Thread.currentThread().interrupt();
+                            }
+                        }
+                    }
+                    if (secondCsvFile != null) {
+                        System.out.println("[SingleDirection] Second CSV downloaded: " + secondCsvFile.getName());
+                        try {
+                            secondDirectionRows = CsvUtils.readCsv(secondCsvFile.getAbsolutePath());
+                            System.out.println("[SingleDirection] Second CSV (\""
+                                    + singleDirMissing + "\") captured " + secondDirectionRows.size() + " rows.");
+                        } catch (Exception e2) {
+                            System.err.println("[SingleDirection] Failed to read second CSV: " + e2.getMessage());
+                        }
+                    } else {
+                        System.err.println("[SingleDirection] No second CSV appeared within 30s for missing direction \""
+                                + singleDirMissing + "\".");
+                    }
+                } catch (Exception singleDirEx) {
+                    System.err.println("[SingleDirection] Second download failed — continuing with first CSV only. Cause: "
+                            + singleDirEx.getMessage());
+                }
+            }
+
             if (latestFile != null) {
                 System.out.println("Reading data from: " + latestFile.getName());
                 try {
-                    List<Map<String, String>> allRows = CsvUtils.readCsv(latestFile.getAbsolutePath());
+                    // [SingleDirection] Build allRows from pre-read in-memory data so it is correct
+                    // regardless of whether the second download overwrote the file on disk.
+                    // For all other cases: read from disk as normal.
+                    List<Map<String, String>> allRows;
+                    // [SingleDirection] Sheet 2 rows — kept separate, processed independently after Sheet 1.
+                    List<Map<String, String>> standardEoASheetRows = null;
+                    if (isSingleDirectionSendOrPay && firstDirectionRows != null) {
+                        // Sheet 1: present-direction rows from "Before Send or Pay Financial Commitment" CSV.
+                        // Processed with Send or Pay Financial commitment check.
+                        final String dirPresent = singleDirPresent;
+                        final String dirMissing = singleDirMissing;
+                        allRows = firstDirectionRows.stream()
+                                .filter(r -> dirPresent != null && dirPresent.equals(r.getOrDefault("Direction", "")))
+                                .collect(Collectors.toList());
+                        System.out.println("[SingleDirection] Sheet 1 (\"" + dirPresent
+                                + "\", Send or Pay Financial): " + allRows.size() + " rows.");
+
+                        // Sheet 2: missing-direction rows from "Standard EoA" CSV.
+                        // Not merged into allRows — processed independently with no commitment check.
+                        if (secondDirectionRows != null && !secondDirectionRows.isEmpty()) {
+                            standardEoASheetRows = secondDirectionRows.stream()
+                                    .filter(r -> dirMissing != null && dirMissing.equals(r.getOrDefault("Direction", "")))
+                                    .collect(Collectors.toList());
+                            System.out.println("[SingleDirection] Sheet 2 (\"" + dirMissing
+                                    + "\", Standard EoA): " + standardEoASheetRows.size() + " rows — processed separately.");
+                        } else {
+                            System.out.println("[SingleDirection] Sheet 2 not available — processing Sheet 1 only.");
+                        }
+                    } else {
+                        allRows = CsvUtils.readCsv(latestFile.getAbsolutePath());
+                    }
 
                     // Check for column existence before processing rows
                     if (!allRows.isEmpty()) {
@@ -606,6 +732,97 @@ public class IotronAutomationTest {
                             agg.achievedCum  += parseNum(r.get("Discount Achieved Cum"));
                         }
                         System.out.println("[CommitmentCheck] Aggregation totals rebuilt for not-achieved group(s).");
+                    }
+
+                    // [SingleDirection] Process Sheet 2 (Standard EoA) independently — no commitment check.
+                    if (standardEoASheetRows != null && !standardEoASheetRows.isEmpty()) {
+                        System.out.println("\n[SingleDirection] Processing Sheet 2 (Standard EoA, \""
+                                + singleDirMissing + "\")...");
+                        List<Map<String, String>> subsetData2 = standardEoASheetRows.stream().map(row -> {
+                            Map<String, String> subset = new java.util.LinkedHashMap<>();
+                            subset.put("Direction",                     row.getOrDefault("Direction", ""));
+                            subset.put("Traffic Period",                row.getOrDefault("Traffic Period", ""));
+                            subset.put("Discount Service Type",         row.getOrDefault("Discount Service Type", ""));
+                            subset.put("Discount Event Type",           row.getOrDefault("Discount Event Type", ""));
+                            subset.put("Discount Calculation Type",     row.getOrDefault("Discount Calculation Type", ""));
+                            subset.put("Discount Basis Value",          row.getOrDefault("Discount Basis Value", ""));
+                            subset.put("Traffic Volume Restricted EoA", row.getOrDefault("Traffic Volume Restricted EoA", ""));
+                            subset.put("TAP Charge EoA",                row.getOrDefault("TAP Charge EoA", ""));
+                            subset.put("Traffic Volume Restricted Cum", row.getOrDefault("Traffic Volume Restricted Cum", ""));
+                            subset.put("TAP Charge Restricted Cum",     row.getOrDefault("TAP Charge Restricted Cum", ""));
+                            subset.put("Discounted Charge EoA",         row.getOrDefault("Discounted Charge EoA", ""));
+                            subset.put("Discounted Charge Cum",         row.getOrDefault("Discounted Charge Cum", ""));
+                            return subset;
+                        }).collect(Collectors.toList());
+                        System.out.println("[1_step_EoA_DATA][StandardEoA] captured " + subsetData2.size() + " rows.");
+
+                        for (Map<String, String> row : subsetData2) {
+                            try {
+                                double basisValue = parseNum(row.getOrDefault("Discount Basis Value", "0"));
+                                double volEoA     = parseNum(row.getOrDefault("Traffic Volume Restricted EoA", "0"));
+                                double tapEoA     = parseNum(row.getOrDefault("TAP Charge EoA", "0"));
+                                double volCum     = parseNum(row.getOrDefault("Traffic Volume Restricted Cum", "0"));
+                                double tapCum     = parseNum(row.getOrDefault("TAP Charge Restricted Cum", "0"));
+
+                                String calcType = row.getOrDefault("Discount Calculation Type", "");
+                                double chargeEoA;
+                                double chargeCum;
+
+                                if ("Calculated Value of Undiscounted Units".equals(calcType)) {
+                                    chargeEoA = parseNum(row.get("Discounted Charge EoA"));
+                                } else if ("Undiscounted Premium Numbers".equals(calcType)) {
+                                    chargeEoA = tapEoA;
+                                } else {
+                                    chargeEoA = volEoA * basisValue;
+                                }
+
+                                if ("Calculated Value of Undiscounted Units".equals(calcType)) {
+                                    chargeCum = parseNum(row.get("Discounted Charge Cum"));
+                                } else if ("Undiscounted Premium Numbers".equals(calcType)) {
+                                    chargeCum = tapCum;
+                                } else {
+                                    chargeCum = volCum * basisValue;
+                                }
+
+                                double achievedEoA = "Calculated Value of Undiscounted Units".equals(calcType)
+                                        ? 0.0 : tapEoA - chargeEoA;
+                                double rateEoA   = (volEoA != 0) ? chargeEoA / volEoA : 0.0;
+                                double achievedCum = tapCum - chargeCum;
+                                double rateCum   = (volCum != 0) ? chargeCum / volCum : 0.0;
+
+                                Map<String, String> result = new java.util.LinkedHashMap<>();
+                                result.put("Direction",             row.get("Direction"));
+                                result.put("Traffic Period",        row.get("Traffic Period"));
+                                result.put("Service Type",          row.get("Discount Service Type"));
+                                result.put("Event Type",            row.get("Discount Event Type"));
+                                result.put("Calc Type",             row.get("Discount Calculation Type"));
+                                result.put("Basis Value",           fmt(basisValue));
+                                result.put("Vol EoA",               fmt(volEoA));
+                                result.put("TAP EoA",               fmt(tapEoA));
+                                result.put("Discount Charge EoA",   fmt(chargeEoA));
+                                result.put("Discount Achieved EoA", fmt(achievedEoA));
+                                result.put("Avg Rate EoA",          fmt(rateEoA));
+                                result.put("Vol Cum",               fmt(volCum));
+                                result.put("TAP Cum",               fmt(tapCum));
+                                result.put("Discount Charge Cum",   fmt(chargeCum));
+                                result.put("Discount Achieved Cum", fmt(achievedCum));
+                                result.put("Avg Rate Cum",          fmt(rateCum));
+                                calcResults.add(result);
+
+                                String key = row.get("Direction") + "|" + row.get("Traffic Period");
+                                AggregatedData agg = aggregations.computeIfAbsent(key, k -> new AggregatedData());
+                                agg.volEoA      += volEoA;
+                                agg.chargeEoA   += chargeEoA;
+                                agg.achievedEoA += achievedEoA;
+                                agg.volCum      += volCum;
+                                agg.chargeCum   += chargeCum;
+                                agg.achievedCum += achievedCum;
+                            } catch (NumberFormatException ex) {
+                                System.err.println("[StandardEoA] Skipping row due to parse error: " + ex.getMessage());
+                            }
+                        }
+                        System.out.println("[SingleDirection] Sheet 2 processing complete — "
+                                + subsetData2.size() + " rows added to HTML report.");
                     }
 
                     // Save as HTML report for easy cross-verification.

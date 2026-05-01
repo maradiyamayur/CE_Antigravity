@@ -31,6 +31,7 @@ public class ForecastReportPage extends BasePage {
     private By csvOption = By
             .xpath("//li[contains(@class, 'a-IRR-iconList-item')]//span[text()='CSV'] | //li[@data-value='CSV']");
     private By popupDownloadButton = By.xpath("//button[@class='ui-button--hot ui-button ui-corner-all ui-widget']");
+    private By popupCancelButton   = By.xpath("//button[@class='ui-button ui-corner-all ui-widget']");
 
     public ForecastReportPage(WebDriver driver) {
         super(driver);
@@ -210,7 +211,8 @@ public class ForecastReportPage extends BasePage {
     }
 
     /**
-     * Clicks the Download button in the popup.
+     * Clicks the Download button in the popup, waits for the download to initiate,
+     * then closes the popup via the Cancel button so it does not intercept subsequent clicks.
      */
     public void clickDownloadInPopup() {
         System.out.println("Clicking 'Download' button in popup...");
@@ -224,6 +226,16 @@ public class ForecastReportPage extends BasePage {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        // Close the popup so it does not intercept clicks on subsequent downloads.
+        try {
+            WebElement cancelBtn = wait.until(ExpectedConditions.elementToBeClickable(popupCancelButton));
+            jsClick(cancelBtn);
+            System.out.println("Download popup closed via Cancel button.");
+            waitForApexAjax();
+        } catch (Exception e) {
+            System.out.println("[INFO] Cancel button not found or popup already closed — continuing.");
         }
     }
 
